@@ -89,13 +89,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     // bottom toolbar buttons
     @IBOutlet weak var bottomToolbar: UIToolbar!
-    @IBOutlet weak var unhideButton: UIBarButtonItem!
-    @IBAction func unhideButtonClicked(_ sender: UIBarButtonItem) {
-        deletedSessions.removeAll()
-        initSessions()
-        sliderTableView.reloadData()
-
-    }
     
     @IBOutlet weak var disconnectButton: UIBarButtonItem!
     @IBAction func disconnectButtonClicked(_ sender: UIBarButtonItem) {
@@ -193,9 +186,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         PortNum = port
         SController = StreamController(address: ip, port: port, delegate: self)
 //        scheduledTimerWithTimeInterval(timeout: 3.0)
-        SController?.setupNetworkCommunication()
-        SController?.delegate = self
+//        SController?.setupNetworkCommunication()
         SController?.processMessages()
+        SController?.delegate = self
+        SController?.connectNoSend(ip: ip, port: port)
+        
     }
     
     func appMovedToBackground() {
@@ -266,15 +261,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func initSessions() {
         // This finds all sessions and overwrites the global session state.
         allSessions.removeAll()
-        processedSessions.removeAll()
-        
         guard let sessions = SController?.fullState?.defaultDevice.sessions else { return }
-        
         for x : FullState.Session in sessions {
             allSessions.append(Session(id: x.id, muted: x.muted, name: x.name, volume: Double(x.volume)))
         }
+        // always sort alphabetically for a consistent view
+        allSessions.sort {
+            $0.name.localizedCaseInsensitiveCompare($1.name) == ComparisonResult.orderedAscending
+        }
         // While we are reloading here, initialize the title showing in the initial picker view.
-        pickerTextField.text = SController?.fullState?.defaultDevice.name
+        guard let state = SController?.fullState?.defaultDevice.name else { return }
+        if pickerTextField == nil {
+            self.view.setNeedsLayout()
+        }
+        pickerTextField.text = state
     }
     
     func findDeviceId(longName: String) -> String {
@@ -294,17 +294,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if SController?.fullState?.version != protocolVersion {
             createDisconnectAlert(title: "Error", message: "Client and server protocols mismatch.")
         }
-        
         // re-populate the array of current sessions and reload the sliders.
-        let indexPath = IndexPath(row: allSessions.count - 1, section: 0)
-        buildSliderStack(index: indexPath)
         initSessions()
         guard let masterMuteState = SController?.fullState?.defaultDevice.masterMuted else {
             print("Master mute state could not be set!")
             return
         }
         masterMuteButton.isOn = !masterMuteState
-        
         // This reloads the sliderTableView completely.
         DispatchQueue.main.async{
             self.sliderTableView.reloadData()
@@ -401,42 +397,19 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     // This code controls the tableView rows the sliders live in.
     
-    func buildSliderStack(index: IndexPath){
-        
-        // We have to know how many cells we had in the stack prior to an update.
-        if allSessions.count == 0 {
-            initSessions()
-        }
-        
-        DispatchQueue.main.async{
-            self.sliderTableView.reloadData()
-        }
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        if allSessions.count >= 1 {
-            initSessions()
-        }
-        if processedSessions.count > allSessions.count {
-            return processedSessions.count
-        }
         return allSessions.count
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        // The full table needs to completely reload.
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "sliderCell") as! SliderCell
         cell.delegate = self
-        if allSessions.count == 0 {
-            initSessions()  // populate the sessions array again. We changed the view.
-        }
-        let targetSession = allSessions.removeFirst()
-        processedSessions.append(targetSession)
+        
+        let targetSession = allSessions[indexPath.row]
+        print("Updating cell index path: \(indexPath.row), target: \(targetSession.name)")
         cell.setSessionParameter(session: targetSession)
-   
+        
         return cell
     }
     // TODO: v2 allow hiding of sessions
@@ -464,7 +437,6 @@ extension ViewController: SliderCellDelegate {
                 let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
                 let dataWithNewline = dataAsString! + "\n"
                 SController?.sendString(input: dataWithNewline)
-                reloadTheWorld()
                 
                 break
                 
@@ -493,7 +465,6 @@ extension ViewController: SliderCellDelegate {
                 let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
                 let dataWithNewline = dataAsString! + "\n"
                 SController?.sendString(input: dataWithNewline)
-                reloadTheWorld()
                 
                 break
                 
@@ -515,8 +486,8 @@ extension ViewController: StreamControllerDelegate {
         performSegue(withIdentifier: "BackToStartSegue", sender: "abort")
     }
     func tearDownConnection() {
-        SController?.inputStream.close()
-        SController?.outputStream.close()
+//        SController?.inputStream.close()
+//        SController?.outputStream.close()
         SController?.serverConnected = false
         clientConnected = false
     }

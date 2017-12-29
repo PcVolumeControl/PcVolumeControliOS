@@ -464,6 +464,7 @@
         <image name="volume-thumbslider.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="spJ-x4-y41"/>
         <segue reference="oMA-JO-w79"/>
     </inferredMetricsTieBreakers>
 </document>

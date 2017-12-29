@@ -781,7 +781,7 @@
 				A927E16E1FC53AB10024D526 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		A927E16F1FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControl" */ = {
 			isa = XCConfigurationList;
@@ -790,7 +790,7 @@
 				A927E1711FC53AB10024D526 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		A927E1721FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlTests" */ = {
 			isa = XCConfigurationList;
@@ -799,7 +799,7 @@
 				A927E1741FC53AB10024D526 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		A927E1751FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlUITests" */ = {
 			isa = XCConfigurationList;
@@ -808,7 +808,7 @@
 				A927E1771FC53AB10024D526 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
