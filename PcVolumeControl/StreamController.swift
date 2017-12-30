@@ -72,17 +72,27 @@ class StreamController: NSObject {
         guard let client = ClientConnection else { return }
         switch client.send(string: input) {
             case .success:
-                var responsedata = [UInt8]()
                 var responsestring: String = ""
-                while true {
+                var allFullResponses = Set<String>() // for dedup
+                while !responsestring.hasSuffix("\n") {
+                    // read some more data
                     if let responseChunk = ClientConnection?.read(1024*10, timeout: TCPTimeout) {
-                        responsedata += responseChunk
+                        // convert that data into a string
+                        // BUG: At this point, if the server sent us multiple replies, they're all going
+                        // to be in this same read(). We have to read more intelligently or just break it
+                        // up clientside...I guess?
                         if let stringified = String(bytes: responseChunk, encoding: .utf8) {
                             responsestring += stringified
                             if responsestring.hasSuffix("\n") {
                                 // It's a full message. Decode it.
-                                print("Response:\n\(responsestring)")
-                                lastMessageSubject.onNext(responsestring)
+                                // HACK: Check for multiple messages.
+                                for resp in responsestring.components(separatedBy: "\n") {
+                                    allFullResponses.insert(resp)
+                                }
+                                allFullResponses.remove("") // get rid of the empty string we initialized with
+                                guard let singleUpdate = allFullResponses.popFirst() else { break }
+                                print("Response:\n\(singleUpdate)")
+                                lastMessageSubject.onNext(singleUpdate)
                                 break
                             }
                         }
