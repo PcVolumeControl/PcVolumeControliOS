@@ -185,7 +185,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         IPaddr = ip
         PortNum = port
         SController = StreamController(address: ip, port: port, delegate: self)
-//        scheduledTimerWithTimeInterval(timeout: 3.0)
 //        SController?.setupNetworkCommunication()
         SController?.processMessages()
         SController?.delegate = self
@@ -224,19 +223,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Quit", style: UIAlertActionStyle.default, handler: { (action) in alert.dismiss(animated:true, completion: nil); self.bailToConnectScreen()}))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    var timer = Timer()
-    func scheduledTimerWithTimeInterval(timeout: Double) {
-        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
-        timer = Timer.scheduledTimer(timeInterval: timeout, target: self, selector: #selector(ViewController.timeoutHit), userInfo: nil, repeats: false)
-    }
-    func timeoutHit() {
-        if SController?.serverConnected == false {
-            print("Connection timed out...")
-            tearDownConnection()
-            createDisconnectAlert(title: "Connection Error", message: "Bad hostname, IP, or port for the server.\nDouble-check your settings.")
-        }
     }
     
     func pushUpdateToServer(data: ViewController.ADefaultDeviceUpdate?) {

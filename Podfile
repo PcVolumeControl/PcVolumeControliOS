@@ -6,7 +6,7 @@ target 'PcVolumeControl' do
     use_frameworks!
     pod 'RxSwift',    '~> 4.0'
     pod 'RxCocoa',    '~> 4.0'
-    pod 'SwiftSocket'
+    pod 'SwiftSocket','2.0.1'
     
     # Pods for PcVolumeControl
     

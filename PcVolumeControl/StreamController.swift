@@ -31,7 +31,8 @@ class StreamController: NSObject {
     var fullState: FullState?
     var serverConnected: Bool?
     var delegate: StreamControllerDelegate?
-    let TCPTimeout = 5
+    let TCPTimeout = 2
+    var ClientConnection: TCPClient?
     
     // Rx stuff
     let bag = DisposeBag()
@@ -68,40 +69,55 @@ class StreamController: NSObject {
     }
     
     func sendString(input: String){
-        let client = TCPClient(address: address, port: Int32(port))
-        switch client.connect(timeout: TCPTimeout) {
-        case .success:
-            switch client.send(string: input) {
+        guard let client = ClientConnection else { return }
+        switch client.send(string: input) {
             case .success:
-                var data = [UInt8]()
+                var responsedata = [UInt8]()
+                var responsestring: String = ""
                 while true {
-                    guard let response = client.read(1024*10, timeout: 1) else { break }
-                    data += response
-                }
-                if let response = String(bytes: data, encoding: .utf8) {
-                    print("Response:\n\(response)")
-                    lastMessageContent.onNext(response)
+                    if let responseChunk = ClientConnection?.read(1024*10, timeout: TCPTimeout) {
+                        responsedata += responseChunk
+                        if let stringified = String(bytes: responseChunk, encoding: .utf8) {
+                            responsestring += stringified
+                            if responsestring.hasSuffix("\n") {
+                                // It's a full message. Decode it.
+                                print("Response:\n\(responsestring)")
+                                lastMessageSubject.onNext(responsestring)
+                                break
+            
+                            }
+                        }
+                    }
                 }
             case .failure(let error):
                 print(error)
             }
-        case .failure(let error):
-            print(error)
-        }
+       
     }
     
     func connectNoSend(ip: String, port: UInt32) {
-        let client = TCPClient(address: ip, port: Int32(port))
+        // Make the initial TCP connection.
+        let client = TCPClient(address: address, port: Int32(port))
+        ClientConnection = client
         switch client.connect(timeout: TCPTimeout) {
         case .success:
-            var data = [UInt8]()
+            var responsedata = [UInt8]()
+            var responsestring: String = ""
             while true {
-                guard let response = client.read(1024*10, timeout: 1) else { break }
-                data += response
-            }
-            if let response = String(bytes: data, encoding: .utf8) {
-                print("Response:\n\(response)")
-                lastMessageContent.onNext(response)
+                if let responseChunk = client.read(1024*10, timeout: TCPTimeout) {
+                    responsedata += responseChunk
+                    if let stringified = String(bytes: responseChunk, encoding: .utf8) {
+                        responsestring += stringified
+//                        print("Response:\n\(responsestring)")
+                        
+                        if responsestring.hasSuffix("\n") {
+                            // It's a full message. Decode it.
+                            lastMessageSubject.onNext(responsestring)
+                            break
+                            
+                        }
+                    }
+                }
             }
         case .failure(let error):
             print(error)
@@ -131,8 +147,7 @@ class StreamController: NSObject {
             // TODO: hack. Only return the first message if the whole update contains multiple messages.
             if message.contains("\n") {
                 let wholeUpdate = message.components(separatedBy: "\n")
-                guard let firstUpdate = wholeUpdate.first else { return }
-                print("JSONSubscription: last full message\n\(firstUpdate)")
+                guard let firstUpdate = wholeUpdate.first else { print("didn't see the first update"); return }
                 do {
                     try self.JSONDecode(input: firstUpdate)
                 } catch CodingError.JSONDecodeProblem {
@@ -167,59 +182,6 @@ class StreamController: NSObject {
         }
     }
 }
-
-//extension StreamController: StreamDelegate {
-//    func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
-//        switch eventCode {
-//        case Stream.Event.hasBytesAvailable:
-//            print("TCP: new data chunk seen")
-//            readAvailableBytes(stream: aStream as! InputStream)
-//        case Stream.Event.endEncountered:
-//            print("TCP: message end encountered")
-//        case Stream.Event.errorOccurred:
-//            print("TCP: socket error occurred. bailing...")
-//            connectionIssue()
-//        case Stream.Event.hasSpaceAvailable:
-//            print("TCP: has space available")
-//        default:
-//            print("TCP: some other event...")
-//            break
-//        }
-//    }
-//    private func readAvailableBytes(stream: InputStream) {
-//
-//        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: maxReadLength)
-//
-//        while stream.hasBytesAvailable {
-//
-//            let numberOfBytesRead = inputStream.read(buffer, maxLength: maxReadLength)
-//
-//            if numberOfBytesRead < 0 {
-//                if let _ = stream.streamError {
-//                    break
-//                }
-//            }
-//            if let message = processedMessageString(buffer: buffer, length: numberOfBytesRead) {
-//                // add the message into the array
-//                print("TCP: Message chunk of length: \(message.count) added to messageContent")
-//                lastMessageContent.onNext(message)
-//            }
-//        }
-//
-//    }
-//    private func processedMessageString(buffer: UnsafeMutablePointer<UInt8>,
-//                                        length: Int) -> String? {
-//
-//        let stringArray = String(bytesNoCopy: buffer,
-//                                 length: length,
-//                                 encoding: .utf8,
-//                                 freeWhenDone: true)
-//        return stringArray
-//    }
-//
-//
-//
-//}
 
 class FullState : Codable {
     struct theDefaultDevice : Codable {
