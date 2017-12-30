@@ -67,41 +67,15 @@ class StreamController: NSObject {
         self.delegate?.tearDownConnection()
         self.serverConnected = false
     }
-    
+
     func sendString(input: String){
         guard let client = ClientConnection else { return }
         switch client.send(string: input) {
             case .success:
-                var responsestring: String = ""
-                var allFullResponses = Set<String>() // for dedup
-                while !responsestring.hasSuffix("\n") {
-                    // read some more data
-                    if let responseChunk = ClientConnection?.read(1024*10, timeout: TCPTimeout) {
-                        // convert that data into a string
-                        // BUG: At this point, if the server sent us multiple replies, they're all going
-                        // to be in this same read(). We have to read more intelligently or just break it
-                        // up clientside...I guess?
-                        if let stringified = String(bytes: responseChunk, encoding: .utf8) {
-                            responsestring += stringified
-                            if responsestring.hasSuffix("\n") {
-                                // It's a full message. Decode it.
-                                // HACK: Check for multiple messages.
-                                for resp in responsestring.components(separatedBy: "\n") {
-                                    allFullResponses.insert(resp)
-                                }
-                                allFullResponses.remove("") // get rid of the empty string we initialized with
-                                guard let singleUpdate = allFullResponses.popFirst() else { break }
-                                print("Response:\n\(singleUpdate)")
-                                lastMessageSubject.onNext(singleUpdate)
-                                break
-                            }
-                        }
-                    }
-                }
+                print("Message sent to server.")
             case .failure(let error):
                 print(error)
             }
-       
     }
     
     func connectNoSend(ip: String, port: UInt32) {
@@ -110,19 +84,27 @@ class StreamController: NSObject {
         ClientConnection = client
         switch client.connect(timeout: TCPTimeout) {
         case .success:
-            var responsedata = [UInt8]()
             var responsestring: String = ""
+            var allFullResponses = Set<String>() // for dedup
             while true {
+                // read some more data
                 if let responseChunk = client.read(1024*10, timeout: TCPTimeout) {
-                    responsedata += responseChunk
+                    // convert that data into a string
+                    // BUG: At this point, if the server sent us multiple replies, they're all going
+                    // to be in this same read(). We have to read more intelligently or just break it
+                    // up clientside...I guess?
                     if let stringified = String(bytes: responseChunk, encoding: .utf8) {
                         responsestring += stringified
-//                        print("Response:\n\(responsestring)")
-                        
                         if responsestring.hasSuffix("\n") {
                             // It's a full message. Decode it.
-                            lastMessageSubject.onNext(responsestring)
-                            break
+                            // HACK: Check for multiple messages.
+                            for resp in responsestring.components(separatedBy: "\n") {
+                                allFullResponses.insert(resp)
+                            }
+                            allFullResponses.remove("") // get rid of the empty string we initialized with
+                            guard let singleUpdate = allFullResponses.popFirst() else { continue }
+                            print("Response:\n\(singleUpdate)")
+                            lastMessageSubject.onNext(singleUpdate)
                             
                         }
                     }
@@ -154,16 +136,12 @@ class StreamController: NSObject {
             if message == "NULL" { return } // first message ever
             
             // TODO: hack. Only return the first message if the whole update contains multiple messages.
-            if message.contains("\n") {
-                let wholeUpdate = message.components(separatedBy: "\n")
-                guard let firstUpdate = wholeUpdate.first else { print("didn't see the first update"); return }
-                do {
-                    try self.JSONDecode(input: firstUpdate)
-                } catch CodingError.JSONDecodeProblem {
-                    print("JSONSubscription: JSON decode failed!!!!")
-                } catch {
-                    print("JSONSubscription: fell off the end...")
-                }
+            do {
+                try self.JSONDecode(input: message)
+            } catch CodingError.JSONDecodeProblem {
+                print("JSONSubscription: JSON decode failed!!!!")
+            } catch {
+                print("JSONSubscription: fell off the end...")
             }
         }
     }
@@ -178,7 +156,8 @@ class StreamController: NSObject {
             print("JSONDecode: Successfully decoded the payload.")
             serverConnected = true
             fullState = fs
-            serverUpdated()
+//            serverUpdated()
+            delegate?.didGetServerUpdate()
             print("JSONDecode: pushing initial server update into fullstate...")
             
         } catch Swift.DecodingError.dataCorrupted {

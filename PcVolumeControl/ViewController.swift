@@ -111,6 +111,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var IPaddr: String!
     var PortNum: UInt32?
     var connectionParams: [String]?
+    let asyncQueue = DispatchQueue(label: "asyncQueue", attributes: .concurrent)
     
     var deletedSessions = [Session]() // Deleted previously due to a swipe-delete
     
@@ -186,8 +187,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         SController = StreamController(address: ip, port: port, delegate: self)
         SController?.processMessages()
         SController?.delegate = self
-        SController?.connectNoSend(ip: ip, port: port)
         
+        asyncQueue.async {
+            self.SController?.connectNoSend(ip: ip, port: port)
+        }
+    
     }
     
     func appMovedToBackground() {
@@ -258,7 +262,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if pickerTextField == nil {
             self.view.setNeedsLayout()
         }
-        pickerTextField.text = state
+        DispatchQueue.main.async {
+            self.pickerTextField.text = state
+        }
     }
     
     func findDeviceId(longName: String) -> String {
@@ -285,10 +291,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
             return
         }
         masterMuteButton.isOn = !masterMuteState
-        // This reloads the sliderTableView completely.
-        DispatchQueue.main.async{
-            self.sliderTableView.reloadData()
-        }
+        sliderTableView.reloadData()
+
     }
 }
 //
@@ -353,6 +357,7 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         // The data is supposed to be an array of Uint8.
         let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
         let dataWithNewline = dataAsString! + "\n"
+        
         SController?.sendString(input: dataWithNewline)
     }
     
@@ -416,7 +421,6 @@ extension ViewController: SliderCellDelegate {
                 let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
                 let dataWithNewline = dataAsString! + "\n"
                 SController?.sendString(input: dataWithNewline)
-                
                 break
                 
             }
@@ -437,14 +441,12 @@ extension ViewController: SliderCellDelegate {
                 let adefault = ASessionUpdate.adflDevice(sessions: [onesession], deviceId: defaultDeviceShortId)
                 let data = ASessionUpdate(version: protocolVersion, defaultDevice: adefault)
                 
-                
                 let dataAsBytes = try! encoder.encode(data)
                 dump(dataAsBytes)
                 // The data is supposed to be an array of Uint8.
                 let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
                 let dataWithNewline = dataAsString! + "\n"
                 SController?.sendString(input: dataWithNewline)
-                
                 break
                 
             }
@@ -457,7 +459,9 @@ extension ViewController: StreamControllerDelegate {
     func didGetServerUpdate() {
         print("Server update detected. Reloading...")
         clientConnected = true
-        reloadTheWorld()
+        DispatchQueue.main.async {
+            self.reloadTheWorld()
+        }
     }
     func bailToConnectScreen() {
         // used if the TCP controller detects problems
@@ -465,8 +469,6 @@ extension ViewController: StreamControllerDelegate {
         performSegue(withIdentifier: "BackToStartSegue", sender: "abort")
     }
     func tearDownConnection() {
-//        SController?.inputStream.close()
-//        SController?.outputStream.close()
         SController?.serverConnected = false
         clientConnected = false
     }
