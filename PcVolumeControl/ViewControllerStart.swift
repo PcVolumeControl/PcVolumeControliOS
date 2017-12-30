@@ -30,6 +30,8 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         ServerIPField.delegate = self
         ServerPortField.delegate = self
+        ServerIPField.autocorrectionType = .no
+        ServerPortField.autocorrectionType = .no
         ServerIPField.keyboardType = .numbersAndPunctuation
         ServerPortField.keyboardType = .numberPad
         
