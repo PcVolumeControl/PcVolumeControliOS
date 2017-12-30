@@ -84,7 +84,6 @@ class StreamController: NSObject {
                                 print("Response:\n\(responsestring)")
                                 lastMessageSubject.onNext(responsestring)
                                 break
-            
                             }
                         }
                     }

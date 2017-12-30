@@ -29,24 +29,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let id = SController?.fullState?.defaultDevice.deviceId
         var defaultDevId: AMasterChannelUpdate.adflDevice?
         // Volume is not changing.
-        let masterVolume = SController?.fullState?.defaultDevice.masterVolume
+        guard let masterVolume = SController?.fullState?.defaultDevice.masterVolume else { return }
         if sender.isOn {
             // Unmute the master.
-            defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: false, masterVolume: masterVolume!)
+            defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: false, masterVolume: masterVolume)
         }
         else
         {
             // Mute the master.
-            defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: true, masterVolume: masterVolume!)
+            defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: true, masterVolume: masterVolume)
         }
-        let data = AMasterChannelUpdate(version: protocolVersion, defaultDevice: (defaultDevId)!)
-        let encoder = JSONEncoder()
+        let data = AMasterChannelUpdate(version: protocolVersion, defaultDevice: (defaultDevId!))
         
+        let encoder = JSONEncoder()
         let dataAsBytes = try! encoder.encode(data)
         dump(dataAsBytes)
         // The data is supposed to be an array of Uint8.
-        let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
-        let dataWithNewline = dataAsString! + "\n"
+        guard let dataAsString = String(bytes: dataAsBytes, encoding: .utf8) else { return }
+        let dataWithNewline = dataAsString + "\n"
         SController?.sendString(input: dataWithNewline)
     }
 
@@ -55,9 +55,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         guard let id = SController?.fullState?.defaultDevice.deviceId else { reloadTheWorld(); return }
         var defaultDevId: AMasterChannelUpdate.adflDevice?
         // mute value is not changing.
-        let masterMuted = SController?.fullState?.defaultDevice.masterMuted
+        guard let masterMuted = SController?.fullState?.defaultDevice.masterMuted else { return }
         let volumeValue = sender.value
-        defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id, masterMuted: masterMuted!, masterVolume: Double(volumeValue))
+        defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id, masterMuted: masterMuted, masterVolume: Double(volumeValue))
 
         let data = AMasterChannelUpdate(version: protocolVersion, defaultDevice: (defaultDevId)!)
         let encoder = JSONEncoder()
@@ -65,15 +65,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let dataAsBytes = try! encoder.encode(data)
         dump(dataAsBytes)
         // The data is supposed to be an array of Uint8.
-        let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
-        let dataWithNewline = dataAsString! + "\n"
+        guard let dataAsString = String(bytes: dataAsBytes, encoding: .utf8) else { return }
+        let dataWithNewline = dataAsString + "\n"
         SController?.sendString(input: dataWithNewline)
     }
     
     // about page popup
     @IBOutlet weak var aboutButton: UIBarButtonItem!
     @IBAction func aboutButtonClicked(_ sender: UIBarButtonItem) {
-        let reconnectInfo = [IPaddr, PortNum ?? 3000] as [Any]
+        let reconnectInfo = [IPaddr, PortNum ?? 3000] as [Any] // default to 3000
         performSegue(withIdentifier: "aboutSegue", sender: reconnectInfo)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -113,7 +113,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var connectionParams: [String]?
     
     var deletedSessions = [Session]() // Deleted previously due to a swipe-delete
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,7 +184,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         IPaddr = ip
         PortNum = port
         SController = StreamController(address: ip, port: port, delegate: self)
-//        SController?.setupNetworkCommunication()
         SController?.processMessages()
         SController?.delegate = self
         SController?.connectNoSend(ip: ip, port: port)
@@ -293,12 +291,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
 }
-
 //
 // EXTENSIONS
 //
-
-
 // This controls the picker view for the master/default device.
 extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -352,7 +347,6 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         let defaultDevId = ADefaultDeviceUpdate.adflDevice(deviceId: id)
         let data = ADefaultDeviceUpdate(version: protocolVersion, defaultDevice: defaultDevId)
         
-//        pushUpdateToServer(data: data)
         let encoder = JSONEncoder()
         let dataAsBytes = try! encoder.encode(data)
         dump(dataAsBytes)
@@ -386,7 +380,6 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allSessions.count
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "sliderCell") as! SliderCell
