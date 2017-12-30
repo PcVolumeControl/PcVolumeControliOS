@@ -23,19 +23,32 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         connectionParams.append(ServerPortField.text)
         performSegue(withIdentifier: "ConnectSegue", sender: connectionParams)
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         ServerIPField.delegate = self
         ServerPortField.delegate = self
+        ServerIPField.returnKeyType = UIReturnKeyType.next
+        ServerIPField.tag = 1
+        ServerPortField.tag = 2
         ServerIPField.autocorrectionType = .no
         ServerPortField.autocorrectionType = .no
         ServerIPField.keyboardType = .numbersAndPunctuation
         ServerPortField.keyboardType = .numberPad
         
         setNeedsStatusBarAppearanceUpdate() // light upper bar
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        // Do not add a line break
+        return false
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
