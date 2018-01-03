@@ -459,6 +459,8 @@ extension ViewController: StreamControllerDelegate {
     func tearDownConnection() {
         SController?.serverConnected = false
         clientConnected = false
+        guard let opened_connection = SController?.ClientConnection else { return }
+        opened_connection.close()
     }
     
 }
