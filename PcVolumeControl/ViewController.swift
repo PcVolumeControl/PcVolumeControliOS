@@ -227,20 +227,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func pushUpdateToServer(data: ViewController.ADefaultDeviceUpdate?) {
-        // Take in the struct for a given update and parse/push to the server.
-        // side-effect: server update might come back or disconnection happens
-        let encoder = JSONEncoder()
-        // TODO: need to understand the input types here...
-        
-        let dataAsBytes = try! encoder.encode(data)
-        dump(dataAsBytes)
-        // The data is supposed to be an array of Uint8.
-        let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
-        let dataWithNewline = dataAsString! + "\n"
-        SController?.sendString(input: dataWithNewline)
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -248,6 +234,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func initSessions() {
         // This finds all sessions and overwrites the global session state.
+        print("initsessions executing...")
         allSessions.removeAll()
         guard let sessions = SController?.fullState?.defaultDevice.sessions else { return }
         for x : FullState.Session in sessions {
@@ -401,7 +388,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension ViewController: SliderCellDelegate {
     func didChangeVolume(id: String, newvalue: Double, name: String) {
-        print("Volume changed on \(id) to: \(newvalue)")
+        print("\n\nVolume changed on \(id) to: \(newvalue)")
         
         let defaultDeviceShortId = findDeviceId(longName: id)
 //        let currentMuteValue: Bool?
@@ -416,7 +403,7 @@ extension ViewController: SliderCellDelegate {
                 let data = ASessionUpdate(version: protocolVersion, defaultDevice: adefault)
                 
                 let dataAsBytes = try! encoder.encode(data)
-                dump(dataAsBytes)
+//                dump(dataAsBytes)
                 // The data is supposed to be an array of Uint8.
                 let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
                 let dataWithNewline = dataAsString! + "\n"
@@ -429,10 +416,11 @@ extension ViewController: SliderCellDelegate {
     }
         
     func didToggleMute(id: String, muted: Bool, name: String) {
-        print("Mute button hit on session \(id) to value \(muted)")
+        print("\n\nMute button hit on session \(id) to value \(muted)")
         let defaultDeviceShortId = findDeviceId(longName: id)
         for session in (SController?.fullState?.defaultDevice.sessions)! {
             if session.id == id {
+                
                 // Pull the current volume value for this session.
                 let currentVolumeValue = session.volume
                 let encoder = JSONEncoder()
@@ -442,7 +430,7 @@ extension ViewController: SliderCellDelegate {
                 let data = ASessionUpdate(version: protocolVersion, defaultDevice: adefault)
                 
                 let dataAsBytes = try! encoder.encode(data)
-                dump(dataAsBytes)
+//                dump(dataAsBytes)
                 // The data is supposed to be an array of Uint8.
                 let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
                 let dataWithNewline = dataAsString! + "\n"
@@ -457,7 +445,7 @@ extension ViewController: SliderCellDelegate {
 extension ViewController: StreamControllerDelegate {
     
     func didGetServerUpdate() {
-        print("Server update detected. Reloading...")
+        print("Server update detected. Reloading...\n")
         clientConnected = true
         DispatchQueue.main.async {
             self.reloadTheWorld()
