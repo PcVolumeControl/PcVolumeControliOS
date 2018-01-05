@@ -14,7 +14,9 @@ class AboutViewController: UITableViewController {
     var configuredPort: UInt32?
     
     @IBAction func aboutBackButtonClicked(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "closeAboutSegue", sender: "derp")
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "closeAboutSegue", sender: "aboutvc")
+        }
     }
     @IBAction func downloadServerClicked(_ sender: UIButton) {
         // When they want to download the server code
@@ -23,7 +25,6 @@ class AboutViewController: UITableViewController {
     @IBAction func gitButtonClicked(_ sender: UIButton) {
         openLink(url: "https://github.com/PcVolumeControl")
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,9 +37,11 @@ class AboutViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // If they click the 'Back' button
         if segue.identifier == "closeAboutSegue" {
             let destVC = segue.destination as! ViewController
-            destVC.connectButtonAction(ip: configuredIP, port: configuredPort!)
+            destVC.reconnect()
+//            destVC.bailToConnectScreen() // to reload the view
         }
     }
     func openLink(url: String) {
@@ -46,10 +49,24 @@ class AboutViewController: UITableViewController {
             if #available(iOS 10.0, *) {
                 UIApplication.shared.open(url, options: [:])
             } else {
-                // Fallback on earlier versions
+                // Fallback on earlier versions not supported. 10.0 is lowest.
             }
         }
     }
-    
-    
+}
+
+// We have to make this a delegate to get access back to the original client socket.
+// Using the main viewcontroller doesn't work because everything is reset to nil.
+extension AboutViewController: StreamControllerDelegate {
+    func didGetServerUpdate() {
+        DispatchQueue.main.async {
+            
+        }
+    }
+    func bailToConnectScreen() {
+        
+    }
+    func tearDownConnection() {
+        
+    }
 }

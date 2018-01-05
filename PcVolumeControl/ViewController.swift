@@ -138,6 +138,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         alreadySwitched = false
         
+        if SController?.fullState?.defaultDevice == nil {
+            view.setNeedsDisplay()
+        }
+        
     }
     // white top carrier/battery bar
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -187,18 +191,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
         SController = StreamController(address: ip, port: port, delegate: self)
         SController?.processMessages()
         SController?.delegate = self
-        
+
         asyncQueue.async {
             self.SController?.connectNoSend(ip: ip, port: port)
         }
-    
+        
     }
     
     func appMovedToBackground() {
         // Tear down the TCP connection any time they minimize or exit the app.
         print("App moved to background. TCP Connection should be torn down now...")
         clientConnected = false
-        if SController?.serverConnected! == false {
+        if SController?.clientSocket?.isConnected == false {
             print("Serverside TCP Connection is already dead.")
             return
         }
@@ -252,6 +256,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.async {
             self.pickerTextField.text = state
         }
+        // TODO: master volume slider doesn't respond to async updates from other clients.
+//        guard let mvol = SController?.fullState?.defaultDevice.masterVolume else { return }
+//        if masterVolumeSlider == nil {
+//            self.view.setNeedsLayout()
+//        } else {
+//            DispatchQueue.main.async {
+//                self.masterVolumeSlider.value = Float(mvol)
+//            }
+//        }
     }
     
     func findDeviceId(longName: String) -> String {
@@ -278,6 +291,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
             return
         }
         masterMuteButton.isOn = !masterMuteState
+//        if masterVolumeSlider != nil {
+//            if let masterVolume = SController?.fullState?.defaultDevice.masterVolume {
+//                masterVolumeSlider.value = 45.0
+//            }
+//        }
         sliderTableView.reloadData()
 
     }
@@ -446,7 +464,6 @@ extension ViewController: StreamControllerDelegate {
     
     func didGetServerUpdate() {
         print("Server update detected. Reloading...\n")
-        clientConnected = true
         DispatchQueue.main.async {
             self.reloadTheWorld()
         }
@@ -454,13 +471,18 @@ extension ViewController: StreamControllerDelegate {
     func bailToConnectScreen() {
         // used if the TCP controller detects problems
         clientConnected = false
-        performSegue(withIdentifier: "BackToStartSegue", sender: "abort")
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "BackToStartSegue", sender: "abort")
+        }
     }
     func tearDownConnection() {
-        SController?.serverConnected = false
-        clientConnected = false
-        guard let opened_connection = SController?.ClientConnection else { return }
-        opened_connection.close()
+        SController?.disconnect()
+    }
+    
+    func reconnect() {
+        // This should tear down what we have, then cause a reload of everything.
+        SController?.disconnect()
+        SController?.connectNoSend(ip: IPaddr, port: PortNum)
     }
     
 }

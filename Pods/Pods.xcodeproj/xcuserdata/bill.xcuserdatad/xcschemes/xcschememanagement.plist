@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>BlueSocket.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-PcVolumeControl.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -35,11 +40,6 @@
 			<false/>
 		</dict>
 		<key>RxTest.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SwiftSocket.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
-import SwiftSocket
+import Socket
 
 protocol StreamControllerDelegate {
     func didGetServerUpdate()
@@ -21,9 +21,7 @@ protocol StreamControllerDelegate {
 class StreamController: NSObject {
     // This class uses RxSwift to communicate over a TCP socket.
     // Note that HTTP is not used. It is a raw TCP socket.
-    var inputStream: InputStream!
-    var outputStream: OutputStream!
-    let maxReadLength = 8192
+    var clientSocket: Socket?
     
     var address: String
     var port: UInt32
@@ -31,13 +29,11 @@ class StreamController: NSObject {
     var fullState: FullState?
     var serverConnected: Bool?
     var delegate: StreamControllerDelegate?
-    let TCPTimeout = 2
-    var ClientConnection: TCPClient?
+    let TCPTimeout: UInt = 2
     
     // Rx stuff
     let bag = DisposeBag()
-    var lastMessageSubject = BehaviorSubject<String>(value: "NULL") // holds the last full message
-    var lastMessageContent = PublishSubject<String>() // holds the strings of messages to be combined
+    var lastMessageSubject = PublishSubject<String>()
     
     enum CodingError: Error {
         case JSONDecodeProblem // garbage data, bad decode
@@ -53,6 +49,7 @@ class StreamController: NSObject {
         self.serverConnected = false
         self.delegate = delegate
         self.lastState = ""
+        self.clientSocket = try! Socket.create()
     }
     
     private func serverUpdated() {
@@ -62,80 +59,120 @@ class StreamController: NSObject {
     private func connectionIssue() {
         self.delegate?.bailToConnectScreen()
         self.serverConnected = false
+        disconnect()
     }
-    private func tearDownServerConnection() {
+    func tearDownServerConnection() {
         self.delegate?.tearDownConnection()
         self.serverConnected = false
-    }
-
-    func sendString(input: String){
-        guard let client = ClientConnection else { return }
-        switch client.send(string: input) {
-            case .success:
-                print("Message sent to server.")
-            case .failure(let error):
-                print(error)
-            }
+        disconnect()
     }
     
-    func connectNoSend(ip: String, port: UInt32) {
-        // Make the initial TCP connection.
-        let client = TCPClient(address: address, port: Int32(port))
-        ClientConnection = client
-        switch client.connect(timeout: TCPTimeout) {
-        case .success:
-            var responsestring: String = ""
-            var allFullResponses = Set<String>() // for dedup
-            while true {
-                // read some more data
-                if let responseChunk = client.read(1024*10, timeout: TCPTimeout) {
-                    // convert that data into a string
-                    // BUG: At this point, if the server sent us multiple replies, they're all going
-                    // to be in this same read(). We have to read more intelligently or just break it
-                    // up clientside...I guess?
-                    if let stringified = String(bytes: responseChunk, encoding: .utf8) {
-                        responsestring += stringified
-                        if responsestring.hasSuffix("\n") {
-                            // It's a full message. Decode it.
-                            // HACK: Check for multiple messages.
-                            for resp in responsestring.components(separatedBy: "\n") {
-                                allFullResponses.insert(resp)
-                            }
-                            allFullResponses.remove("") // get rid of the empty string we initialized with
-                            guard let singleUpdate = allFullResponses.popFirst() else { continue }
-                            print("Response:\n\(singleUpdate)")
-                            lastMessageSubject.onNext(singleUpdate)
-                            
-                        }
+    func disconnect() {
+        if let cs = clientSocket {
+            if cs.isConnected {
+                cs.close()
+                print("Socket disconnected.")
+            }
+        }
+    }
+    
+    func connectNoSend(ip: String, port: UInt32?) {
+        let intPort = Int32(port!)
+            do {
+                let mySocket = try Socket.create()
+                clientSocket = mySocket
+                try mySocket.connect(to: ip, port: intPort)
+                print("socket connected!")
+                self.serverConnected = true
+                
+                while true {
+                    if self.serverConnected! {
+                        let result = addNewConnection(socket: mySocket)
+                        print("result: \(result)\n")
+                        lastMessageSubject.onNext(result!)
+                    } else {
+                        connectionIssue() // bail to connect screen
+                        break
                     }
                 }
             }
-        case .failure(let error):
-            print(error)
-            // socket error
+            catch let error {
+                guard let socketError = error as? Socket.Error else {
+                    print("Unexpected error...")
+                    return
+                }
+            } catch {
+                print("some other exception...")
+            }
+    }
+    
+    func sendString(input: String) {
+        print("Client has data to send to the server...\n\(input)")
+        if let cs = clientSocket {
+            try! cs.write(from: input)
         }
     }
     
-    func processMessages() {
-        let messageSubscription = lastMessageContent.subscribe {
-            let message = $0.element
-            if message!.hasSuffix("}\n") {
-                // append what we just saw, notify subscribers, reset the last known state string.
-                self.lastState += message!
-                self.lastMessageSubject.onNext(self.lastState)
-                print("PCVC: End of message detected. can be parsed now...")
-                self.lastState = "" // reset the last state
-                
-            } else {
-                print("PCVC: Newline not detected. It's a partial update.")
-                self.lastState += message!
-            }
-        }
-        let jsonSubscription = lastMessageSubject.subscribe {
-            guard let message = $0.element else { return }
-            if message == "NULL" { return } // first message ever
+    func addNewConnection(socket: Socket) -> String? {
+            var shouldKeepRunning = true
             
-            // TODO: hack. Only return the first message if the whole update contains multiple messages.
+            var readData = Data(capacity: 1024)
+            var responseString = ""
+            
+            do {
+                repeat {
+                    let bytesRead = try socket.read(into: &readData)
+                    
+                    if bytesRead > 0 {
+                        guard let response = String(data: readData, encoding: .utf8) else {
+                            
+                            print("Error string decoding response...")
+                            readData.count = 0
+                            break
+                        }
+                        responseString += response
+                        if response.hasSuffix("\n") {
+                            print("newline detected! That's the end of a message from the server.")
+                            return responseString
+                        }
+                        print("Server received from connection at \(socket.remoteHostname):\(socket.remotePort): \(response) ")
+                    }
+                    
+                    if bytesRead == 0 {
+                        
+                        shouldKeepRunning = false
+                        break
+                    }
+                    
+                    readData.count = 0
+                    
+                } while shouldKeepRunning
+                
+                print("Socket: \(socket.remoteHostname):\(socket.remotePort) closed...")
+                socket.close()
+                self.serverConnected = false
+                
+            }
+            catch let error {
+                guard let socketError = error as? Socket.Error else {
+                    print("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
+                    return "Error!"
+                }
+//                if self.continueRunning {
+//                    print("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
+//                }
+            }
+        // If we got to this point, the server closed the connection.
+        socket.close()
+        self.serverConnected = false
+        return "Socket has been closed!"
+        }
+    
+    func processMessages() {
+        let distinct = lastMessageSubject.distinctUntilChanged()
+        let jsonSubscription = distinct.subscribe {
+            guard let message = $0.element else { return }
+            
             do {
                 try self.JSONDecode(input: message)
             } catch CodingError.JSONDecodeProblem {
@@ -145,6 +182,7 @@ class StreamController: NSObject {
             }
         }
     }
+    
     func JSONDecode(input: String) throws {
         
         // try to decode a JSON string. If it's partial, throw an error.
@@ -156,8 +194,7 @@ class StreamController: NSObject {
             print("JSONDecode: Successfully decoded the payload.")
             serverConnected = true
             fullState = fs
-//            serverUpdated()
-            delegate?.didGetServerUpdate()
+            serverUpdated()
             print("JSONDecode: pushing initial server update into fullstate...")
             
         } catch Swift.DecodingError.dataCorrupted {

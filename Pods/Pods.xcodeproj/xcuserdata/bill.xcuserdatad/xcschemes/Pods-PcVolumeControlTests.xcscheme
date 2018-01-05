@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F101479FEC7CBE927374FD5F4990190B"
+               BlueprintIdentifier = "84518BA3808E4BEB68B8D142C8E1DA37"
                BuildableName = "Pods_PcVolumeControlTests.framework"
                BlueprintName = "Pods-PcVolumeControlTests"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F101479FEC7CBE927374FD5F4990190B"
+            BlueprintIdentifier = "84518BA3808E4BEB68B8D142C8E1DA37"
             BuildableName = "Pods_PcVolumeControlTests.framework"
             BlueprintName = "Pods-PcVolumeControlTests"
             ReferencedContainer = "container:Pods.xcodeproj">
