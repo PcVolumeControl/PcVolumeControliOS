@@ -15,6 +15,10 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var ServerIPField: UITextField!
     @IBOutlet weak var ServerPortField: UITextField!
     
+    @IBOutlet weak var frontAboutButton: UIBarButtonItem!
+    @IBAction func frontAboutButtonClicked(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "showAbout", sender: "nothing")
+    }
     
     @IBAction func ConnectButtonClicked(_ sender: UIButton) {
         // handoff to the main viewcontroller
@@ -23,6 +27,7 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         connectionParams.append(ServerPortField.text)
         performSegue(withIdentifier: "ConnectSegue", sender: connectionParams)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,5 +75,12 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
             destVC.PortNum = UInt32(ServerPortField.text!)
             destVC.connectButtonAction(ip: ServerIPField.text!, port: UInt32(ServerPortField.text!)!)
         }
+    }
+}
+extension UITextField {
+    func setPreferences() {
+        self.layer.cornerRadius = 8
+//        self.layer.borderColor = UIColor.grayColor().CGColor
+        self.layer.borderWidth = 2
     }
 }

@@ -77,11 +77,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         performSegue(withIdentifier: "aboutSegue", sender: reconnectInfo)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "aboutSegue" {
-            let destVC = segue.destination as! AboutViewController
-            destVC.configuredIP = IPaddr
-            destVC.configuredPort = PortNum
-        }
+        
     }
     
     // bottom sliders for sessions

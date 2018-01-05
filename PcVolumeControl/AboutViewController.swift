@@ -10,12 +10,11 @@ import UIKit
 
 class AboutViewController: UITableViewController {
     
-    var configuredIP: String!
-    var configuredPort: UInt32?
+    @IBOutlet var aboutTableView: UITableView!
     
     @IBAction func aboutBackButtonClicked(_ sender: UIBarButtonItem) {
         DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "closeAboutSegue", sender: "aboutvc")
+            self.performSegue(withIdentifier: "closeAbout", sender: "aboutvc")
         }
     }
     @IBAction func downloadServerClicked(_ sender: UIButton) {
@@ -28,7 +27,9 @@ class AboutViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let color = UIColor(hex: "303030")
+        aboutTableView.backgroundColor = color
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,13 +38,8 @@ class AboutViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // If they click the 'Back' button
-        if segue.identifier == "closeAboutSegue" {
-            let destVC = segue.destination as! ViewController
-            destVC.reconnect()
-//            destVC.bailToConnectScreen() // to reload the view
-        }
     }
+    
     func openLink(url: String) {
         if let url = URL(string: url) {
             if #available(iOS 10.0, *) {
@@ -55,18 +51,23 @@ class AboutViewController: UITableViewController {
     }
 }
 
-// We have to make this a delegate to get access back to the original client socket.
-// Using the main viewcontroller doesn't work because everything is reset to nil.
-extension AboutViewController: StreamControllerDelegate {
-    func didGetServerUpdate() {
-        DispatchQueue.main.async {
-            
-        }
-    }
-    func bailToConnectScreen() {
+extension UIColor {
+    convenience init(hex: String) {
+        let scanner = Scanner(string: hex)
+        scanner.scanLocation = 0
         
-    }
-    func tearDownConnection() {
+        var rgbValue: UInt64 = 0
         
+        scanner.scanHexInt64(&rgbValue)
+        
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0xff00) >> 8
+        let b = rgbValue & 0xff
+        
+        self.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff, alpha: 1
+        )
     }
 }
