@@ -39,7 +39,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             // Mute the master.
             defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: true, masterVolume: masterVolume)
         }
-        let data = AMasterChannelUpdate(version: protocolVersion, defaultDevice: (defaultDevId!))
+        let data = AMasterChannelUpdate(protocolVersion: protocolVersion, defaultDevice: (defaultDevId!))
         
         let encoder = JSONEncoder()
         let dataAsBytes = try! encoder.encode(data)
@@ -59,7 +59,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let volumeValue = sender.value
         defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id, masterMuted: masterMuted, masterVolume: Double(volumeValue))
 
-        let data = AMasterChannelUpdate(version: protocolVersion, defaultDevice: (defaultDevId)!)
+        let data = AMasterChannelUpdate(protocolVersion: protocolVersion, defaultDevice: (defaultDevId)!)
         let encoder = JSONEncoder()
         
         let dataAsBytes = try! encoder.encode(data)
@@ -94,7 +94,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    let protocolVersion = 6
+    let protocolVersion = 7
     var SController: StreamController?
     var clientConnected: Bool? // whether or not the client thinks it is connected
     var alreadySwitched: Bool? //TODO,test
@@ -148,7 +148,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         struct adflDevice : Codable {
             let deviceId: String
         }
-        let version: Int
+        let protocolVersion: Int
         let defaultDevice: adflDevice
     }
     
@@ -158,7 +158,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             let masterMuted: Bool
             let masterVolume: Double
         }
-        let version: Int
+        let protocolVersion: Int
         let defaultDevice: adflDevice
     }
     
@@ -168,7 +168,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             let deviceId: String
             
         }
-        let version: Int
+        let protocolVersion: Int
         let defaultDevice: adflDevice
         
     }
@@ -277,7 +277,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func reloadTheWorld() {
         // Reload everything! All the things!
         // bail if the client and server protocols mismatch.
-        if SController?.fullState?.version != protocolVersion {
+        if SController?.fullState?.protocolVersion != protocolVersion {
             createDisconnectAlert(title: "Error", message: "Client and server protocols mismatch.")
         }
         // re-populate the array of current sessions and reload the sliders.
@@ -350,7 +350,7 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             return
         }
         let defaultDevId = ADefaultDeviceUpdate.adflDevice(deviceId: id)
-        let data = ADefaultDeviceUpdate(version: protocolVersion, defaultDevice: defaultDevId)
+        let data = ADefaultDeviceUpdate(protocolVersion: protocolVersion, defaultDevice: defaultDevId)
         
         let encoder = JSONEncoder()
         let dataAsBytes = try! encoder.encode(data)
@@ -414,7 +414,7 @@ extension ViewController: SliderCellDelegate {
                 // TODO: return current muted state and use that to make the onesession instance.
                 let onesession = OneSession(name: name, id: id, volume: newvalue, muted: currentMuteValue)
                 let adefault = ASessionUpdate.adflDevice(sessions: [onesession], deviceId: defaultDeviceShortId)
-                let data = ASessionUpdate(version: protocolVersion, defaultDevice: adefault)
+                let data = ASessionUpdate(protocolVersion: protocolVersion, defaultDevice: adefault)
                 
                 let dataAsBytes = try! encoder.encode(data)
 //                dump(dataAsBytes)
@@ -441,7 +441,7 @@ extension ViewController: SliderCellDelegate {
                 // TODO: return current muted state and use that to make the onesession instance.
                 let onesession = OneSession(name: name, id: id, volume: currentVolumeValue, muted: !muted)
                 let adefault = ASessionUpdate.adflDevice(sessions: [onesession], deviceId: defaultDeviceShortId)
-                let data = ASessionUpdate(version: protocolVersion, defaultDevice: adefault)
+                let data = ASessionUpdate(protocolVersion: protocolVersion, defaultDevice: adefault)
                 
                 let dataAsBytes = try! encoder.encode(data)
 //                dump(dataAsBytes)

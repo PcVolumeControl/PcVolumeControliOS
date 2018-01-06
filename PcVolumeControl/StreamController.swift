@@ -225,10 +225,10 @@ class FullState : Codable {
     }
     let defaultDevice: theDefaultDevice
     let deviceIds: [String: String]
-    let version: Int
+    let protocolVersion: Int
     
-    init(version: Int, deviceIds: [String:String], defaultDevice: theDefaultDevice) {
-        self.version = version
+    init(protocolVersion: Int, deviceIds: [String:String], defaultDevice: theDefaultDevice) {
+        self.protocolVersion = protocolVersion
         self.deviceIds = deviceIds
         self.defaultDevice = defaultDevice
     }
