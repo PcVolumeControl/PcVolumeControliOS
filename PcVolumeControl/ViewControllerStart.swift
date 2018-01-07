@@ -36,34 +36,13 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         SController = StreamController(address: IPaddr!, port: PortNum!, delegate: self)
         SController?.delegate = self
         
-        // try to connect to the socket async
-        let timeout = 3000000 //milliseconds
+        // Start looking for messages in the publish subject.
+        SController?.processMessages()
         
+        // Make the initial server connection and get the first message,
         asyncQueue.async {
             self.SController?.connectNoSend()
-            self.SController?.processMessages()
         }
-//        asyncQueue.async {
-//            var count = 0
-//
-//            while count < timeout {
-//                if let connected = self.serverConnection {
-//                    print("Server connected? - \(connected)")
-//                    if connected {
-//                        print("socket is up")
-//
-//
-//
-//                        break
-//                    } else {
-//                        count += 100000
-//                        usleep(100000)
-//                    }
-//                }
-//            }
-////            print("server connection timed out!")
-////            UIViewController.removeSpinner(spinner: sv)
-//        }
         
     }
     
@@ -105,16 +84,10 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ConnectSegue" {
             let destVC = segue.destination as! ViewController
             destVC.SController = self.SController
-//            destVC.IPaddr = ServerIPField.text
-//            destVC.PortNum = UInt32(ServerPortField.text!)
-//            destVC.connectButtonAction(ip: ServerIPField.text!, port: UInt32(ServerPortField.text!)!)
         }
     }
 }

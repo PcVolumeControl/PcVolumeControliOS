@@ -86,32 +86,28 @@ class StreamController: NSObject {
         do {
             let mySocket = try Socket.create()
             clientSocket = mySocket
-            try clientSocket?.connect(to: address, port: port)
+            try clientSocket?.connect(to: address, port: port, timeout: 10000)
             print("socket connected!")
             self.delegate?.didConnectToServer() // signal we connected.
             while true {
-                let result = addNewConnection(socket: mySocket)
+                if clientSocket?.isConnected == false {
+                    break
+                }
+                let result = pollSocket(socket: mySocket)
                 if result != nil {
-                    print("result: \(result)\n")
+                    print("result: \(String(describing: result))\n")
                     lastMessageSubject.onNext(result!)
-                    serverUpdated()
                 } else {
                     break
                 }
-                
             }
         }
         catch let error {
-//            serverConnected = false
-            guard let socketError = error as? Socket.Error else {
-                print("Unexpected error...")
+            guard let _ = error as? Socket.Error else {
+                print("Unexpected socket error!")
                 return
             }
-        } catch {
-//            serverConnected = false
-            print("some other exception...")
         }
-        
         self.delegate?.failedToConnect()
     }
     
@@ -122,7 +118,7 @@ class StreamController: NSObject {
         }
     }
     
-    func addNewConnection(socket: Socket) -> String? {
+    func pollSocket(socket: Socket) -> String? {
             var shouldKeepRunning = true
             
             var readData = Data(capacity: 1024)
@@ -134,7 +130,6 @@ class StreamController: NSObject {
                     
                     if bytesRead > 0 {
                         guard let response = String(data: readData, encoding: .utf8) else {
-                            
                             print("Error string decoding response...")
                             readData.count = 0
                             break
@@ -170,6 +165,7 @@ class StreamController: NSObject {
             }
         // If we got to this point, the server closed the connection.
         socket.close()
+        connectionIssue()
         return "Socket has been closed!"
         }
     
@@ -182,6 +178,7 @@ class StreamController: NSObject {
                 try self.JSONDecode(input: message)
             } catch CodingError.JSONDecodeProblem {
                 print("JSONSubscription: JSON decode failed!!!!")
+                print("Here is what we attempted to decode:\n\n\(message)")
             } catch {
                 print("JSONSubscription: fell off the end...")
             }
@@ -238,4 +235,3 @@ class FullState : Codable {
         self.defaultDevice = defaultDevice
     }
 }
-
