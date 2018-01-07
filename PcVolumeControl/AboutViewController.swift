@@ -29,7 +29,6 @@ class AboutViewController: UITableViewController {
         super.viewDidLoad()
         let color = UIColor(hex: "303030")
         aboutTableView.backgroundColor = color
-        
     }
 
     override func didReceiveMemoryWarning() {

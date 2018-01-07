@@ -39,7 +39,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             // Mute the master.
             defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: true, masterVolume: masterVolume)
         }
-        let data = AMasterChannelUpdate(version: protocolVersion, defaultDevice: (defaultDevId!))
+        let data = AMasterChannelUpdate(protocolVersion: protocolVersion, defaultDevice: (defaultDevId!))
         
         let encoder = JSONEncoder()
         let dataAsBytes = try! encoder.encode(data)
@@ -59,7 +59,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let volumeValue = sender.value
         defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id, masterMuted: masterMuted, masterVolume: Double(volumeValue))
 
-        let data = AMasterChannelUpdate(version: protocolVersion, defaultDevice: (defaultDevId)!)
+        let data = AMasterChannelUpdate(protocolVersion: protocolVersion, defaultDevice: (defaultDevId)!)
         let encoder = JSONEncoder()
         
         let dataAsBytes = try! encoder.encode(data)
@@ -89,12 +89,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var disconnectButton: UIBarButtonItem!
     @IBAction func disconnectButtonClicked(_ sender: UIBarButtonItem) {
         print("disconnect requested by user")
-        tearDownConnection()
+        SController?.disconnect()
         bailToConnectScreen()
     }
     
     
-    let protocolVersion = 6
+    let protocolVersion = 7
     var SController: StreamController?
     var clientConnected: Bool? // whether or not the client thinks it is connected
     var alreadySwitched: Bool? //TODO,test
@@ -107,12 +107,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var IPaddr: String!
     var PortNum: UInt32?
     var connectionParams: [String]?
-    let asyncQueue = DispatchQueue(label: "asyncQueue", attributes: .concurrent)
+//    let asyncQueue = DispatchQueue(label: "asyncQueue", attributes: .concurrent)
     
     var deletedSessions = [Session]() // Deleted previously due to a swipe-delete
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         setNeedsStatusBarAppearanceUpdate() // white top status bar
         
         // Detection that the app was minimized so we can close TCP connections
@@ -134,6 +136,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         alreadySwitched = false
         
+        SController?.delegate = self
+        
         if SController?.fullState?.defaultDevice == nil {
             view.setNeedsDisplay()
         }
@@ -148,7 +152,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         struct adflDevice : Codable {
             let deviceId: String
         }
-        let version: Int
+        let protocolVersion: Int
         let defaultDevice: adflDevice
     }
     
@@ -158,7 +162,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             let masterMuted: Bool
             let masterVolume: Double
         }
-        let version: Int
+        let protocolVersion: Int
         let defaultDevice: adflDevice
     }
     
@@ -168,7 +172,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             let deviceId: String
             
         }
-        let version: Int
+        let protocolVersion: Int
         let defaultDevice: adflDevice
         
     }
@@ -182,16 +186,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func connectButtonAction(ip: String, port: UInt32) {
         // This is the 'connect' button.
         // IP and port have to be tossed back and forth between VCs.
-        IPaddr = ip
-        PortNum = port
-        SController = StreamController(address: ip, port: port, delegate: self)
-        SController?.processMessages()
-        SController?.delegate = self
-
-        asyncQueue.async {
-            self.SController?.connectNoSend(ip: ip, port: port)
-        }
+        print("duh")
         
+//        IPaddr = ip
+//        PortNum = port
+//        SController = StreamController(address: ip, port: port, delegate: self)
+//        SController?.processMessages()
+//        SController?.delegate = self
+//
+//        asyncQueue.async {
+//            do {
+//                try self.SController?.connectNoSend(ip: ip, port: port)
+//
+//            } catch let error {
+//                if let connError = error as? StreamController.ConnectionError {
+//                    print(connError)
+//                    self.bailToConnectScreen()
+//                }
+//            }
+//        }
     }
     
     func appMovedToBackground() {
@@ -277,7 +290,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func reloadTheWorld() {
         // Reload everything! All the things!
         // bail if the client and server protocols mismatch.
-        if SController?.fullState?.version != protocolVersion {
+        if SController?.fullState?.protocolVersion != protocolVersion {
             createDisconnectAlert(title: "Error", message: "Client and server protocols mismatch.")
         }
         // re-populate the array of current sessions and reload the sliders.
@@ -350,7 +363,7 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             return
         }
         let defaultDevId = ADefaultDeviceUpdate.adflDevice(deviceId: id)
-        let data = ADefaultDeviceUpdate(version: protocolVersion, defaultDevice: defaultDevId)
+        let data = ADefaultDeviceUpdate(protocolVersion: protocolVersion, defaultDevice: defaultDevId)
         
         let encoder = JSONEncoder()
         let dataAsBytes = try! encoder.encode(data)
@@ -414,7 +427,7 @@ extension ViewController: SliderCellDelegate {
                 // TODO: return current muted state and use that to make the onesession instance.
                 let onesession = OneSession(name: name, id: id, volume: newvalue, muted: currentMuteValue)
                 let adefault = ASessionUpdate.adflDevice(sessions: [onesession], deviceId: defaultDeviceShortId)
-                let data = ASessionUpdate(version: protocolVersion, defaultDevice: adefault)
+                let data = ASessionUpdate(protocolVersion: protocolVersion, defaultDevice: adefault)
                 
                 let dataAsBytes = try! encoder.encode(data)
 //                dump(dataAsBytes)
@@ -441,7 +454,7 @@ extension ViewController: SliderCellDelegate {
                 // TODO: return current muted state and use that to make the onesession instance.
                 let onesession = OneSession(name: name, id: id, volume: currentVolumeValue, muted: !muted)
                 let adefault = ASessionUpdate.adflDevice(sessions: [onesession], deviceId: defaultDeviceShortId)
-                let data = ASessionUpdate(version: protocolVersion, defaultDevice: adefault)
+                let data = ASessionUpdate(protocolVersion: protocolVersion, defaultDevice: adefault)
                 
                 let dataAsBytes = try! encoder.encode(data)
 //                dump(dataAsBytes)
@@ -472,14 +485,23 @@ extension ViewController: StreamControllerDelegate {
         }
     }
     func tearDownConnection() {
-        SController?.disconnect()
+        
+    }
+    func didConnectToServer() {
+    }
+    
+    func isAttemptingConnection() {
+        
     }
     
     func reconnect() {
         // This should tear down what we have, then cause a reload of everything.
         SController?.disconnect()
-        SController?.connectNoSend(ip: IPaddr, port: PortNum)
+        try? SController?.connectNoSend()
     }
     
+    func failedToConnect() {
+        
+    }
 }
 
