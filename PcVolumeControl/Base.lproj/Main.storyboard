@@ -138,7 +138,8 @@
                                 </constraints>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ad6-ra-ZAb"/>
-                                    <barButtonItem title="disconnect" id="Yu0-kd-HNt">
+                                    <barButtonItem title="Disconnect" id="Yu0-kd-HNt">
+                                        <color key="tintColor" red="1" green="0.17599671189999999" blue="0.32916878040000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <connections>
                                             <action selector="disconnectButtonClicked:" destination="BYZ-38-t0r" id="RTf-Lx-RiB"/>
                                         </connections>
@@ -149,7 +150,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0wa-fI-yZC">
                                 <rect key="frame" x="5" y="30" width="365" height="140"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" highlighted="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="Default Device" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="hQX-Vz-PMb">
+                                    <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" highlighted="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="Default Device" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hQX-Vz-PMb">
                                         <rect key="frame" x="14" y="8" width="337" height="30"/>
                                         <color key="backgroundColor" red="0.24863696099999999" green="0.30925625559999997" blue="0.70984238389999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.45000000000000001" height="1"/>
@@ -470,6 +471,6 @@
         <image name="volume-thumbslider.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HMQ-MO-tD9"/>
+        <segue reference="ZCj-f2-AIv"/>
     </inferredMetricsTieBreakers>
 </document>

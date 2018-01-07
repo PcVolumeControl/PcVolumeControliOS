@@ -13,6 +13,23 @@ import Foundation
 @objcMembers
 class ViewController: UIViewController, UITextFieldDelegate {
     
+    let protocolVersion = 7
+    var SController: StreamController?
+    var clientConnected: Bool? // whether or not the client thinks it is connected
+    var alreadySwitched: Bool? //TODO,test
+    
+    var soundLevel: Float?
+    var selectedDefaultDevice: (String, String)?
+    
+    var allSessions = [Session]() // Array used to build slider table
+    var processedSessions = [Session]()
+    var IPaddr: String!
+    var PortNum: UInt32?
+    var connectionParams: [String]?
+    //    let asyncQueue = DispatchQueue(label: "asyncQueue", attributes: .concurrent)
+    
+    var deletedSessions = [Session]() // Deleted previously due to a swipe-delete
+    
     //MARK: Properties
     @IBOutlet weak var connectionStatus: UILabel!
     @IBOutlet weak var defaultDeviceView: UIView!
@@ -73,8 +90,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // about page popup
     @IBOutlet weak var aboutButton: UIBarButtonItem!
     @IBAction func aboutButtonClicked(_ sender: UIBarButtonItem) {
-        let reconnectInfo = [IPaddr, PortNum ?? 3000] as [Any] // default to 3000
-        performSegue(withIdentifier: "aboutSegue", sender: reconnectInfo)
+        performSegue(withIdentifier: "aboutSegue", sender: "nothing")
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -89,30 +105,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var disconnectButton: UIBarButtonItem!
     @IBAction func disconnectButtonClicked(_ sender: UIBarButtonItem) {
         print("disconnect requested by user")
-        tearDownConnection()
+        SController?.disconnect()
         bailToConnectScreen()
     }
     
-    
-    let protocolVersion = 7
-    var SController: StreamController?
-    var clientConnected: Bool? // whether or not the client thinks it is connected
-    var alreadySwitched: Bool? //TODO,test
-    
-    var soundLevel: Float?
-    var selectedDefaultDevice: (String, String)?
-    
-    var allSessions = [Session]() // Array used to build slider table
-    var processedSessions = [Session]()
-    var IPaddr: String!
-    var PortNum: UInt32?
-    var connectionParams: [String]?
-    let asyncQueue = DispatchQueue(label: "asyncQueue", attributes: .concurrent)
-    
-    var deletedSessions = [Session]() // Deleted previously due to a swipe-delete
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         setNeedsStatusBarAppearanceUpdate() // white top status bar
         
         // Detection that the app was minimized so we can close TCP connections
@@ -133,6 +133,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         constructPicker()
         
         alreadySwitched = false
+        
+        SController?.delegate = self
         
         if SController?.fullState?.defaultDevice == nil {
             view.setNeedsDisplay()
@@ -182,27 +184,33 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func connectButtonAction(ip: String, port: UInt32) {
         // This is the 'connect' button.
         // IP and port have to be tossed back and forth between VCs.
-        IPaddr = ip
-        PortNum = port
-        SController = StreamController(address: ip, port: port, delegate: self)
-        SController?.processMessages()
-        SController?.delegate = self
-
-        asyncQueue.async {
-            self.SController?.connectNoSend(ip: ip, port: port)
-        }
+        print("duh")
         
+//        IPaddr = ip
+//        PortNum = port
+//        SController = StreamController(address: ip, port: port, delegate: self)
+//        SController?.processMessages()
+//        SController?.delegate = self
+//
+//        asyncQueue.async {
+//            do {
+//                try self.SController?.connectNoSend(ip: ip, port: port)
+//
+//            } catch let error {
+//                if let connError = error as? StreamController.ConnectionError {
+//                    print(connError)
+//                    self.bailToConnectScreen()
+//                }
+//            }
+//        }
     }
     
     func appMovedToBackground() {
         // Tear down the TCP connection any time they minimize or exit the app.
         print("App moved to background. TCP Connection should be torn down now...")
-        clientConnected = false
-        if SController?.clientSocket?.isConnected == false {
-            print("Serverside TCP Connection is already dead.")
-            return
+        if SController?.clientSocket?.isConnected == true {
+            SController?.disconnect()
         }
-        tearDownConnection()
     }
     
     func appWillEnterForeground() {
@@ -215,10 +223,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     func appDidBecomeActive() {
         print("App moved from background selection screen to foreground.")
-        if alreadySwitched == true {
-            return
+        if alreadySwitched == false {
+            bailToConnectScreen()
         }
-        bailToConnectScreen()
     }
     
     func createDisconnectAlert(title: String, message: String) {
@@ -236,7 +243,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // This finds all sessions and overwrites the global session state.
         print("initsessions executing...")
         allSessions.removeAll()
-        guard let sessions = SController?.fullState?.defaultDevice.sessions else { return }
+        guard let sessions = SController?.fullState?.defaultDevice.sessions else {
+            createDisconnectAlert(title: "Whoops", message: "Full state sent from the server was not loaded for some reason.")
+//            SController?.disconnect()
+            return
+        }
         for x : FullState.Session in sessions {
             allSessions.append(Session(id: x.id, muted: x.muted, name: x.name, volume: Double(x.volume)))
         }
@@ -277,9 +288,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func reloadTheWorld() {
         // Reload everything! All the things!
         // bail if the client and server protocols mismatch.
+
         if SController?.fullState?.protocolVersion != protocolVersion {
             createDisconnectAlert(title: "Error", message: "Client and server protocols mismatch.")
         }
+
         // re-populate the array of current sessions and reload the sliders.
         initSessions()
         guard let masterMuteState = SController?.fullState?.defaultDevice.masterMuted else {
@@ -472,14 +485,23 @@ extension ViewController: StreamControllerDelegate {
         }
     }
     func tearDownConnection() {
-        SController?.disconnect()
+        
+    }
+    func didConnectToServer() {
+    }
+    
+    func isAttemptingConnection() {
+        
     }
     
     func reconnect() {
         // This should tear down what we have, then cause a reload of everything.
         SController?.disconnect()
-        SController?.connectNoSend(ip: IPaddr, port: PortNum)
+        try? SController?.connectNoSend()
     }
     
+    func failedToConnect() {
+        
+    }
 }
 

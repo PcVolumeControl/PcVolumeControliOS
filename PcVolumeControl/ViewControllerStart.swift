@@ -8,9 +8,16 @@
 
 import UIKit
 import Foundation
+import Socket
 
 class ViewControllerStart: UIViewController, UITextFieldDelegate {
     // This is controlling the initial connection screen.
+    
+    let asyncQueue = DispatchQueue(label: "asyncQueue", attributes: .concurrent)
+    var serverConnection: Bool?
+    var spinnerView: UIView? = nil
+    var SController: StreamController? = nil
+
     @IBOutlet weak var Cbutton: UIButton!
     @IBOutlet weak var ServerIPField: UITextField!
     @IBOutlet weak var ServerPortField: UITextField!
@@ -21,11 +28,22 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func ConnectButtonClicked(_ sender: UIButton) {
+
         // handoff to the main viewcontroller
-        var connectionParams = [String?]()
-        connectionParams.append(ServerIPField.text)
-        connectionParams.append(ServerPortField.text)
-        performSegue(withIdentifier: "ConnectSegue", sender: connectionParams)
+        
+        let IPaddr = self.ServerIPField.text
+        let PortNum = Int32(self.ServerPortField.text!)
+        SController = StreamController(address: IPaddr!, port: PortNum!, delegate: self)
+        SController?.delegate = self
+        
+        // Start looking for messages in the publish subject.
+        SController?.processMessages()
+        
+        // Make the initial server connection and get the first message,
+        asyncQueue.async {
+            self.SController?.connectNoSend()
+        }
+        
     }
     
     override func viewDidLoad() {
@@ -43,6 +61,7 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         ServerPortField.keyboardType = .numberPad
         
         setNeedsStatusBarAppearanceUpdate() // light upper bar
+     
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -65,22 +84,81 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ConnectSegue" {
             let destVC = segue.destination as! ViewController
-            destVC.IPaddr = ServerIPField.text
-            destVC.PortNum = UInt32(ServerPortField.text!)
-            destVC.connectButtonAction(ip: ServerIPField.text!, port: UInt32(ServerPortField.text!)!)
+            destVC.SController = self.SController
         }
     }
 }
+
+// TODO: actually connect this to the text boxes
 extension UITextField {
     func setPreferences() {
         self.layer.cornerRadius = 8
 //        self.layer.borderColor = UIColor.grayColor().CGColor
         self.layer.borderWidth = 2
+    }
+}
+
+extension ViewControllerStart: StreamControllerDelegate {
+    func didGetServerUpdate() {
+        
+    }
+    func bailToConnectScreen() {
+        
+    }
+    func tearDownConnection() {
+    }
+    func isAttemptingConnection() {
+        print("connection is in progress...")
+
+        // validate that the connection was actually opened.
+        asyncQueue.async {
+            DispatchQueue.main.async {
+                self.spinnerView = UIViewController.displaySpinner(onView: self.view)
+            }
+        }
+    }
+    func didConnectToServer() {
+        print("did connect to server delegation...")
+        asyncQueue.async {
+            DispatchQueue.main.async {
+                if let spinner = self.spinnerView {
+                    UIViewController.removeSpinner(spinner: spinner)
+                    
+                }
+                // go to the next screen, pushing along the stream controller instance.
+                self.performSegue(withIdentifier: "ConnectSegue", sender: self.SController)
+            }
+        }
+    }
+    
+    func failedToConnect() {
+        if let spinner = spinnerView {
+            UIViewController.removeSpinner(spinner: spinner)
+        }
+    }
+}
+
+extension UIViewController {
+    class func displaySpinner(onView : UIView) -> UIView {
+        
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+    
+        spinnerView.addSubview(ai)
+        onView.addSubview(spinnerView)
+
+        return spinnerView
+    }
+    
+    class func removeSpinner(spinner :UIView) {
+        DispatchQueue.main.async {
+            spinner.removeFromSuperview()
+        }
     }
 }
