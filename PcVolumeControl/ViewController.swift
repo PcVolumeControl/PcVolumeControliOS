@@ -202,7 +202,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         allSessions.removeAll()
         guard let sessions = SController?.fullState?.defaultDevice.sessions else {
             createDisconnectAlert(title: "Whoops", message: "Full state sent from the server was not loaded for some reason.")
-//            SController?.disconnect()
             return
         }
         for x : FullState.Session in sessions {
@@ -261,10 +260,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
 }
 
-//
-// EXTENSIONS
-//
-// This controls the picker view for the master/default device.
+/*
+This controls the picker view for the master/default device.
+*/
 extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func constructPicker() {
