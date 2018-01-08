@@ -242,12 +242,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func findDeviceId(longName: String) -> String {
         // Look through the device IDs to get the short-form device ID.
         // This takes in the long-form session ID as input.
-        for (shortId, _) in (SController?.fullState?.deviceIds)! {
-            if longName.contains(shortId) {
-                return shortId
+        
+        var deviceName = "Unknown"
+        if let ids = SController?.fullState?.deviceIds {
+            for (shortId, _) in ids {
+                if longName.contains(shortId) {
+                    deviceName = shortId
+                }
             }
         }
-        return "NOT FOUND"
+        return deviceName
     }
     
     func reloadTheWorld() {
