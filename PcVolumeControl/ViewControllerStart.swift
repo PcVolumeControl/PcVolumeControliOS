@@ -67,7 +67,9 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         ServerPortField.keyboardType = .numberPad
         
         setNeedsStatusBarAppearanceUpdate() // light upper bar
-     
+        
+        // connect button styling
+        Cbutton.styleButton(cornerRadius: 8, borderWidth: 2, borderColor: UIColor.gray.cgColor)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -166,5 +168,14 @@ extension UIViewController {
         DispatchQueue.main.async {
             spinner.removeFromSuperview()
         }
+    }
+}
+
+// Customizing the Connect button a bit
+extension UIButton {
+    func styleButton(cornerRadius: CGFloat, borderWidth: CGFloat, borderColor: CGColor) {
+        self.layer.cornerRadius = cornerRadius
+        self.layer.borderWidth = borderWidth
+        self.layer.borderColor = borderColor
     }
 }

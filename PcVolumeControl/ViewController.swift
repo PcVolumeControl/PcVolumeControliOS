@@ -26,7 +26,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var IPaddr: String!
     var PortNum: UInt32?
     var connectionParams: [String]?
-    //    let asyncQueue = DispatchQueue(label: "asyncQueue", attributes: .concurrent)
     
     var deletedSessions = [Session]() // Deleted previously due to a swipe-delete
     
@@ -37,8 +36,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // picker
     @IBOutlet weak var pickerTextField: UITextField!
     
-    @IBOutlet weak var masterPickerLabel: UILabel!
-    //    @IBOutlet weak var masterPickerLabel: UITextField!
     // top slider for master channel
     @IBOutlet weak var masterVolumeSlider: DesignableSlider!
     
@@ -105,8 +102,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+
         setNeedsStatusBarAppearanceUpdate() // white top status bar
         
         // Detection that the app was minimized so we can close TCP connections
@@ -229,9 +225,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         // While we are reloading here, initialize the title showing in the initial picker view.
         guard let state = SController?.fullState?.defaultDevice.name else { return }
-        if masterPickerLabel == nil {
-            self.view.setNeedsLayout()
-        }
+      
         DispatchQueue.main.async {
             self.pickerTextField.text = state
             self.pickerTextField.tintColor = .clear
@@ -299,8 +293,8 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         
-        let doneButton = UIBarButtonItem(title: "Set Default Device", style: .plain, target: self,
-                                         action: #selector(ViewController.dismissKeyboard))
+        let doneButton = UIBarButtonItem(title: "Set Output Device", style: .plain, target: self,
+                                         action: #selector(ViewController.outputDeviceSelected))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) // shift it right
         toolBar.setItems([spacer, doneButton, spacer], animated: false)
         toolBar.isUserInteractionEnabled = true
@@ -326,7 +320,7 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         return y
     }
     
-    func dismissKeyboard() {
+    func outputDeviceSelected() {
         view.endEditing(true)
         
         // When they select the default, we need to update state and send a new master device to the server.
@@ -382,15 +376,17 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
-    // TODO: v2 allow hiding of sessions
 }
 
+/*
+ The cells where the sessions show up are custom UITableViewCells.
+ */
 extension ViewController: SliderCellDelegate {
     func didChangeVolume(id: String, newvalue: Double, name: String) {
         print("\n\nVolume changed on \(id) to: \(newvalue)")
         
         let defaultDeviceShortId = findDeviceId(longName: id)
-//        let currentMuteValue: Bool?
+
         for session in (SController?.fullState?.defaultDevice.sessions)! {
             if session.id == id {
                 // Pull the current mute value for this session.
@@ -402,8 +398,6 @@ extension ViewController: SliderCellDelegate {
                 let data = ASessionUpdate(protocolVersion: protocolVersion, defaultDevice: adefault)
                 
                 let dataAsBytes = try! encoder.encode(data)
-//                dump(dataAsBytes)
-                // The data is supposed to be an array of Uint8.
                 let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
                 let dataWithNewline = dataAsString! + "\n"
                 SController?.sendString(input: dataWithNewline)
@@ -411,7 +405,6 @@ extension ViewController: SliderCellDelegate {
                 
             }
         }
-
     }
         
     func didToggleMute(id: String, muted: Bool, name: String) {
@@ -429,8 +422,6 @@ extension ViewController: SliderCellDelegate {
                 let data = ASessionUpdate(protocolVersion: protocolVersion, defaultDevice: adefault)
                 
                 let dataAsBytes = try! encoder.encode(data)
-//                dump(dataAsBytes)
-                // The data is supposed to be an array of Uint8.
                 let dataAsString = String(bytes: dataAsBytes, encoding: .utf8)
                 let dataWithNewline = dataAsString! + "\n"
                 SController?.sendString(input: dataWithNewline)
@@ -441,9 +432,20 @@ extension ViewController: SliderCellDelegate {
     }
 }
 
+/*
+ The streamcontroller is used to keep track of the TCP socket to the server.
+ It also handles validation/coding of the JSON strings going to/from the server.
+ 
+ This view controller should not try to look for status on the stream controller
+ object here. Instead, delegates from the stream controller should be used to
+ signal important events to this view controller.
+ */
+
 extension ViewController: StreamControllerDelegate {
     
     func didGetServerUpdate() {
+        // This is the top of everything. The entire UI is reloaded if this executes.
+        // It's only executed when the streamcontroller parses a valid JSON server message.
         print("Server update detected. Reloading...\n")
         DispatchQueue.main.async {
             self.reloadTheWorld()
@@ -456,23 +458,16 @@ extension ViewController: StreamControllerDelegate {
             self.performSegue(withIdentifier: "BackToStartSegue", sender: "abort")
         }
     }
-    func tearDownConnection() {
-        
-    }
-    func didConnectToServer() {
-    }
-    
-    func isAttemptingConnection() {
-        
-    }
+    func tearDownConnection() {}
+    func didConnectToServer() {}
+    func isAttemptingConnection() {}
+    func failedToConnect() {}
     
     func reconnect() {
         // This should tear down what we have, then cause a reload of everything.
         SController?.disconnect()
         try? SController?.connectNoSend()
     }
-    
-    func failedToConnect() {
-        
-    }
 }
+
+
