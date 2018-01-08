@@ -36,9 +36,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var masterFooterUIView: UIView!
     // picker
     @IBOutlet weak var pickerTextField: UITextField!
-    @IBOutlet weak var masterPickerLabel: UITextField!
+    
+    @IBOutlet weak var masterPickerLabel: UILabel!
+    //    @IBOutlet weak var masterPickerLabel: UITextField!
     // top slider for master channel
-    @IBOutlet weak var masterVolumeSlider: UISlider!
+    @IBOutlet weak var masterVolumeSlider: DesignableSlider!
+    
     @IBOutlet weak var masterMuteButton: UISwitch!
     
     @IBAction func masterMuteSwitch(_ sender: UISwitch) {
@@ -49,12 +52,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         guard let masterVolume = SController?.fullState?.defaultDevice.masterVolume else { return }
         if sender.isOn {
             // Unmute the master.
-            defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: false, masterVolume: masterVolume)
+            defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: false, masterVolume: Float(masterVolume))
         }
         else
         {
             // Mute the master.
-            defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: true, masterVolume: masterVolume)
+            defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id!, masterMuted: true, masterVolume: Float(masterVolume))
         }
         let data = AMasterChannelUpdate(protocolVersion: protocolVersion, defaultDevice: (defaultDevId!))
         
@@ -74,7 +77,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // mute value is not changing.
         guard let masterMuted = SController?.fullState?.defaultDevice.masterMuted else { return }
         let volumeValue = sender.value
-        defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id, masterMuted: masterMuted, masterVolume: Double(volumeValue))
+        defaultDevId = AMasterChannelUpdate.adflDevice(deviceId: id, masterMuted: masterMuted, masterVolume: volumeValue)
 
         let data = AMasterChannelUpdate(protocolVersion: protocolVersion, defaultDevice: (defaultDevId)!)
         let encoder = JSONEncoder()
@@ -85,15 +88,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         guard let dataAsString = String(bytes: dataAsBytes, encoding: .utf8) else { return }
         let dataWithNewline = dataAsString + "\n"
         SController?.sendString(input: dataWithNewline)
-    }
-    
-    // about page popup
-    @IBOutlet weak var aboutButton: UIBarButtonItem!
-    @IBAction func aboutButtonClicked(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "aboutSegue", sender: "nothing")
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
     }
     
     // bottom sliders for sessions
@@ -134,6 +128,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         alreadySwitched = false
         
+        // Make this a delegate for the TCP Stream Controller class.
         SController?.delegate = self
         
         if SController?.fullState?.defaultDevice == nil {
@@ -141,6 +136,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         
     }
+    
     // white top carrier/battery bar
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -158,7 +154,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         struct adflDevice : Codable {
             let deviceId: String
             let masterMuted: Bool
-            let masterVolume: Double
+            let masterVolume: Float
         }
         let protocolVersion: Int
         let defaultDevice: adflDevice
@@ -177,32 +173,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     struct OneSession : Codable {
         let name: String
         let id: String
-        let volume: Double
+        let volume: Float
         let muted: Bool
-    }
-    
-    func connectButtonAction(ip: String, port: UInt32) {
-        // This is the 'connect' button.
-        // IP and port have to be tossed back and forth between VCs.
-        print("duh")
-        
-//        IPaddr = ip
-//        PortNum = port
-//        SController = StreamController(address: ip, port: port, delegate: self)
-//        SController?.processMessages()
-//        SController?.delegate = self
-//
-//        asyncQueue.async {
-//            do {
-//                try self.SController?.connectNoSend(ip: ip, port: port)
-//
-//            } catch let error {
-//                if let connError = error as? StreamController.ConnectionError {
-//                    print(connError)
-//                    self.bailToConnectScreen()
-//                }
-//            }
-//        }
     }
     
     func appMovedToBackground() {
@@ -257,21 +229,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         // While we are reloading here, initialize the title showing in the initial picker view.
         guard let state = SController?.fullState?.defaultDevice.name else { return }
-        if pickerTextField == nil {
+        if masterPickerLabel == nil {
             self.view.setNeedsLayout()
         }
         DispatchQueue.main.async {
             self.pickerTextField.text = state
+            self.pickerTextField.tintColor = .clear
         }
-        // TODO: master volume slider doesn't respond to async updates from other clients.
-//        guard let mvol = SController?.fullState?.defaultDevice.masterVolume else { return }
-//        if masterVolumeSlider == nil {
-//            self.view.setNeedsLayout()
-//        } else {
-//            DispatchQueue.main.async {
-//                self.masterVolumeSlider.value = Float(mvol)
-//            }
-//        }
+        
     }
     
     func findDeviceId(longName: String) -> String {
@@ -293,22 +258,22 @@ class ViewController: UIViewController, UITextFieldDelegate {
             createDisconnectAlert(title: "Error", message: "Client and server protocols mismatch.")
         }
 
-        // re-populate the array of current sessions and reload the sliders.
-        initSessions()
         guard let masterMuteState = SController?.fullState?.defaultDevice.masterMuted else {
             print("Master mute state could not be set!")
             return
         }
         masterMuteButton.isOn = !masterMuteState
-//        if masterVolumeSlider != nil {
-//            if let masterVolume = SController?.fullState?.defaultDevice.masterVolume {
-//                masterVolumeSlider.value = 45.0
-//            }
-//        }
-        sliderTableView.reloadData()
+        let masterVolume = SController?.fullState?.defaultDevice.masterVolume ?? 50.0
+        masterVolumeSlider?.value = masterVolume
 
+        // Bottom slider table stack with all sessions
+        // re-populate the array of current sessions and reload the sliders.
+        initSessions()
+
+        sliderTableView.reloadData()
     }
 }
+
 //
 // EXTENSIONS
 //
@@ -320,6 +285,7 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         devicePicker.delegate = self
         pickerTextField.inputView = devicePicker
         pickerTextField.text = selectedDefaultDevice?.1
+
         // TODO: change the default selected item to be the current default.
         createToolbar() // done button
     }
@@ -332,7 +298,6 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         let doneButton = UIBarButtonItem(title: "Set Default Device", style: .plain, target: self,
                                          action: #selector(ViewController.dismissKeyboard))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) // shift it right
-
         toolBar.setItems([spacer, doneButton, spacer], animated: false)
         toolBar.isUserInteractionEnabled = true
         pickerTextField.inputAccessoryView = toolBar
@@ -348,9 +313,12 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             print("full state is nil. bailing...")
             bailToConnectScreen()
         }
-        for (shortId, prettyName) in (SController?.fullState?.deviceIds)! {
-            y.append((shortId, prettyName))
+        if let deviceIDs = SController?.fullState?.deviceIds {
+            for (shortId, prettyName) in deviceIDs {
+                y.append((shortId, prettyName))
+            }
         }
+        
         return y
     }
     
@@ -425,7 +393,7 @@ extension ViewController: SliderCellDelegate {
                 let currentMuteValue = session.muted
                 let encoder = JSONEncoder()
                 // TODO: return current muted state and use that to make the onesession instance.
-                let onesession = OneSession(name: name, id: id, volume: newvalue, muted: currentMuteValue)
+                let onesession = OneSession(name: name, id: id, volume: Float(newvalue), muted: currentMuteValue)
                 let adefault = ASessionUpdate.adflDevice(sessions: [onesession], deviceId: defaultDeviceShortId)
                 let data = ASessionUpdate(protocolVersion: protocolVersion, defaultDevice: adefault)
                 
@@ -452,7 +420,7 @@ extension ViewController: SliderCellDelegate {
                 let currentVolumeValue = session.volume
                 let encoder = JSONEncoder()
                 // TODO: return current muted state and use that to make the onesession instance.
-                let onesession = OneSession(name: name, id: id, volume: currentVolumeValue, muted: !muted)
+                let onesession = OneSession(name: name, id: id, volume: Float(currentVolumeValue), muted: !muted)
                 let adefault = ASessionUpdate.adflDevice(sessions: [onesession], deviceId: defaultDeviceShortId)
                 let data = ASessionUpdate(protocolVersion: protocolVersion, defaultDevice: adefault)
                 
@@ -504,4 +472,3 @@ extension ViewController: StreamControllerDelegate {
         
     }
 }
-

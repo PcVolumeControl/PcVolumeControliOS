@@ -86,7 +86,7 @@ class StreamController: NSObject {
         do {
             let mySocket = try Socket.create()
             clientSocket = mySocket
-            try clientSocket?.connect(to: address, port: port, timeout: 10000)
+            try clientSocket?.connect(to: address, port: port, timeout: 2000)
             print("socket connected!")
             self.delegate?.didConnectToServer() // signal we connected.
             while true {
@@ -214,7 +214,7 @@ class FullState : Codable {
     struct theDefaultDevice : Codable {
         let deviceId: String
         let masterMuted: Bool
-        let masterVolume: Double
+        let masterVolume: Float
         let name: String
         let sessions: [Session]
         

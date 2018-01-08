@@ -36,7 +36,7 @@
                                 <color key="textColor" red="0.7729581338" green="0.76832964199999998" blue="0.77758662560000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="192.168.2.78" borderStyle="bezel" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="d8X-iq-0qa">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="192.168.1.200" borderStyle="bezel" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="d8X-iq-0qa">
                                 <rect key="frame" x="24" y="221" width="304" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -150,8 +150,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0wa-fI-yZC">
                                 <rect key="frame" x="5" y="30" width="365" height="140"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" highlighted="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="Default Device" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hQX-Vz-PMb">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" highlighted="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="Default Device" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hQX-Vz-PMb">
                                         <rect key="frame" x="14" y="8" width="337" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.24863696099999999" green="0.30925625559999997" blue="0.70984238389999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.45000000000000001" height="1"/>
                                         <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -159,7 +160,7 @@
                                         <textInputTraits key="textInputTraits" returnKeyType="go"/>
                                     </textField>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="aKO-0K-9R9" customClass="DesignableSlider" customModule="PcVolumeControl" customModuleProvider="target">
-                                        <rect key="frame" x="12" y="89" width="291" height="30"/>
+                                        <rect key="frame" x="12" y="89" width="291" height="31"/>
                                         <color key="tintColor" red="0.80532201780000001" green="0.022611889570000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="thumbImage" value="volume-thumbslider.png"/>
@@ -180,8 +181,6 @@
                                 <constraints>
                                     <constraint firstItem="aKO-0K-9R9" firstAttribute="leading" secondItem="0wa-fI-yZC" secondAttribute="leading" constant="14" id="1l5-25-wsP"/>
                                     <constraint firstAttribute="trailing" secondItem="2s7-sN-Vau" secondAttribute="trailing" constant="5" id="28q-Ee-iVN"/>
-                                    <constraint firstItem="aKO-0K-9R9" firstAttribute="leading" secondItem="hQX-Vz-PMb" secondAttribute="leading" id="BQL-bq-6Yf"/>
-                                    <constraint firstItem="2s7-sN-Vau" firstAttribute="top" secondItem="hQX-Vz-PMb" secondAttribute="bottom" constant="15" id="DSh-8M-xKs"/>
                                     <constraint firstAttribute="height" constant="140" id="HBI-TZ-fiE"/>
                                     <constraint firstAttribute="bottom" secondItem="2s7-sN-Vau" secondAttribute="bottom" constant="20" id="Hra-bV-WPe"/>
                                     <constraint firstItem="2s7-sN-Vau" firstAttribute="leading" secondItem="aKO-0K-9R9" secondAttribute="trailing" constant="10" id="UXh-pC-Sk0"/>
@@ -280,7 +279,8 @@
                         <outlet property="defaultDeviceView" destination="0wa-fI-yZC" id="tLt-I5-Dsk"/>
                         <outlet property="disconnectButton" destination="Yu0-kd-HNt" id="eKg-eD-GSK"/>
                         <outlet property="masterMuteButton" destination="2s7-sN-Vau" id="VCg-f6-IMa"/>
-                        <outlet property="pickerTextField" destination="hQX-Vz-PMb" id="jiX-2C-Ayc"/>
+                        <outlet property="masterVolumeSlider" destination="aKO-0K-9R9" id="vvD-QK-dfH"/>
+                        <outlet property="pickerTextField" destination="hQX-Vz-PMb" id="KEP-VZ-yLb"/>
                         <outlet property="sliderTableView" destination="KEP-mY-qSY" id="PrR-M9-J4H"/>
                         <segue destination="zBk-Ud-178" kind="show" identifier="BackToStartSegue" id="ZCj-f2-AIv"/>
                     </connections>

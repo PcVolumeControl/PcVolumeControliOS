@@ -25,8 +25,14 @@ class AboutViewController: UITableViewController {
         openLink(url: "https://github.com/PcVolumeControl")
     }
     
+    // white top carrier/battery bar
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setNeedsStatusBarAppearanceUpdate() // white top status bar
         let color = UIColor(hex: "303030")
         aboutTableView.backgroundColor = color
     }
