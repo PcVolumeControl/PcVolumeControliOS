@@ -30,10 +30,16 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
     @IBAction func ConnectButtonClicked(_ sender: UIButton) {
 
         // handoff to the main viewcontroller
+        guard let PortNum = Int32(self.ServerPortField.text!) else {
+            let _ = Alert.showBasic(title: "Error", message: "Bad port number specified.\nThe default is 3000.", vc: self)
+            return
+        }
+        guard let IPaddr = self.ServerIPField.text else {
+            let _ = Alert.showBasic(title: "Error", message: "There was an issue parsing the server IP address or name.", vc: self)
+            return
+        }
         
-        let IPaddr = self.ServerIPField.text
-        let PortNum = Int32(self.ServerPortField.text!)
-        SController = StreamController(address: IPaddr!, port: PortNum!, delegate: self)
+        SController = StreamController(address: IPaddr, port: PortNum, delegate: self)
         SController?.delegate = self
         
         // Start looking for messages in the publish subject.
