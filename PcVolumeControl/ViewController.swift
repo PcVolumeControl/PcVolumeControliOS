@@ -15,24 +15,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     let protocolVersion = 7
     var SController: StreamController?
-    var clientConnected: Bool? // whether or not the client thinks it is connected
-    var alreadySwitched: Bool? //TODO,test
-    
-    var soundLevel: Float?
+    var alreadySwitched: Bool?
     var selectedDefaultDevice: (String, String)?
-    
     var allSessions = [Session]() // Array used to build slider table
-    var processedSessions = [Session]()
     var IPaddr: String!
     var PortNum: UInt32?
-    var connectionParams: [String]?
     
-    var deletedSessions = [Session]() // Deleted previously due to a swipe-delete
-    
-    //MARK: Properties
-    @IBOutlet weak var connectionStatus: UILabel!
     @IBOutlet weak var defaultDeviceView: UIView!
-    @IBOutlet weak var masterFooterUIView: UIView!
+//    @IBOutlet weak var masterFooterUIView: UIView!
     // picker
     @IBOutlet weak var pickerTextField: UITextField!
     
@@ -93,9 +83,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // bottom toolbar buttons
     @IBOutlet weak var bottomToolbar: UIToolbar!
     
+    // Very bottom toolbar with disconnect button
     @IBOutlet weak var disconnectButton: UIBarButtonItem!
     @IBAction func disconnectButtonClicked(_ sender: UIBarButtonItem) {
-        print("disconnect requested by user")
+        print("Disconnect requested by user...")
         SController?.disconnect()
         bailToConnectScreen()
     }
@@ -209,7 +200,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func initSessions() {
         // This finds all sessions and overwrites the global session state.
-        print("initsessions executing...")
+        print("Sessions are being re-intialized...")
         allSessions.removeAll()
         guard let sessions = SController?.fullState?.defaultDevice.sessions else {
             createDisconnectAlert(title: "Whoops", message: "Full state sent from the server was not loaded for some reason.")
@@ -453,12 +444,19 @@ extension ViewController: StreamControllerDelegate {
     }
     func bailToConnectScreen() {
         // used if the TCP controller detects problems
-        clientConnected = false
         DispatchQueue.main.async {
             self.performSegue(withIdentifier: "BackToStartSegue", sender: "abort")
         }
     }
-    func tearDownConnection() {}
+    func tearDownConnection() {
+        // Something went wrong with the socket open to the server.
+        let alert = UIAlertController(title: "Error", message: "The server connection was lost.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { action in
+            self.bailToConnectScreen()
+        }))
+        self.present(alert, animated: true)
+
+    }
     func didConnectToServer() {}
     func isAttemptingConnection() {}
     func failedToConnect() {}

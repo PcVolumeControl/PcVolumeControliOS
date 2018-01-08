@@ -70,8 +70,10 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         
         // connect button styling
         Cbutton.styleButton(cornerRadius: 8, borderWidth: 2, borderColor: UIColor.gray.cgColor)
+
     }
     
+    // used to move between IP and Port fields
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
@@ -79,7 +81,6 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         } else {
             textField.resignFirstResponder()
         }
-        // Do not add a line break
         return false
     }
     
@@ -100,28 +101,10 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
     }
 }
 
-// TODO: actually connect this to the text boxes
-extension UITextField {
-    func setPreferences() {
-        self.layer.cornerRadius = 8
-//        self.layer.borderColor = UIColor.grayColor().CGColor
-        self.layer.borderWidth = 2
-    }
-}
-
 extension ViewControllerStart: StreamControllerDelegate {
-    func didGetServerUpdate() {
-        
-    }
-    func bailToConnectScreen() {
-        
-    }
-    func tearDownConnection() {
-    }
     func isAttemptingConnection() {
         print("connection is in progress...")
 
-        // validate that the connection was actually opened.
         asyncQueue.async {
             DispatchQueue.main.async {
                 self.spinnerView = UIViewController.displaySpinner(onView: self.view)
@@ -129,7 +112,7 @@ extension ViewControllerStart: StreamControllerDelegate {
         }
     }
     func didConnectToServer() {
-        print("did connect to server delegation...")
+        print("Server connection complete. Moving to main VC.")
         asyncQueue.async {
             DispatchQueue.main.async {
                 if let spinner = self.spinnerView {
@@ -147,8 +130,12 @@ extension ViewControllerStart: StreamControllerDelegate {
             UIViewController.removeSpinner(spinner: spinner)
         }
     }
+    func didGetServerUpdate() {}
+    func bailToConnectScreen() {}
+    func tearDownConnection() {}
 }
 
+// This is the spinner shown when the socket is being set up.
 extension UIViewController {
     class func displaySpinner(onView : UIView) -> UIView {
         

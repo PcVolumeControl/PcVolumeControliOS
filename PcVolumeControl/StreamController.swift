@@ -32,7 +32,7 @@ class StreamController: NSObject {
     var fullState: FullState?
     var serverConnected: Bool?
     var delegate: StreamControllerDelegate?
-    let TCPTimeout: UInt = 2
+    let TCPTimeout: UInt = 2000
     
     // Rx stuff
     let bag = DisposeBag()
@@ -86,11 +86,12 @@ class StreamController: NSObject {
         do {
             let mySocket = try Socket.create()
             clientSocket = mySocket
-            try clientSocket?.connect(to: address, port: port, timeout: 2000)
+            try clientSocket?.connect(to: address, port: port, timeout: TCPTimeout)
             print("socket connected!")
             self.delegate?.didConnectToServer() // signal we connected.
             while true {
                 if clientSocket?.isConnected == false {
+                    self.delegate?.tearDownConnection()
                     break
                 }
                 let result = pollSocket(socket: mySocket)
@@ -155,10 +156,12 @@ class StreamController: NSObject {
                 print("Socket: \(socket.remoteHostname):\(socket.remotePort) closed...")
                 socket.close()
                 serverConnected = false
+                // Tell the main VC so it can show an alert and bail.
+                self.delegate?.tearDownConnection()
                 
             }
             catch let error {
-                guard let socketError = error as? Socket.Error else {
+                guard let _ = error as? Socket.Error else {
                     print("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
                     return "Error!"
                 }
