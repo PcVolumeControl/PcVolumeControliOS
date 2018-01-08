@@ -464,7 +464,7 @@ extension ViewController: StreamControllerDelegate {
     func reconnect() {
         // This should tear down what we have, then cause a reload of everything.
         SController?.disconnect()
-        try? SController?.connectNoSend()
+        SController?.connectNoSend()
     }
 }
 
