@@ -20,15 +20,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var allSessions = [Session]() // Array used to build slider table
     var IPaddr: String!
     var PortNum: UInt32?
+    var disconnectRequested: Bool = false
     
     @IBOutlet weak var defaultDeviceView: UIView!
-//    @IBOutlet weak var masterFooterUIView: UIView!
-    // picker
     @IBOutlet weak var pickerTextField: UITextField!
-    
-    // top slider for master channel
     @IBOutlet weak var masterVolumeSlider: DesignableSlider!
-    
     @IBOutlet weak var masterMuteButton: UISwitch!
     
     @IBAction func masterMuteSwitch(_ sender: UISwitch) {
@@ -87,6 +83,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var disconnectButton: UIBarButtonItem!
     @IBAction func disconnectButtonClicked(_ sender: UIBarButtonItem) {
         print("Disconnect requested by user...")
+        disconnectRequested = true
         SController?.disconnect()
         bailToConnectScreen()
     }
@@ -95,6 +92,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         setNeedsStatusBarAppearanceUpdate() // white top status bar
+        disconnectRequested = false
         
         // Detection that the app was minimized so we can close TCP connections
         let notificationCenter = NotificationCenter.default
@@ -449,6 +447,12 @@ extension ViewController: StreamControllerDelegate {
         }
     }
     func tearDownConnection() {
+        // Check to see if the disconnect button took us here.
+        if disconnectRequested == true {
+            bailToConnectScreen()
+            return
+        }
+        
         // Something went wrong with the socket open to the server.
         let alert = UIAlertController(title: "Error", message: "The server connection was lost.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { action in
