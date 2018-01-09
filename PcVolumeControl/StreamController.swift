@@ -140,7 +140,7 @@ class StreamController: NSObject {
                             print("newline detected! That's the end of a message from the server.")
                             return responseString
                         }
-                        print("This iOS client received made connection to \(socket.remoteHostname):\(socket.remotePort): \(response) ")
+                        print("This iOS client got a response from: \(socket.remoteHostname):\(socket.remotePort): \(response) ")
                     }
                     
                     if bytesRead == 0 {

@@ -25,6 +25,7 @@
 		A97414AB1FDF98BC00062954 /* SliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97414AA1FDF98BC00062954 /* SliderCell.swift */; };
 		A97414AD1FE629AC00062954 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97414AC1FE629AC00062954 /* Session.swift */; };
 		A9A25CCE1FEB61DD009C985B /* StreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A25CCD1FEB61DD009C985B /* StreamController.swift */; };
+		A9A5A49620048D740033B561 /* ios-icons in Resources */ = {isa = PBXBuildFile; fileRef = A9A5A49520048D740033B561 /* ios-icons */; };
 		A9AC32CA1FECEF1400D385A8 /* pcvg logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AC32C91FECEF1400D385A8 /* pcvg logo.png */; };
 		A9AC32CC1FECF78400D385A8 /* pcvg logo square.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */; };
 		A9B66A231FECE1910051C4C5 /* ViewControllerStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */; };
@@ -72,15 +73,16 @@
 		A952C1651FE8D3A6002559B3 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
-		A971F24A1FF2B52B00AD9167 /* black-on-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "black-on-white.png"; path = "../../../../Desktop/black-on-white.png"; sourceTree = "<group>"; };
+		A971F24A1FF2B52B00AD9167 /* black-on-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "black-on-white.png"; path = "../../../../Desktop/pcvc_images/black-on-white.png"; sourceTree = "<group>"; };
 		A971F24C1FF2BD4C00AD9167 /* DesignableSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableSlider.swift; sourceTree = "<group>"; };
-		A971F2501FF2BDE800AD9167 /* volume-thumbslider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "volume-thumbslider.png"; path = "../../../../Desktop/volume-thumbslider.png"; sourceTree = "<group>"; };
+		A971F2501FF2BDE800AD9167 /* volume-thumbslider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "volume-thumbslider.png"; path = "../../../../Desktop/pcvc_images/volume-thumbslider.png"; sourceTree = "<group>"; };
 		A971F2541FF2E5C600AD9167 /* teeny-downloadbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "teeny-downloadbutton.png"; path = "../../../../Desktop/teeny-downloadbutton.png"; sourceTree = "<group>"; };
 		A97414AA1FDF98BC00062954 /* SliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderCell.swift; sourceTree = "<group>"; };
 		A97414AC1FE629AC00062954 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		A9A25CCD1FEB61DD009C985B /* StreamController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamController.swift; sourceTree = "<group>"; };
-		A9AC32C91FECEF1400D385A8 /* pcvg logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo.png"; path = "../../../../Desktop/pcvg logo.png"; sourceTree = "<group>"; };
-		A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo square.png"; path = "../../../../Desktop/pcvg logo square.png"; sourceTree = "<group>"; };
+		A9A5A49520048D740033B561 /* ios-icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "ios-icons"; sourceTree = "<group>"; };
+		A9AC32C91FECEF1400D385A8 /* pcvg logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo.png"; path = "../../../../Desktop/pcvc_images/pcvg logo.png"; sourceTree = "<group>"; };
+		A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo square.png"; path = "../../../../Desktop/pcvc_images/pcvg logo square.png"; sourceTree = "<group>"; };
 		A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerStart.swift; sourceTree = "<group>"; };
 		A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "pcvg logo square"; path = "../../../../Desktop/pcvg logo square"; sourceTree = "<group>"; };
 		BC0C05349FA2A35B69E7936E /* Pods-PcVolumeControlUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			children = (
 				A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */,
 				A927E14E1FC53AB10024D526 /* Main.storyboard */,
+				A9A5A49520048D740033B561 /* ios-icons */,
 				A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */,
 				A927E14C1FC53AB10024D526 /* ViewController.swift */,
 				A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */,
@@ -326,6 +329,7 @@
 				A971F2551FF2E5C600AD9167 /* teeny-downloadbutton.png in Resources */,
 				A9AC32CC1FECF78400D385A8 /* pcvg logo square.png in Resources */,
 				A927E1501FC53AB10024D526 /* Main.storyboard in Resources */,
+				A9A5A49620048D740033B561 /* ios-icons in Resources */,
 				A9AC32CA1FECEF1400D385A8 /* pcvg logo.png in Resources */,
 				A971F24B1FF2B52C00AD9167 /* black-on-white.png in Resources */,
 			);
