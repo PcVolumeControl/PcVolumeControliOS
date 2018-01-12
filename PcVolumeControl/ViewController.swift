@@ -21,6 +21,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var IPaddr: String!
     var PortNum: UInt32?
     var disconnectRequested: Bool = false
+    var initialDraw: Bool = false
     
     @IBOutlet weak var defaultDeviceView: UIView!
     @IBOutlet weak var pickerTextField: UITextField!
@@ -90,7 +91,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        if initialDraw == true {
+            reloadTheWorld()
+            initialDraw = false
+        }
+        
         setNeedsStatusBarAppearanceUpdate() // white top status bar
         disconnectRequested = false
         
@@ -239,7 +245,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func reloadTheWorld() {
         // Reload everything! All the things!
         // bail if the client and server protocols mismatch.
-
+        
         if SController?.fullState?.protocolVersion != protocolVersion {
             createDisconnectAlert(title: "Error", message: "Client and server protocols mismatch.")
         }

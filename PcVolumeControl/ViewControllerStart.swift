@@ -45,7 +45,7 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         // Start looking for messages in the publish subject.
         SController?.processMessages()
         
-        // Make the initial server connection and get the first message,
+        // Make the initial server connection and get the first message.
         asyncQueue.async {
             self.SController?.connectNoSend()
         }
@@ -96,14 +96,15 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ConnectSegue" {
             let destVC = segue.destination as! ViewController
-            destVC.SController = self.SController
+            destVC.SController = self.SController // give them our stream controller
+            destVC.initialDraw = true // signal to viewDidLoad() to reload everything.
         }
     }
 }
 
 extension ViewControllerStart: StreamControllerDelegate {
     func isAttemptingConnection() {
-        print("connection is in progress...")
+        print("Connection is in progress...")
 
         asyncQueue.async {
             DispatchQueue.main.async {
@@ -117,7 +118,6 @@ extension ViewControllerStart: StreamControllerDelegate {
             DispatchQueue.main.async {
                 if let spinner = self.spinnerView {
                     UIViewController.removeSpinner(spinner: spinner)
-                    
                 }
                 // go to the next screen, pushing along the stream controller instance.
                 self.performSegue(withIdentifier: "ConnectSegue", sender: self.SController)
