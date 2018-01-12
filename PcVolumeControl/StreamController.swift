@@ -88,7 +88,6 @@ class StreamController: NSObject {
             clientSocket = mySocket
             try clientSocket?.connect(to: address, port: port, timeout: TCPTimeout)
             print("socket connected!")
-            self.delegate?.didConnectToServer() // signal we connected.
             while true {
                 if clientSocket?.isConnected == false {
                     self.delegate?.tearDownConnection()
@@ -98,6 +97,8 @@ class StreamController: NSObject {
                 if result != nil {
                     print("result: \(String(describing: result))\n")
                     lastMessageSubject.onNext(result!)
+                    self.delegate?.didConnectToServer() // segue now
+                    
                 } else {
                     break
                 }
