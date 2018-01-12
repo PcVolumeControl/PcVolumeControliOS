@@ -18,29 +18,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pcvg logo square.png" translatesAutoresizingMaskIntoConstraints="NO" id="CEj-T1-7Jp">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pcvg logo square.png" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CEj-T1-7Jp">
                                 <rect key="frame" x="67" y="105" width="240" height="228"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="228" id="Q1i-wv-TkC"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="PCVolumeControl" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oeI-bF-r4z">
-                                <rect key="frame" x="53" y="350" width="269" height="30"/>
-                                <color key="backgroundColor" red="0.18823745850000001" green="0.18823251129999999" blue="0.18823352460000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.18823745850000001" green="0.18823251129999999" blue="0.18823352460000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="CEj-T1-7Jp" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" constant="85" id="3Jf-Rd-Yrj"/>
                             <constraint firstItem="CEj-T1-7Jp" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4ei-MS-lLe"/>
-                            <constraint firstItem="oeI-bF-r4z" firstAttribute="top" secondItem="CEj-T1-7Jp" secondAttribute="bottom" constant="17" id="73Z-sQ-9Q8"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="oeI-bF-r4z" secondAttribute="bottom" constant="287" id="Iln-oS-Goz"/>
                             <constraint firstItem="CEj-T1-7Jp" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="67" id="J2B-Fv-Wec"/>
-                            <constraint firstItem="oeI-bF-r4z" firstAttribute="centerX" secondItem="CEj-T1-7Jp" secondAttribute="centerX" id="MEd-zm-l0c"/>
-                            <constraint firstItem="oeI-bF-r4z" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="53" id="oXT-BC-MiJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                     </view>

@@ -49,12 +49,11 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         asyncQueue.async {
             self.SController?.connectNoSend()
         }
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Do any additional setup after loading the view.
         ServerIPField.delegate = self
         ServerPortField.delegate = self
@@ -70,6 +69,7 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         
         // connect button styling
         Cbutton.styleButton(cornerRadius: 8, borderWidth: 2, borderColor: UIColor.gray.cgColor)
+        addDoneButtonOnKeyboard()
 
     }
     
@@ -90,7 +90,6 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -99,6 +98,29 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
             destVC.SController = self.SController // give them our stream controller
             destVC.initialDraw = true // signal to viewDidLoad() to reload everything.
         }
+    }
+    func addDoneButtonOnKeyboard()
+    {
+        let doneToolbar: UIToolbar = UIToolbar()
+        doneToolbar.barStyle = UIBarStyle.default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(ViewControllerStart.doneButtonAction(_:)))
+        var items = [UIBarButtonItem]()
+        items.append(flexSpace)
+        items.append(done)
+        items.append(flexSpace)
+        
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        ServerPortField.inputAccessoryView = doneToolbar
+        
+    }
+    
+    @objc func doneButtonAction(_ sender: UIBarButtonItem!)
+    {
+        view.endEditing(true)
     }
 }
 
