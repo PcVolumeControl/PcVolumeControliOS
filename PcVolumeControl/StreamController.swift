@@ -175,7 +175,7 @@ class StreamController: NSObject {
     
     func processMessages() {
         let distinct = lastMessageSubject.distinctUntilChanged()
-        let jsonSubscription = distinct.subscribe {
+        let _ = distinct.subscribe {
             guard let message = $0.element else { return }
             
             do {
