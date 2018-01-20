@@ -31,12 +31,26 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
 
         // handoff to the main viewcontroller
         guard let PortNum = Int32(self.ServerPortField.text!) else {
-            let _ = Alert.showBasic(title: "Error", message: "Bad port number specified.\nThe default is 3000.", vc: self)
+            let _ = Alert.showBasic(title: "Error", message: "Bad port number specified.\nThe default is 3000. The port number needs to be between 1-65535.", vc: self)
             return
         }
         guard let IPaddr = self.ServerIPField.text else {
-            let _ = Alert.showBasic(title: "Error", message: "There was an issue parsing the server IP address or name.", vc: self)
             return
+        }
+        
+        // Check if the IP field is blank.
+        if IPaddr.isEmpty {
+            let _ = Alert.showBasic(title: "Error", message: "A host name or IPv4 address is required in order to connect to your PCVolumeControl server.", vc: self)
+            return
+        } else {
+            // They entered *something*
+            if IPaddr.matches("^[0-9]") && IPaddr.matches("[0-9]$") {
+                // pretty sure it's an IP address, but is it valid?
+                if !isValidIP(s: IPaddr) {
+                    let _ = Alert.showBasic(title: "Error", message: "The entry '\(IPaddr)' was not a valid IPv4 address.", vc: self)
+                    return
+                }
+            }
         }
         
         SController = StreamController(address: IPaddr, port: PortNum, delegate: self)
@@ -122,6 +136,11 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
     {
         view.endEditing(true)
     }
+    func isValidIP(s: String) -> Bool {
+        let parts = s.components(separatedBy: ".")
+        let nums = parts.flatMap { Int($0) }
+        return parts.count == 4 && nums.count == 4 && nums.filter { $0 >= 0 && $0 < 256}.count == 4
+    }
 }
 
 extension ViewControllerStart: StreamControllerDelegate {
@@ -150,6 +169,9 @@ extension ViewControllerStart: StreamControllerDelegate {
     func failedToConnect() {
         if let spinner = spinnerView {
             UIViewController.removeSpinner(spinner: spinner)
+            DispatchQueue.main.async {
+                let _ = Alert.showBasic(title: "Connection Error", message: "Connection to the server failed.\n\nIs the IP or name correct?\nIs the port open?", vc: self)
+            }
         }
     }
     func didGetServerUpdate() {}
@@ -186,5 +208,12 @@ extension UIButton {
         self.layer.cornerRadius = cornerRadius
         self.layer.borderWidth = borderWidth
         self.layer.borderColor = borderColor
+    }
+}
+
+// Extend String so we can allow regex matching on the domain name/IP entered.
+extension String {
+    func matches(_ regex: String) -> Bool {
+        return self.range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
     }
 }
