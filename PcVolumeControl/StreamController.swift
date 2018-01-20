@@ -106,10 +106,13 @@ class StreamController: NSObject {
         }
         catch let error {
             guard let _ = error as? Socket.Error else {
-                print("Unexpected socket error!")
+                self.delegate?.failedToConnect()
                 return
             }
         }
+        // If gethostbyname fails, we will get here.
+        // Other exceptions probably get here too.
+        print("Unexpected socket error!")
         self.delegate?.failedToConnect()
     }
     
