@@ -17,6 +17,7 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
     var serverConnection: Bool?
     var spinnerView: UIView? = nil
     var SController: StreamController? = nil
+    var defaults = UserDefaults.standard // to persist the IP/port entered previously
 
     @IBOutlet weak var Cbutton: UIButton!
     @IBOutlet weak var ServerIPField: UITextField!
@@ -53,6 +54,10 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
             }
         }
         
+        defaults.set(IPaddr, forKey: "IPaddr")
+        defaults.set(PortNum, forKey: "PortNum")
+        defaults.synchronize()
+        
         SController = StreamController(address: IPaddr, port: PortNum, delegate: self)
         SController?.delegate = self
         
@@ -84,7 +89,13 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         // connect button styling
         Cbutton.styleButton(cornerRadius: 8, borderWidth: 2, borderColor: UIColor.gray.cgColor)
         addDoneButtonOnKeyboard()
-
+        
+        if let ipaddr = defaults.string(forKey: "IPaddr") {
+            ServerIPField.text = ipaddr
+        }
+        if let port = defaults.string(forKey: "PortNum") {
+            ServerPortField.text = port
+        }
     }
     
     // used to move between IP and Port fields
