@@ -230,7 +230,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
         allSessions.sort {
             $0.name.localizedCaseInsensitiveCompare($1.name) == ComparisonResult.orderedAscending
         }
+        // While we are reloading here, initialize the title showing in the initial picker view.
+        guard let state = SController?.fullState?.defaultDevice.name else { return }
         
+        DispatchQueue.main.async {
+            self.pickerTextField.text = state
+            self.pickerTextField.tintColor = .clear
+        }
         /*
         of all the sessions here, if we have already reordered the stack, move our cells around
         so the prioritized ones are up top and everything else appears below.
@@ -238,6 +244,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         if let dfl = defaults.object(forKey: "customOrderedCells") as? [String] {
             // We found a customized ordering.
+            if dfl.count > allSessions.count {
+                // TODO: This is kinda hacky. There has to be a better way.
+                defaults.set([], forKey: "customOrderedCells")
+                defaults.synchronize()
+                return
+            }
             for item in allSessions {
                 if dfl.contains(item.id) {
                     // The ID we are looking at has a custom ordering.
@@ -250,13 +262,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
             }
-        }
-        // While we are reloading here, initialize the title showing in the initial picker view.
-        guard let state = SController?.fullState?.defaultDevice.name else { return }
-      
-        DispatchQueue.main.async {
-            self.pickerTextField.text = state
-            self.pickerTextField.tintColor = .clear
         }
     }
     
