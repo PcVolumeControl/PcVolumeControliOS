@@ -10,6 +10,7 @@ import UIKit
 
 class AboutViewController: UITableViewController {
     
+    @IBOutlet weak var buildNumberLabel: UILabel!
     @IBOutlet var aboutTableView: UITableView!
     
     @IBAction func aboutBackButtonClicked(_ sender: UIBarButtonItem) {
@@ -35,6 +36,9 @@ class AboutViewController: UITableViewController {
         setNeedsStatusBarAppearanceUpdate() // white top status bar
         let color = UIColor(hex: "303030")
         aboutTableView.backgroundColor = color
+        let version = Bundle.main.releaseVersionNumber
+        let build = Bundle.main.buildVersionNumber
+        buildNumberLabel.text = "App: v\(version ?? "1").\(build ?? "0")"
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,5 +78,13 @@ extension UIColor {
             green: CGFloat(g) / 0xff,
             blue: CGFloat(b) / 0xff, alpha: 1
         )
+    }
+}
+extension Bundle {
+    var releaseVersionNumber: String? {
+        return infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+    var buildVersionNumber: String? {
+        return infoDictionary?["CFBundleVersion"] as? String
     }
 }
