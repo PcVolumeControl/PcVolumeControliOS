@@ -22,6 +22,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var PortNum: UInt32?
     var disconnectRequested: Bool = false
     var initialDraw: Bool = false
+    var defaults = UserDefaults.standard
     
     @IBOutlet weak var defaultDeviceView: UIView!
     @IBOutlet weak var pickerTextField: UITextField!
@@ -82,11 +83,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     // Very bottom toolbar with disconnect button
     @IBOutlet weak var disconnectButton: UIBarButtonItem!
+    @IBOutlet weak var editCellsButton: UIBarButtonItem!
     @IBAction func disconnectButtonClicked(_ sender: UIBarButtonItem) {
         print("Disconnect requested by user...")
         disconnectRequested = true
         SController?.disconnect()
         bailToConnectScreen()
+    }
+    
+    @IBAction func editCellButtonClicked(_ sender: UIBarButtonItem) {
+        // Toggle editing of the cells - reordering or deleting.
+        self.sliderTableView.isEditing = !self.sliderTableView.isEditing
+        if self.sliderTableView.isEditing {
+            sender.title = "Done"
+            sender.tintColor = .white
+        } else {
+            sender.title = "Reorder Sliders"
+            sender.tintColor = .none
+        }
     }
     
     override func viewDidLoad() {
@@ -125,7 +139,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if SController?.fullState?.defaultDevice == nil {
             view.setNeedsDisplay()
         }
-        
     }
     
     // white top carrier/battery bar
@@ -217,6 +230,27 @@ class ViewController: UIViewController, UITextFieldDelegate {
         allSessions.sort {
             $0.name.localizedCaseInsensitiveCompare($1.name) == ComparisonResult.orderedAscending
         }
+        
+        /*
+        of all the sessions here, if we have already reordered the stack, move our cells around
+        so the prioritized ones are up top and everything else appears below.
+        */
+        
+        if let dfl = defaults.object(forKey: "customOrderedCells") as? [String] {
+            // We found a customized ordering.
+            for item in allSessions {
+                if dfl.contains(item.id) {
+                    // The ID we are looking at has a custom ordering.
+                    if let cIdx = dfl.index(of: item.id) {
+                        // allSessions is mutated in this loop. Get the new index.
+                        if let aIdx = allSessions.index(where: {$0.id == item.id}) {
+                            allSessions.remove(at: aIdx)
+                            allSessions.insert(item, at: cIdx)
+                        }
+                    }
+                }
+            }
+        }
         // While we are reloading here, initialize the title showing in the initial picker view.
         guard let state = SController?.fullState?.defaultDevice.name else { return }
       
@@ -224,7 +258,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
             self.pickerTextField.text = state
             self.pickerTextField.tintColor = .clear
         }
-        
     }
     
     func findDeviceId(longName: String) -> String {
@@ -367,7 +400,34 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         print("Updating cell index path: \(indexPath.row), target: \(targetSession.name)")
         cell.setSessionParameter(session: targetSession)
         
+        // Customize the reordercontrol/hamburger icon background
+        cell.backgroundColor = .gray
+        // TODO: We really should disable the sliders/switches in each cell during editing.
+     
         return cell
+    }
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        // return .delete to get a delete button on the left side of the cell.
+        return .none
+    }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        // indentation on the left side of the cell
+        return false
+    }
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedObject = self.allSessions[sourceIndexPath.row]
+        allSessions.remove(at: sourceIndexPath.row)
+        allSessions.insert(movedObject, at: destinationIndexPath.row)
+        NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) \(allSessions)")
+        // The sessions have been customized. Write the state/order into defaults so initsessions can read them.
+        var customOrdering = [String]()
+        for (index, session) in allSessions.enumerated() {
+            customOrdering.append(session.id)
+            print("Session '\(session.name)' custom-ordered to index: \(index)")
+        }
+        defaults.set(customOrdering, forKey: "customOrderedCells")
+        defaults.synchronize()
     }
 }
 

@@ -142,7 +142,6 @@
                                     <constraint firstAttribute="height" constant="40" id="mfK-G2-0Na"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ad6-ra-ZAb"/>
                                     <barButtonItem title="Disconnect" id="Yu0-kd-HNt">
                                         <color key="tintColor" red="1" green="0.17599671189999999" blue="0.32916878040000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <connections>
@@ -150,6 +149,11 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="609-kR-F5D"/>
+                                    <barButtonItem title="Reorder Sliders" id="LoM-2u-wKP">
+                                        <connections>
+                                            <action selector="editCellButtonClicked:" destination="BYZ-38-t0r" id="O7l-kE-QGA"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0wa-fI-yZC">
@@ -288,6 +292,7 @@
                         <outlet property="bottomToolbar" destination="NBE-GR-QfZ" id="Vm0-Lk-jbo"/>
                         <outlet property="defaultDeviceView" destination="0wa-fI-yZC" id="tLt-I5-Dsk"/>
                         <outlet property="disconnectButton" destination="Yu0-kd-HNt" id="eKg-eD-GSK"/>
+                        <outlet property="editCellsButton" destination="LoM-2u-wKP" id="agt-dq-arT"/>
                         <outlet property="masterMuteButton" destination="2s7-sN-Vau" id="VCg-f6-IMa"/>
                         <outlet property="masterVolumeSlider" destination="aKO-0K-9R9" id="vvD-QK-dfH"/>
                         <outlet property="pickerTextField" destination="hQX-Vz-PMb" id="KEP-VZ-yLb"/>
@@ -501,6 +506,6 @@
         <image name="volume-thumbslider.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HMQ-MO-tD9"/>
+        <segue reference="ZCj-f2-AIv"/>
     </inferredMetricsTieBreakers>
 </document>
