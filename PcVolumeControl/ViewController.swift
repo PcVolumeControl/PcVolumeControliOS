@@ -185,6 +185,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Tear down the TCP connection any time they minimize or exit the app.
         print("App moved to background. TCP Connection should be torn down now...")
         if SController?.clientSocket?.isConnected == true {
+            disconnectRequested = true
             SController?.disconnect()
         }
     }
