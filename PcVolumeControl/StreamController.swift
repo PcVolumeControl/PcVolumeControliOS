@@ -73,6 +73,9 @@ class StreamController: NSObject {
         // Signal to delegates that the socket is open.
         self.delegate?.didConnectToServer()
     }
+    func didDiscovermDNSService() {
+        
+    }
     
     func disconnect() {
         if let cs = clientSocket {

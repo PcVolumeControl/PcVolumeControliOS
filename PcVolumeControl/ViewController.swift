@@ -85,10 +85,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var disconnectButton: UIBarButtonItem!
     @IBOutlet weak var editCellsButton: UIBarButtonItem!
     @IBAction func disconnectButtonClicked(_ sender: UIBarButtonItem) {
-        print("Disconnect requested by user...")
-        disconnectRequested = true
-        SController?.disconnect()
-        bailToConnectScreen()
+        return
+//        print("Disconnect requested by user...")
+//        disconnectRequested = true
+//        SController?.disconnect()
+//        bailToConnectScreen()
     }
     
     @IBAction func editCellButtonClicked(_ sender: UIBarButtonItem) {
@@ -101,6 +102,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
             sender.title = "Reorder Sliders"
             sender.tintColor = .none
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.title = "192.168.2.78"
+        
     }
     
     override func viewDidLoad() {
@@ -194,14 +200,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // If the app is brought out of the background, we _always_ restart.
         print("App moved to foreground. Force reconnection...")
         if alreadySwitched == false {
-            bailToConnectScreen()
+//            bailToConnectScreen()
+            reconnect()
             alreadySwitched = true
         }
     }
     func appDidBecomeActive() {
         print("App moved from background selection screen to foreground.")
         if alreadySwitched == false {
-            bailToConnectScreen()
+//            bailToConnectScreen()
+            reconnect()
         }
     }
     
@@ -513,7 +521,7 @@ extension ViewController: StreamControllerDelegate {
     func bailToConnectScreen() {
         // used if the TCP controller detects problems
         DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "BackToStartSegue", sender: "abort")
+//            self.performSegue(withIdentifier: "BackToStartSegue", sender: "abort")
         }
     }
     func tearDownConnection() {

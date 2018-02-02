@@ -43,6 +43,7 @@
 		A92F6CA020105AEA0045180F /* Icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8220105AEA0045180F /* Icon-80.png */; };
 		A92F6CA120105AEA0045180F /* Icon-87.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8320105AEA0045180F /* Icon-87.png */; };
 		A92F6CA220105AEA0045180F /* Icon-88.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8420105AEA0045180F /* Icon-88.png */; };
+		A92F6CAF20199B7A0045180F /* MdnsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92F6CAE20199B7A0045180F /* MdnsViewController.swift */; };
 		A952C1661FE8D3A6002559B3 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A952C1651FE8D3A6002559B3 /* Alert.swift */; };
 		A971F2471FF1DA5D00AD9167 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */; };
 		A971F2491FF2ABBB00AD9167 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */; };
@@ -55,6 +56,10 @@
 		A9AC32CA1FECEF1400D385A8 /* pcvg logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AC32C91FECEF1400D385A8 /* pcvg logo.png */; };
 		A9AC32CC1FECF78400D385A8 /* pcvg logo square.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */; };
 		A9B66A231FECE1910051C4C5 /* ViewControllerStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */; };
+		A9E20977201C2B5800D0DD26 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E20976201C2B5800D0DD26 /* DiscoverViewController.swift */; };
+		A9E20979201C2B8500D0DD26 /* ManualViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E20978201C2B8500D0DD26 /* ManualViewController.swift */; };
+		A9E2097B201C343F00D0DD26 /* ServerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E2097A201C343F00D0DD26 /* ServerCell.swift */; };
+		A9E2097D201C562000D0DD26 /* ServerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E2097C201C562000D0DD26 /* ServerController.swift */; };
 		A9FDBC6F1FECFCE300DAE6D7 /* pcvg logo square in Resources */ = {isa = PBXBuildFile; fileRef = A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */; };
 		C52F283691D46C907B40E610 /* Pods_PcVolumeControlUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44154FABEF460A95987B8D20 /* Pods_PcVolumeControlUITests.framework */; };
 /* End PBXBuildFile section */
@@ -122,6 +127,7 @@
 		A92F6C8220105AEA0045180F /* Icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-80.png"; sourceTree = "<group>"; };
 		A92F6C8320105AEA0045180F /* Icon-87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-87.png"; sourceTree = "<group>"; };
 		A92F6C8420105AEA0045180F /* Icon-88.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-88.png"; sourceTree = "<group>"; };
+		A92F6CAE20199B7A0045180F /* MdnsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MdnsViewController.swift; sourceTree = "<group>"; };
 		A952C1651FE8D3A6002559B3 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
@@ -134,6 +140,10 @@
 		A9AC32C91FECEF1400D385A8 /* pcvg logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo.png"; path = "../../../../Desktop/pcvc_images/pcvg logo.png"; sourceTree = "<group>"; };
 		A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo square.png"; path = "../../../../Desktop/pcvc_images/pcvg logo square.png"; sourceTree = "<group>"; };
 		A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerStart.swift; sourceTree = "<group>"; };
+		A9E20976201C2B5800D0DD26 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
+		A9E20978201C2B8500D0DD26 /* ManualViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualViewController.swift; sourceTree = "<group>"; };
+		A9E2097A201C343F00D0DD26 /* ServerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCell.swift; sourceTree = "<group>"; };
+		A9E2097C201C562000D0DD26 /* ServerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerController.swift; sourceTree = "<group>"; };
 		A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "pcvg logo square"; path = "../../../../Desktop/pcvg logo square"; sourceTree = "<group>"; };
 		BC0C05349FA2A35B69E7936E /* Pods-PcVolumeControlUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E497C089C2FB3C823939B7C5 /* Pods-PcVolumeControlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -216,9 +226,14 @@
 				A92F6C6620105AEA0045180F /* iosicons */,
 				A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */,
 				A927E14E1FC53AB10024D526 /* Main.storyboard */,
+				A92F6CAE20199B7A0045180F /* MdnsViewController.swift */,
+				A9E20976201C2B5800D0DD26 /* DiscoverViewController.swift */,
+				A9E20978201C2B8500D0DD26 /* ManualViewController.swift */,
 				A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */,
 				A927E14C1FC53AB10024D526 /* ViewController.swift */,
 				A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */,
+				A9E2097A201C343F00D0DD26 /* ServerCell.swift */,
+				A9E2097C201C562000D0DD26 /* ServerController.swift */,
 				A9A25CCD1FEB61DD009C985B /* StreamController.swift */,
 				A97414AA1FDF98BC00062954 /* SliderCell.swift */,
 				A97414AC1FE629AC00062954 /* Session.swift */,
@@ -622,14 +637,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9E2097B201C343F00D0DD26 /* ServerCell.swift in Sources */,
 				A952C1661FE8D3A6002559B3 /* Alert.swift in Sources */,
+				A92F6CAF20199B7A0045180F /* MdnsViewController.swift in Sources */,
 				A9B66A231FECE1910051C4C5 /* ViewControllerStart.swift in Sources */,
 				A9A25CCE1FEB61DD009C985B /* StreamController.swift in Sources */,
 				A97414AD1FE629AC00062954 /* Session.swift in Sources */,
 				A927E14D1FC53AB10024D526 /* ViewController.swift in Sources */,
 				A97414AB1FDF98BC00062954 /* SliderCell.swift in Sources */,
+				A9E2097D201C562000D0DD26 /* ServerController.swift in Sources */,
 				A971F2491FF2ABBB00AD9167 /* AboutViewController.swift in Sources */,
+				A9E20977201C2B5800D0DD26 /* DiscoverViewController.swift in Sources */,
 				A971F24D1FF2BD4C00AD9167 /* DesignableSlider.swift in Sources */,
+				A9E20979201C2B8500D0DD26 /* ManualViewController.swift in Sources */,
 				A927E14B1FC53AB10024D526 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
