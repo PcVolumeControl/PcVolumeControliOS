@@ -235,9 +235,11 @@ class FullState : Codable {
     let defaultDevice: theDefaultDevice
     let deviceIds: [String: String]
     let protocolVersion: Int
+    let applicationVersion: String
     
-    init(protocolVersion: Int, deviceIds: [String:String], defaultDevice: theDefaultDevice) {
+    init(protocolVersion: Int, applicationVersion: String, deviceIds: [String:String], defaultDevice: theDefaultDevice) {
         self.protocolVersion = protocolVersion
+        self.applicationVersion = applicationVersion
         self.deviceIds = deviceIds
         self.defaultDevice = defaultDevice
     }

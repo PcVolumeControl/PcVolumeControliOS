@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		348891E8769139D2690DB42B /* Pods_PcVolumeControlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F56215ED55A4131802149D7F /* Pods_PcVolumeControlTests.framework */; };
 		5550754A39B693CAFC993140 /* Pods_PcVolumeControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99C84E6328E6B3ED66F99F6E /* Pods_PcVolumeControl.framework */; };
-		58122E51836F8149A36B1D1A /* Pods_PcVolumeControlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95CA0E4FEFF806AD07864A4B /* Pods_PcVolumeControlTests.framework */; };
 		A927E14B1FC53AB10024D526 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A927E14A1FC53AB10024D526 /* AppDelegate.swift */; };
 		A927E14D1FC53AB10024D526 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A927E14C1FC53AB10024D526 /* ViewController.swift */; };
 		A927E1501FC53AB10024D526 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A927E14E1FC53AB10024D526 /* Main.storyboard */; };
@@ -56,7 +56,7 @@
 		A9AC32CC1FECF78400D385A8 /* pcvg logo square.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */; };
 		A9B66A231FECE1910051C4C5 /* ViewControllerStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */; };
 		A9FDBC6F1FECFCE300DAE6D7 /* pcvg logo square in Resources */ = {isa = PBXBuildFile; fileRef = A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */; };
-		C52F283691D46C907B40E610 /* Pods_PcVolumeControlUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44154FABEF460A95987B8D20 /* Pods_PcVolumeControlUITests.framework */; };
+		EEDA50CCF6A917C7E1D4A1CD /* Pods_PcVolumeControlUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D95E22BFE1DA0B3954E6D2E7 /* Pods_PcVolumeControlUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,10 +79,8 @@
 /* Begin PBXFileReference section */
 		086A605B7329CBA602164155 /* Pods-PcVolumeControlUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests.release.xcconfig"; sourceTree = "<group>"; };
 		0BA2255E57FA4C02678D5451 /* Pods-PcVolumeControl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControl.release.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl.release.xcconfig"; sourceTree = "<group>"; };
-		44154FABEF460A95987B8D20 /* Pods_PcVolumeControlUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControlUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		495F5F7A5E85DDCE697DD73B /* Pods-PcVolumeControlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests.release.xcconfig"; sourceTree = "<group>"; };
 		784048895FDEE72E5BF0656F /* Pods-PcVolumeControl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl.debug.xcconfig"; sourceTree = "<group>"; };
-		95CA0E4FEFF806AD07864A4B /* Pods_PcVolumeControlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99C84E6328E6B3ED66F99F6E /* Pods_PcVolumeControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A927E1471FC53AB10024D526 /* PcVolumeControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PcVolumeControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A927E14A1FC53AB10024D526 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -136,7 +134,9 @@
 		A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerStart.swift; sourceTree = "<group>"; };
 		A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "pcvg logo square"; path = "../../../../Desktop/pcvg logo square"; sourceTree = "<group>"; };
 		BC0C05349FA2A35B69E7936E /* Pods-PcVolumeControlUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D95E22BFE1DA0B3954E6D2E7 /* Pods_PcVolumeControlUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControlUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E497C089C2FB3C823939B7C5 /* Pods-PcVolumeControlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F56215ED55A4131802149D7F /* Pods_PcVolumeControlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58122E51836F8149A36B1D1A /* Pods_PcVolumeControlTests.framework in Frameworks */,
+				348891E8769139D2690DB42B /* Pods_PcVolumeControlTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,7 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C52F283691D46C907B40E610 /* Pods_PcVolumeControlUITests.framework in Frameworks */,
+				EEDA50CCF6A917C7E1D4A1CD /* Pods_PcVolumeControlUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,8 +184,8 @@
 			isa = PBXGroup;
 			children = (
 				99C84E6328E6B3ED66F99F6E /* Pods_PcVolumeControl.framework */,
-				95CA0E4FEFF806AD07864A4B /* Pods_PcVolumeControlTests.framework */,
-				44154FABEF460A95987B8D20 /* Pods_PcVolumeControlUITests.framework */,
+				F56215ED55A4131802149D7F /* Pods_PcVolumeControlTests.framework */,
+				D95E22BFE1DA0B3954E6D2E7 /* Pods_PcVolumeControlUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -285,7 +285,6 @@
 				A927E1441FC53AB10024D526 /* Frameworks */,
 				A927E1451FC53AB10024D526 /* Resources */,
 				BEBDDB816B648C94BC6671EB /* [CP] Embed Pods Frameworks */,
-				743D9B956E54D2193D3E45A4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -305,7 +304,6 @@
 				A927E1581FC53AB10024D526 /* Frameworks */,
 				A927E1591FC53AB10024D526 /* Resources */,
 				6AEFFD5810991B954268EDC0 /* [CP] Embed Pods Frameworks */,
-				8ACDF564A63A09B6D9FA4A07 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -326,7 +324,6 @@
 				A927E1631FC53AB10024D526 /* Frameworks */,
 				A927E1641FC53AB10024D526 /* Resources */,
 				3AC8693A686B4605AD24E0C6 /* [CP] Embed Pods Frameworks */,
-				8AC8594FB96CC1F44916CF8B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -345,12 +342,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = PcVolumeControl;
 				TargetAttributes = {
 					A927E1461FC53AB10024D526 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = BP75F4S5N3;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					A927E15A1FC53AB10024D526 = {
@@ -365,7 +363,7 @@
 			};
 			buildConfigurationList = A927E1421FC53AB10024D526 /* Build configuration list for PBXProject "PcVolumeControl" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -488,7 +486,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
@@ -503,7 +501,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6AEFFD5810991B954268EDC0 /* [CP] Embed Pods Frameworks */ = {
@@ -512,7 +510,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
@@ -527,52 +525,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		743D9B956E54D2193D3E45A4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8AC8594FB96CC1F44916CF8B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8ACDF564A63A09B6D9FA4A07 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BEBDDB816B648C94BC6671EB /* [CP] Embed Pods Frameworks */ = {
@@ -581,20 +534,22 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F2BF7B3B20AD85363E2E2664 /* [CP] Check Pods Manifest.lock */ = {
@@ -679,6 +634,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -688,14 +644,17 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -706,6 +665,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -720,12 +680,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -734,6 +694,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -743,14 +704,17 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -761,6 +725,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -769,11 +734,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -793,13 +758,13 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = PcVolumeControl/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=*]" = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -817,12 +782,12 @@
 					"$(SRCROOT)",
 				);
 				INFOPLIST_FILE = PcVolumeControl/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

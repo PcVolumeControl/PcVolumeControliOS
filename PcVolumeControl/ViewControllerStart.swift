@@ -129,8 +129,8 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         let doneToolbar: UIToolbar = UIToolbar()
         doneToolbar.barStyle = UIBarStyle.default
         
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(ViewControllerStart.doneButtonAction(_:)))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(ViewControllerStart.doneButtonAction(_:)))
         var items = [UIBarButtonItem]()
         items.append(flexSpace)
         items.append(done)
@@ -149,7 +149,7 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
     }
     func isValidIP(s: String) -> Bool {
         let parts = s.components(separatedBy: ".")
-        let nums = parts.flatMap { Int($0) }
+        let nums = parts.compactMap { Int($0) }
         return parts.count == 4 && nums.count == 4 && nums.filter { $0 >= 0 && $0 < 256}.count == 4
     }
 }
@@ -196,7 +196,7 @@ extension UIViewController {
         
         let spinnerView = UIView.init(frame: onView.bounds)
         spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
         ai.startAnimating()
         ai.center = spinnerView.center
     

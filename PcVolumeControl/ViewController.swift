@@ -117,17 +117,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Detection that the app was minimized so we can close TCP connections
         let notificationCenter = NotificationCenter.default
         // If the app is backgrounded with the home button, tear down the TCP connection.
-        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: Notification.Name.UIApplicationWillResignActive, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
         // When the app is brough back to foreground, go to the initial connection screen.
-        notificationCenter.addObserver(self, selector: #selector(appWillEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         
         // table view stuff for the slider screen
         sliderTableView.delegate = self
         sliderTableView.dataSource = self
         sliderTableView.tableFooterView = UIView(frame: CGRect.zero) // remove footer
         sliderTableView.estimatedRowHeight = 140.0
-        sliderTableView.rowHeight = UITableViewAutomaticDimension
+        sliderTableView.rowHeight = UITableView.automaticDimension
         
         constructPicker()
         
@@ -206,8 +206,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func createDisconnectAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Quit", style: UIAlertActionStyle.default, handler: { (action) in alert.dismiss(animated:true, completion: nil); self.bailToConnectScreen()}))
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Quit", style: UIAlertAction.Style.default, handler: { (action) in alert.dismiss(animated:true, completion: nil); self.bailToConnectScreen()}))
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -254,9 +254,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
             for item in allSessions {
                 if dfl.contains(item.id) {
                     // The ID we are looking at has a custom ordering.
-                    if let cIdx = dfl.index(of: item.id) {
+                    if let cIdx = dfl.firstIndex(of: item.id) {
                         // allSessions is mutated in this loop. Get the new index.
-                        if let aIdx = allSessions.index(where: {$0.id == item.id}) {
+                        if let aIdx = allSessions.firstIndex(where: {$0.id == item.id}) {
                             allSessions.remove(at: aIdx)
                             allSessions.insert(item, at: cIdx)
                         }
@@ -412,7 +412,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
      
         return cell
     }
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         // return .delete to get a delete button on the left side of the cell.
         return .none
     }
