@@ -31,6 +31,7 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
     @IBAction func ConnectButtonClicked(_ sender: UIButton) {
 
         // handoff to the main viewcontroller
+        // This only checks to see if we can make an Int32 out of the port number. Validation is done below.
         guard let PortNum = Int32(self.ServerPortField.text!) else {
             let _ = Alert.showBasic(title: "Error", message: "Bad port number specified.\nThe default is 3000. The port number needs to be between 1-65535.", vc: self)
             return
@@ -52,6 +53,11 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
                     return
                 }
             }
+        }
+        
+        if !isValidPort(p: PortNum) {
+            let _ = Alert.showBasic(title: "Error", message: "Bad port number specified.\nThe default is 3000. The port number needs to be between 1-65535.", vc: self)
+            return
         }
         
         defaults.set(IPaddr, forKey: "IPaddr")
@@ -159,6 +165,14 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         let parts = s.components(separatedBy: ".")
         let nums = parts.compactMap { Int($0) }
         return parts.count == 4 && nums.count == 4 && nums.filter { $0 >= 0 && $0 < 256}.count == 4
+    }
+    
+    func isValidPort(p: Int32) -> Bool {
+        let portRange = 1...65535
+        if portRange.contains(Int(p)){
+            return true
+        }
+        return false
     }
 }
 
