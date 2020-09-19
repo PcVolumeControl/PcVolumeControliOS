@@ -122,6 +122,13 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
             let destVC = segue.destination as! ViewController
             destVC.SController = self.SController // give them our stream controller
             destVC.initialDraw = true // signal to viewDidLoad() to reload everything.
+            destVC.modalPresentationStyle = .fullScreen
+            destVC.modalTransitionStyle = .crossDissolve
+        }
+        if segue.identifier == "showAbout" {
+            let destVC = segue.destination as UIViewController
+            destVC.modalPresentationStyle = .fullScreen
+            destVC.modalTransitionStyle = .flipHorizontal
         }
     }
     func addDoneButtonOnKeyboard()

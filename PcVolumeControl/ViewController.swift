@@ -141,6 +141,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // When going back to the start screen, make sure the modal here takes up the entire screen.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "BackToStartSegue" {
+            let destVC = segue.destination as UIViewController
+            destVC.modalPresentationStyle = .fullScreen
+            destVC.modalTransitionStyle = .crossDissolve
+        }
+    }
+    
     // white top carrier/battery bar
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent

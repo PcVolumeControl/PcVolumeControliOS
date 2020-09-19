@@ -47,6 +47,11 @@ class AboutViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "closeAbout" {
+            let destVC = segue.destination as UIViewController
+            destVC.modalPresentationStyle = .fullScreen
+            destVC.modalTransitionStyle = .flipHorizontal
+        }
     }
     
     func openLink(url: String) {
