@@ -83,6 +83,7 @@ class ViewControllerStart: UIViewController, UITextFieldDelegate {
         ServerPortField.autocorrectionType = .no
         ServerIPField.keyboardType = .numbersAndPunctuation
         ServerPortField.keyboardType = .numberPad
+        ServerPortField.textColor = .black
         
         setNeedsStatusBarAppearanceUpdate() // light upper bar
         
