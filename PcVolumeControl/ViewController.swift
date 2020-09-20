@@ -534,10 +534,12 @@ extension ViewController: StreamControllerDelegate {
         
         // Something went wrong with the socket open to the server.
         let alert = UIAlertController(title: "Error", message: "The server connection was lost.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
             self.bailToConnectScreen()
         }))
-        self.present(alert, animated: true)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
 
     }
     func didConnectToServer() {}
