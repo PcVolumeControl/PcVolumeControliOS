@@ -47,6 +47,9 @@ class StreamController: NSObject {
     
     init(address: String, port: Int32, delegate: StreamControllerDelegate) {
         // This is run on initial tap of the 'connect' button or on any spontaneous reconnect.
+        
+        // The address used here is an IP. We could do validation and error messaging related to the name resolution
+        // within this stream controller, but it is done before we get here.
         self.address = address
         self.port = port
         self.serverConnected = false
@@ -110,9 +113,9 @@ class StreamController: NSObject {
                 return
             }
         }
-        // If gethostbyname fails, we will get here.
-        // Other exceptions probably get here too.
-        print("Unexpected socket error!")
+        // No socket error, but we could still have something else.
+        print("Unhandled non-socket error!")
+        print("Socket destination address and port: \(self.address):\(self.port)")
         self.delegate?.failedToConnect()
     }
     
@@ -235,9 +238,11 @@ class FullState : Codable {
     let defaultDevice: theDefaultDevice
     let deviceIds: [String: String]
     let protocolVersion: Int
+    let applicationVersion: String
     
-    init(protocolVersion: Int, deviceIds: [String:String], defaultDevice: theDefaultDevice) {
+    init(protocolVersion: Int, applicationVersion: String, deviceIds: [String:String], defaultDevice: theDefaultDevice) {
         self.protocolVersion = protocolVersion
+        self.applicationVersion = applicationVersion
         self.deviceIds = deviceIds
         self.defaultDevice = defaultDevice
     }
