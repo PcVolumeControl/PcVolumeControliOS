@@ -3,16 +3,21 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		348891E8769139D2690DB42B /* Pods_PcVolumeControlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F56215ED55A4131802149D7F /* Pods_PcVolumeControlTests.framework */; };
-		5550754A39B693CAFC993140 /* Pods_PcVolumeControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99C84E6328E6B3ED66F99F6E /* Pods_PcVolumeControl.framework */; };
-		A927E14B1FC53AB10024D526 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A927E14A1FC53AB10024D526 /* AppDelegate.swift */; };
-		A927E14D1FC53AB10024D526 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A927E14C1FC53AB10024D526 /* ViewController.swift */; };
-		A927E1501FC53AB10024D526 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A927E14E1FC53AB10024D526 /* Main.storyboard */; };
 		A927E1521FC53AB10024D526 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A927E1511FC53AB10024D526 /* Assets.xcassets */; };
+		A92ED6DF2CE92F1A00D40FC4 /* ConnectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6D62CE92F1A00D40FC4 /* ConnectingView.swift */; };
+		A92ED6E02CE92F1A00D40FC4 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6D92CE92F1A00D40FC4 /* MainViewModel.swift */; };
+		A92ED6E12CE92F1A00D40FC4 /* streamcontroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6DD2CE92F1A00D40FC4 /* streamcontroller.swift */; };
+		A92ED6E22CE92F1A00D40FC4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6D72CE92F1A00D40FC4 /* ContentView.swift */; };
+		A92ED6E32CE92F1A00D40FC4 /* PCVolumeControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6DA2CE92F1A00D40FC4 /* PCVolumeControlApp.swift */; };
+		A92ED6E42CE92F1A00D40FC4 /* session.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6DB2CE92F1A00D40FC4 /* session.swift */; };
+		A92ED6E52CE92F1A00D40FC4 /* UIStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6DE2CE92F1A00D40FC4 /* UIStyling.swift */; };
+		A92ED6E62CE92F1A00D40FC4 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6DC2CE92F1A00D40FC4 /* SliderView.swift */; };
+		A92ED6E72CE92F1A00D40FC4 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6D82CE92F1A00D40FC4 /* MainView.swift */; };
+		A92ED6EB2CE9312C00D40FC4 /* DiscoveredServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6EA2CE9312C00D40FC4 /* DiscoveredServer.swift */; };
 		A92F6C8520105AEA0045180F /* Icon-100.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6720105AEA0045180F /* Icon-100.png */; };
 		A92F6C8620105AEA0045180F /* Icon-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6820105AEA0045180F /* Icon-1024.png */; };
 		A92F6C8720105AEA0045180F /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6920105AEA0045180F /* Icon-114.png */; };
@@ -43,53 +48,22 @@
 		A92F6CA020105AEA0045180F /* Icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8220105AEA0045180F /* Icon-80.png */; };
 		A92F6CA120105AEA0045180F /* Icon-87.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8320105AEA0045180F /* Icon-87.png */; };
 		A92F6CA220105AEA0045180F /* Icon-88.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8420105AEA0045180F /* Icon-88.png */; };
-		A952C1661FE8D3A6002559B3 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A952C1651FE8D3A6002559B3 /* Alert.swift */; };
-		A971F2471FF1DA5D00AD9167 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */; };
-		A971F2491FF2ABBB00AD9167 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */; };
-		A971F24B1FF2B52C00AD9167 /* black-on-white.png in Resources */ = {isa = PBXBuildFile; fileRef = A971F24A1FF2B52B00AD9167 /* black-on-white.png */; };
-		A971F24D1FF2BD4C00AD9167 /* DesignableSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A971F24C1FF2BD4C00AD9167 /* DesignableSlider.swift */; };
-		A971F2511FF2BDE800AD9167 /* volume-thumbslider.png in Resources */ = {isa = PBXBuildFile; fileRef = A971F2501FF2BDE800AD9167 /* volume-thumbslider.png */; };
-		A97414AB1FDF98BC00062954 /* SliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97414AA1FDF98BC00062954 /* SliderCell.swift */; };
-		A97414AD1FE629AC00062954 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97414AC1FE629AC00062954 /* Session.swift */; };
-		A9A25CCE1FEB61DD009C985B /* StreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A25CCD1FEB61DD009C985B /* StreamController.swift */; };
-		A9AC32CA1FECEF1400D385A8 /* pcvg logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AC32C91FECEF1400D385A8 /* pcvg logo.png */; };
-		A9AC32CC1FECF78400D385A8 /* pcvg logo square.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */; };
-		A9B66A231FECE1910051C4C5 /* ViewControllerStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */; };
-		A9FDBC6F1FECFCE300DAE6D7 /* pcvg logo square in Resources */ = {isa = PBXBuildFile; fileRef = A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */; };
-		EEDA50CCF6A917C7E1D4A1CD /* Pods_PcVolumeControlUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D95E22BFE1DA0B3954E6D2E7 /* Pods_PcVolumeControlUITests.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		A927E15C1FC53AB10024D526 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A927E13F1FC53AB10024D526 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A927E1461FC53AB10024D526;
-			remoteInfo = PcVolumeControl;
-		};
-		A927E1671FC53AB10024D526 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A927E13F1FC53AB10024D526 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A927E1461FC53AB10024D526;
-			remoteInfo = PcVolumeControl;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		086A605B7329CBA602164155 /* Pods-PcVolumeControlUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests.release.xcconfig"; sourceTree = "<group>"; };
-		0BA2255E57FA4C02678D5451 /* Pods-PcVolumeControl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControl.release.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl.release.xcconfig"; sourceTree = "<group>"; };
-		495F5F7A5E85DDCE697DD73B /* Pods-PcVolumeControlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests.release.xcconfig"; sourceTree = "<group>"; };
-		784048895FDEE72E5BF0656F /* Pods-PcVolumeControl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl.debug.xcconfig"; sourceTree = "<group>"; };
-		99C84E6328E6B3ED66F99F6E /* Pods_PcVolumeControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A927E1471FC53AB10024D526 /* PcVolumeControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PcVolumeControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A927E14A1FC53AB10024D526 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A927E14C1FC53AB10024D526 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A927E14F1FC53AB10024D526 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A927E1511FC53AB10024D526 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A927E1561FC53AB10024D526 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A927E15B1FC53AB10024D526 /* PcVolumeControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PcVolumeControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A927E1661FC53AB10024D526 /* PcVolumeControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PcVolumeControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A92ED6D62CE92F1A00D40FC4 /* ConnectingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectingView.swift; sourceTree = "<group>"; };
+		A92ED6D72CE92F1A00D40FC4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A92ED6D82CE92F1A00D40FC4 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		A92ED6D92CE92F1A00D40FC4 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		A92ED6DA2CE92F1A00D40FC4 /* PCVolumeControlApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PCVolumeControlApp.swift; sourceTree = "<group>"; };
+		A92ED6DB2CE92F1A00D40FC4 /* session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = session.swift; sourceTree = "<group>"; };
+		A92ED6DC2CE92F1A00D40FC4 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
+		A92ED6DD2CE92F1A00D40FC4 /* streamcontroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = streamcontroller.swift; sourceTree = "<group>"; };
+		A92ED6DE2CE92F1A00D40FC4 /* UIStyling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStyling.swift; sourceTree = "<group>"; };
+		A92ED6EA2CE9312C00D40FC4 /* DiscoveredServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveredServer.swift; sourceTree = "<group>"; };
 		A92F6C6720105AEA0045180F /* Icon-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-100.png"; sourceTree = "<group>"; };
 		A92F6C6820105AEA0045180F /* Icon-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1024.png"; sourceTree = "<group>"; };
 		A92F6C6920105AEA0045180F /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
@@ -120,23 +94,6 @@
 		A92F6C8220105AEA0045180F /* Icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-80.png"; sourceTree = "<group>"; };
 		A92F6C8320105AEA0045180F /* Icon-87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-87.png"; sourceTree = "<group>"; };
 		A92F6C8420105AEA0045180F /* Icon-88.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-88.png"; sourceTree = "<group>"; };
-		A952C1651FE8D3A6002559B3 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
-		A971F24A1FF2B52B00AD9167 /* black-on-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "black-on-white.png"; path = "../../../../Desktop/pcvc_images/black-on-white.png"; sourceTree = "<group>"; };
-		A971F24C1FF2BD4C00AD9167 /* DesignableSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableSlider.swift; sourceTree = "<group>"; };
-		A971F2501FF2BDE800AD9167 /* volume-thumbslider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "volume-thumbslider.png"; path = "../../../../Desktop/pcvc_images/volume-thumbslider.png"; sourceTree = "<group>"; };
-		A97414AA1FDF98BC00062954 /* SliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderCell.swift; sourceTree = "<group>"; };
-		A97414AC1FE629AC00062954 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		A9A25CCD1FEB61DD009C985B /* StreamController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamController.swift; sourceTree = "<group>"; };
-		A9AC32C91FECEF1400D385A8 /* pcvg logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo.png"; path = "../../../../Desktop/pcvc_images/pcvg logo.png"; sourceTree = "<group>"; };
-		A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo square.png"; path = "../../../../Desktop/pcvc_images/pcvg logo square.png"; sourceTree = "<group>"; };
-		A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerStart.swift; sourceTree = "<group>"; };
-		A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "pcvg logo square"; path = "../../../../Desktop/pcvg logo square"; sourceTree = "<group>"; };
-		BC0C05349FA2A35B69E7936E /* Pods-PcVolumeControlUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		D95E22BFE1DA0B3954E6D2E7 /* Pods_PcVolumeControlUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControlUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E497C089C2FB3C823939B7C5 /* Pods-PcVolumeControlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests.debug.xcconfig"; sourceTree = "<group>"; };
-		F56215ED55A4131802149D7F /* Pods_PcVolumeControlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,59 +101,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5550754A39B693CAFC993140 /* Pods_PcVolumeControl.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A927E1581FC53AB10024D526 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				348891E8769139D2690DB42B /* Pods_PcVolumeControlTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A927E1631FC53AB10024D526 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EEDA50CCF6A917C7E1D4A1CD /* Pods_PcVolumeControlUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		05289F2B48ABC96006296323 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				784048895FDEE72E5BF0656F /* Pods-PcVolumeControl.debug.xcconfig */,
-				0BA2255E57FA4C02678D5451 /* Pods-PcVolumeControl.release.xcconfig */,
-				E497C089C2FB3C823939B7C5 /* Pods-PcVolumeControlTests.debug.xcconfig */,
-				495F5F7A5E85DDCE697DD73B /* Pods-PcVolumeControlTests.release.xcconfig */,
-				BC0C05349FA2A35B69E7936E /* Pods-PcVolumeControlUITests.debug.xcconfig */,
-				086A605B7329CBA602164155 /* Pods-PcVolumeControlUITests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		9C6066ABCCE4BFEE4290D8AC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				99C84E6328E6B3ED66F99F6E /* Pods_PcVolumeControl.framework */,
-				F56215ED55A4131802149D7F /* Pods_PcVolumeControlTests.framework */,
-				D95E22BFE1DA0B3954E6D2E7 /* Pods_PcVolumeControlUITests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		A927E13E1FC53AB10024D526 = {
 			isa = PBXGroup;
 			children = (
 				A927E1491FC53AB10024D526 /* PcVolumeControl */,
 				A927E1481FC53AB10024D526 /* Products */,
-				05289F2B48ABC96006296323 /* Pods */,
-				9C6066ABCCE4BFEE4290D8AC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -204,8 +119,6 @@
 			isa = PBXGroup;
 			children = (
 				A927E1471FC53AB10024D526 /* PcVolumeControl.app */,
-				A927E15B1FC53AB10024D526 /* PcVolumeControlTests.xctest */,
-				A927E1661FC53AB10024D526 /* PcVolumeControlUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -214,24 +127,18 @@
 			isa = PBXGroup;
 			children = (
 				A92F6C6620105AEA0045180F /* iosicons */,
-				A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */,
-				A927E14E1FC53AB10024D526 /* Main.storyboard */,
-				A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */,
-				A927E14C1FC53AB10024D526 /* ViewController.swift */,
-				A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */,
-				A9A25CCD1FEB61DD009C985B /* StreamController.swift */,
-				A97414AA1FDF98BC00062954 /* SliderCell.swift */,
-				A97414AC1FE629AC00062954 /* Session.swift */,
-				A971F24C1FF2BD4C00AD9167 /* DesignableSlider.swift */,
-				A952C1651FE8D3A6002559B3 /* Alert.swift */,
-				A927E14A1FC53AB10024D526 /* AppDelegate.swift */,
 				A927E1511FC53AB10024D526 /* Assets.xcassets */,
-				A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */,
 				A927E1561FC53AB10024D526 /* Info.plist */,
-				A971F24A1FF2B52B00AD9167 /* black-on-white.png */,
-				A971F2501FF2BDE800AD9167 /* volume-thumbslider.png */,
-				A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */,
-				A9AC32C91FECEF1400D385A8 /* pcvg logo.png */,
+				A92ED6D62CE92F1A00D40FC4 /* ConnectingView.swift */,
+				A92ED6D72CE92F1A00D40FC4 /* ContentView.swift */,
+				A92ED6D82CE92F1A00D40FC4 /* MainView.swift */,
+				A92ED6D92CE92F1A00D40FC4 /* MainViewModel.swift */,
+				A92ED6EA2CE9312C00D40FC4 /* DiscoveredServer.swift */,
+				A92ED6DA2CE92F1A00D40FC4 /* PCVolumeControlApp.swift */,
+				A92ED6DB2CE92F1A00D40FC4 /* session.swift */,
+				A92ED6DC2CE92F1A00D40FC4 /* SliderView.swift */,
+				A92ED6DD2CE92F1A00D40FC4 /* streamcontroller.swift */,
+				A92ED6DE2CE92F1A00D40FC4 /* UIStyling.swift */,
 			);
 			path = PcVolumeControl;
 			sourceTree = "<group>";
@@ -280,11 +187,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A927E16F1FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControl" */;
 			buildPhases = (
-				1065C93B38DACFF50F89DF79 /* [CP] Check Pods Manifest.lock */,
 				A927E1431FC53AB10024D526 /* Sources */,
 				A927E1441FC53AB10024D526 /* Frameworks */,
 				A927E1451FC53AB10024D526 /* Resources */,
-				BEBDDB816B648C94BC6671EB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -295,69 +200,22 @@
 			productReference = A927E1471FC53AB10024D526 /* PcVolumeControl.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A927E15A1FC53AB10024D526 /* PcVolumeControlTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A927E1721FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlTests" */;
-			buildPhases = (
-				F2BF7B3B20AD85363E2E2664 /* [CP] Check Pods Manifest.lock */,
-				A927E1571FC53AB10024D526 /* Sources */,
-				A927E1581FC53AB10024D526 /* Frameworks */,
-				A927E1591FC53AB10024D526 /* Resources */,
-				6AEFFD5810991B954268EDC0 /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A927E15D1FC53AB10024D526 /* PBXTargetDependency */,
-			);
-			name = PcVolumeControlTests;
-			productName = PcVolumeControlTests;
-			productReference = A927E15B1FC53AB10024D526 /* PcVolumeControlTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		A927E1651FC53AB10024D526 /* PcVolumeControlUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A927E1751FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlUITests" */;
-			buildPhases = (
-				26B7CE52DF6445914DB830BE /* [CP] Check Pods Manifest.lock */,
-				A927E1621FC53AB10024D526 /* Sources */,
-				A927E1631FC53AB10024D526 /* Frameworks */,
-				A927E1641FC53AB10024D526 /* Resources */,
-				3AC8693A686B4605AD24E0C6 /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A927E1681FC53AB10024D526 /* PBXTargetDependency */,
-			);
-			name = PcVolumeControlUITests;
-			productName = PcVolumeControlUITests;
-			productReference = A927E1661FC53AB10024D526 /* PcVolumeControlUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		A927E13F1FC53AB10024D526 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1620;
 				ORGANIZATIONNAME = PcVolumeControl;
 				TargetAttributes = {
 					A927E1461FC53AB10024D526 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = BP75F4S5N3;
-						LastSwiftMigration = 1020;
+						LastSwiftMigration = 1620;
 						ProvisioningStyle = Automatic;
-					};
-					A927E15A1FC53AB10024D526 = {
-						CreatedOnToolsVersion = 7.3.1;
-						TestTargetID = A927E1461FC53AB10024D526;
-					};
-					A927E1651FC53AB10024D526 = {
-						CreatedOnToolsVersion = 7.3.1;
-						TestTargetID = A927E1461FC53AB10024D526;
 					};
 				};
 			};
@@ -375,8 +233,6 @@
 			projectRoot = "";
 			targets = (
 				A927E1461FC53AB10024D526 /* PcVolumeControl */,
-				A927E15A1FC53AB10024D526 /* PcVolumeControlTests */,
-				A927E1651FC53AB10024D526 /* PcVolumeControlUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -387,24 +243,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				A92F6C8A20105AEA0045180F /* Icon-144.png in Resources */,
-				A971F2471FF1DA5D00AD9167 /* Launch Screen.storyboard in Resources */,
 				A92F6C8720105AEA0045180F /* Icon-114.png in Resources */,
 				A92F6C8D20105AEA0045180F /* Icon-167.png in Resources */,
 				A92F6C8620105AEA0045180F /* Icon-1024.png in Resources */,
 				A92F6C8920105AEA0045180F /* Icon-128.png in Resources */,
-				A971F2511FF2BDE800AD9167 /* volume-thumbslider.png in Resources */,
 				A92F6C8E20105AEA0045180F /* Icon-172.png in Resources */,
 				A92F6C9120105AEA0045180F /* Icon-20.png in Resources */,
 				A92F6C8820105AEA0045180F /* Icon-120.png in Resources */,
-				A9FDBC6F1FECFCE300DAE6D7 /* pcvg logo square in Resources */,
 				A927E1521FC53AB10024D526 /* Assets.xcassets in Resources */,
 				A92F6C9B20105AEA0045180F /* Icon-58.png in Resources */,
 				A92F6C8F20105AEA0045180F /* Icon-180.png in Resources */,
-				A9AC32CC1FECF78400D385A8 /* pcvg logo square.png in Resources */,
 				A92F6C9020105AEA0045180F /* Icon-196.png in Resources */,
 				A92F6C9920105AEA0045180F /* Icon-55.png in Resources */,
 				A92F6C9F20105AEA0045180F /* Icon-76.png in Resources */,
-				A927E1501FC53AB10024D526 /* Main.storyboard in Resources */,
 				A92F6C8C20105AEA0045180F /* Icon-16.png in Resources */,
 				A92F6CA020105AEA0045180F /* Icon-80.png in Resources */,
 				A92F6C9420105AEA0045180F /* Icon-32.png in Resources */,
@@ -412,7 +263,6 @@
 				A92F6C9A20105AEA0045180F /* Icon-57.png in Resources */,
 				A92F6C9320105AEA0045180F /* Icon-29.png in Resources */,
 				A92F6C9720105AEA0045180F /* Icon-50.png in Resources */,
-				A9AC32CA1FECEF1400D385A8 /* pcvg logo.png in Resources */,
 				A92F6C9220105AEA0045180F /* Icon-256.png in Resources */,
 				A92F6CA220105AEA0045180F /* Icon-88.png in Resources */,
 				A92F6C9C20105AEA0045180F /* Icon-60.png in Resources */,
@@ -421,219 +271,39 @@
 				A92F6C9D20105AEA0045180F /* Icon-64.png in Resources */,
 				A92F6C9820105AEA0045180F /* Icon-512.png in Resources */,
 				A92F6C9E20105AEA0045180F /* Icon-72.png in Resources */,
-				A971F24B1FF2B52C00AD9167 /* black-on-white.png in Resources */,
 				A92F6CA120105AEA0045180F /* Icon-87.png in Resources */,
 				A92F6C9520105AEA0045180F /* Icon-40.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A927E1591FC53AB10024D526 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A927E1641FC53AB10024D526 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		1065C93B38DACFF50F89DF79 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PcVolumeControl-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		26B7CE52DF6445914DB830BE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PcVolumeControlUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3AC8693A686B4605AD24E0C6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
-				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6AEFFD5810991B954268EDC0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
-				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BEBDDB816B648C94BC6671EB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F2BF7B3B20AD85363E2E2664 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PcVolumeControlTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A927E1431FC53AB10024D526 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A952C1661FE8D3A6002559B3 /* Alert.swift in Sources */,
-				A9B66A231FECE1910051C4C5 /* ViewControllerStart.swift in Sources */,
-				A9A25CCE1FEB61DD009C985B /* StreamController.swift in Sources */,
-				A97414AD1FE629AC00062954 /* Session.swift in Sources */,
-				A927E14D1FC53AB10024D526 /* ViewController.swift in Sources */,
-				A97414AB1FDF98BC00062954 /* SliderCell.swift in Sources */,
-				A971F2491FF2ABBB00AD9167 /* AboutViewController.swift in Sources */,
-				A971F24D1FF2BD4C00AD9167 /* DesignableSlider.swift in Sources */,
-				A927E14B1FC53AB10024D526 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A927E1571FC53AB10024D526 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A927E1621FC53AB10024D526 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				A92ED6DF2CE92F1A00D40FC4 /* ConnectingView.swift in Sources */,
+				A92ED6E02CE92F1A00D40FC4 /* MainViewModel.swift in Sources */,
+				A92ED6E12CE92F1A00D40FC4 /* streamcontroller.swift in Sources */,
+				A92ED6E22CE92F1A00D40FC4 /* ContentView.swift in Sources */,
+				A92ED6E32CE92F1A00D40FC4 /* PCVolumeControlApp.swift in Sources */,
+				A92ED6E42CE92F1A00D40FC4 /* session.swift in Sources */,
+				A92ED6E52CE92F1A00D40FC4 /* UIStyling.swift in Sources */,
+				A92ED6E62CE92F1A00D40FC4 /* SliderView.swift in Sources */,
+				A92ED6E72CE92F1A00D40FC4 /* MainView.swift in Sources */,
+				A92ED6EB2CE9312C00D40FC4 /* DiscoveredServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A927E15D1FC53AB10024D526 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A927E1461FC53AB10024D526 /* PcVolumeControl */;
-			targetProxy = A927E15C1FC53AB10024D526 /* PBXContainerItemProxy */;
-		};
-		A927E1681FC53AB10024D526 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A927E1461FC53AB10024D526 /* PcVolumeControl */;
-			targetProxy = A927E1671FC53AB10024D526 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		A927E14E1FC53AB10024D526 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A927E14F1FC53AB10024D526 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A927E16D1FC53AB10024D526 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -665,6 +335,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -694,6 +365,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -725,6 +397,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -737,7 +410,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -746,10 +420,11 @@
 		};
 		A927E1701FC53AB10024D526 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 784048895FDEE72E5BF0656F /* Pods-PcVolumeControl.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = BP75F4S5N3;
 				"DEVELOPMENT_TEAM[sdk=*]" = BP75F4S5N3;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -758,12 +433,18 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = PcVolumeControl/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				INFOPLIST_KEY_CFBundleDisplayName = pcvolumecontrol;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=*]" = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -771,10 +452,11 @@
 		};
 		A927E1711FC53AB10024D526 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BA2255E57FA4C02678D5451 /* Pods-PcVolumeControl.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = BP75F4S5N3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -782,67 +464,18 @@
 					"$(SRCROOT)",
 				);
 				INFOPLIST_FILE = PcVolumeControl/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				INFOPLIST_KEY_CFBundleDisplayName = pcvolumecontrol;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Release;
-		};
-		A927E1731FC53AB10024D526 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E497C089C2FB3C823939B7C5 /* Pods-PcVolumeControlTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = PcVolumeControlTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControlTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PcVolumeControl.app/PcVolumeControl";
-			};
-			name = Debug;
-		};
-		A927E1741FC53AB10024D526 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 495F5F7A5E85DDCE697DD73B /* Pods-PcVolumeControlTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = PcVolumeControlTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControlTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PcVolumeControl.app/PcVolumeControl";
-			};
-			name = Release;
-		};
-		A927E1761FC53AB10024D526 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC0C05349FA2A35B69E7936E /* Pods-PcVolumeControlUITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				INFOPLIST_FILE = PcVolumeControlUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControlUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = PcVolumeControl;
-			};
-			name = Debug;
-		};
-		A927E1771FC53AB10024D526 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 086A605B7329CBA602164155 /* Pods-PcVolumeControlUITests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				INFOPLIST_FILE = PcVolumeControlUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControlUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = PcVolumeControl;
 			};
 			name = Release;
 		};
@@ -863,24 +496,6 @@
 			buildConfigurations = (
 				A927E1701FC53AB10024D526 /* Debug */,
 				A927E1711FC53AB10024D526 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		A927E1721FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A927E1731FC53AB10024D526 /* Debug */,
-				A927E1741FC53AB10024D526 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		A927E1751FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A927E1761FC53AB10024D526 /* Debug */,
-				A927E1771FC53AB10024D526 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
