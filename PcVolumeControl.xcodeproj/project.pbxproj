@@ -3,71 +3,35 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		348891E8769139D2690DB42B /* Pods_PcVolumeControlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F56215ED55A4131802149D7F /* Pods_PcVolumeControlTests.framework */; };
-		5550754A39B693CAFC993140 /* Pods_PcVolumeControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99C84E6328E6B3ED66F99F6E /* Pods_PcVolumeControl.framework */; };
-		A927E14B1FC53AB10024D526 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A927E14A1FC53AB10024D526 /* AppDelegate.swift */; };
-		A927E14D1FC53AB10024D526 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A927E14C1FC53AB10024D526 /* ViewController.swift */; };
-		A927E1501FC53AB10024D526 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A927E14E1FC53AB10024D526 /* Main.storyboard */; };
 		A927E1521FC53AB10024D526 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A927E1511FC53AB10024D526 /* Assets.xcassets */; };
-		A92F6C8520105AEA0045180F /* Icon-100.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6720105AEA0045180F /* Icon-100.png */; };
-		A92F6C8620105AEA0045180F /* Icon-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6820105AEA0045180F /* Icon-1024.png */; };
-		A92F6C8720105AEA0045180F /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6920105AEA0045180F /* Icon-114.png */; };
-		A92F6C8820105AEA0045180F /* Icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6A20105AEA0045180F /* Icon-120.png */; };
-		A92F6C8920105AEA0045180F /* Icon-128.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6B20105AEA0045180F /* Icon-128.png */; };
-		A92F6C8A20105AEA0045180F /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6C20105AEA0045180F /* Icon-144.png */; };
-		A92F6C8B20105AEA0045180F /* Icon-152.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6D20105AEA0045180F /* Icon-152.png */; };
-		A92F6C8C20105AEA0045180F /* Icon-16.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6E20105AEA0045180F /* Icon-16.png */; };
-		A92F6C8D20105AEA0045180F /* Icon-167.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C6F20105AEA0045180F /* Icon-167.png */; };
-		A92F6C8E20105AEA0045180F /* Icon-172.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7020105AEA0045180F /* Icon-172.png */; };
-		A92F6C8F20105AEA0045180F /* Icon-180.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7120105AEA0045180F /* Icon-180.png */; };
-		A92F6C9020105AEA0045180F /* Icon-196.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7220105AEA0045180F /* Icon-196.png */; };
-		A92F6C9120105AEA0045180F /* Icon-20.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7320105AEA0045180F /* Icon-20.png */; };
-		A92F6C9220105AEA0045180F /* Icon-256.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7420105AEA0045180F /* Icon-256.png */; };
-		A92F6C9320105AEA0045180F /* Icon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7520105AEA0045180F /* Icon-29.png */; };
-		A92F6C9420105AEA0045180F /* Icon-32.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7620105AEA0045180F /* Icon-32.png */; };
-		A92F6C9520105AEA0045180F /* Icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7720105AEA0045180F /* Icon-40.png */; };
-		A92F6C9620105AEA0045180F /* Icon-48.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7820105AEA0045180F /* Icon-48.png */; };
-		A92F6C9720105AEA0045180F /* Icon-50.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7920105AEA0045180F /* Icon-50.png */; };
-		A92F6C9820105AEA0045180F /* Icon-512.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7A20105AEA0045180F /* Icon-512.png */; };
-		A92F6C9920105AEA0045180F /* Icon-55.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7B20105AEA0045180F /* Icon-55.png */; };
-		A92F6C9A20105AEA0045180F /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7C20105AEA0045180F /* Icon-57.png */; };
-		A92F6C9B20105AEA0045180F /* Icon-58.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7D20105AEA0045180F /* Icon-58.png */; };
-		A92F6C9C20105AEA0045180F /* Icon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7E20105AEA0045180F /* Icon-60.png */; };
-		A92F6C9D20105AEA0045180F /* Icon-64.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C7F20105AEA0045180F /* Icon-64.png */; };
-		A92F6C9E20105AEA0045180F /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8020105AEA0045180F /* Icon-72.png */; };
-		A92F6C9F20105AEA0045180F /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8120105AEA0045180F /* Icon-76.png */; };
-		A92F6CA020105AEA0045180F /* Icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8220105AEA0045180F /* Icon-80.png */; };
-		A92F6CA120105AEA0045180F /* Icon-87.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8320105AEA0045180F /* Icon-87.png */; };
-		A92F6CA220105AEA0045180F /* Icon-88.png in Resources */ = {isa = PBXBuildFile; fileRef = A92F6C8420105AEA0045180F /* Icon-88.png */; };
-		A952C1661FE8D3A6002559B3 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A952C1651FE8D3A6002559B3 /* Alert.swift */; };
-		A971F2471FF1DA5D00AD9167 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */; };
-		A971F2491FF2ABBB00AD9167 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */; };
-		A971F24B1FF2B52C00AD9167 /* black-on-white.png in Resources */ = {isa = PBXBuildFile; fileRef = A971F24A1FF2B52B00AD9167 /* black-on-white.png */; };
-		A971F24D1FF2BD4C00AD9167 /* DesignableSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A971F24C1FF2BD4C00AD9167 /* DesignableSlider.swift */; };
-		A971F2511FF2BDE800AD9167 /* volume-thumbslider.png in Resources */ = {isa = PBXBuildFile; fileRef = A971F2501FF2BDE800AD9167 /* volume-thumbslider.png */; };
-		A97414AB1FDF98BC00062954 /* SliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97414AA1FDF98BC00062954 /* SliderCell.swift */; };
-		A97414AD1FE629AC00062954 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97414AC1FE629AC00062954 /* Session.swift */; };
-		A9A25CCE1FEB61DD009C985B /* StreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A25CCD1FEB61DD009C985B /* StreamController.swift */; };
-		A9AC32CA1FECEF1400D385A8 /* pcvg logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AC32C91FECEF1400D385A8 /* pcvg logo.png */; };
-		A9AC32CC1FECF78400D385A8 /* pcvg logo square.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */; };
-		A9B66A231FECE1910051C4C5 /* ViewControllerStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */; };
-		A9FDBC6F1FECFCE300DAE6D7 /* pcvg logo square in Resources */ = {isa = PBXBuildFile; fileRef = A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */; };
-		EEDA50CCF6A917C7E1D4A1CD /* Pods_PcVolumeControlUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D95E22BFE1DA0B3954E6D2E7 /* Pods_PcVolumeControlUITests.framework */; };
+		A92ED6E32CE92F1A00D40FC4 /* PCVolumeControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92ED6DA2CE92F1A00D40FC4 /* PCVolumeControlApp.swift */; };
+		A9B17AC0000000000000B001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A9B17AC0000000000000F001 /* PrivacyInfo.xcprivacy */; };
+		A9B31EA52DF0F3DB00117327 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A9B31EA42DF0F3DB00117327 /* Localizable.xcstrings */; };
+		A9F9DEBB2EA59F28003FC66E /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9F9DEBA2EA59F28003FC66E /* WidgetKit.framework */; };
+		A9F9DEBD2EA59F28003FC66E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9F9DEBC2EA59F28003FC66E /* SwiftUI.framework */; };
+		A9F9DECE2EA59F2A003FC66E /* PcVolumeControlWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A9F9DEB82EA59F28003FC66E /* PcVolumeControlWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A927E15C1FC53AB10024D526 /* PBXContainerItemProxy */ = {
+		A9B31EBF2DF108B200117327 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A927E13F1FC53AB10024D526 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A927E1461FC53AB10024D526;
 			remoteInfo = PcVolumeControl;
 		};
-		A927E1671FC53AB10024D526 /* PBXContainerItemProxy */ = {
+		A9F9DECC2EA59F2A003FC66E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A927E13F1FC53AB10024D526 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A9F9DEB72EA59F28003FC66E;
+			remoteInfo = PcVolumeControlWidgetExtension;
+		};
+		B1000008000000000000AA01 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A927E13F1FC53AB10024D526 /* Project object */;
 			proxyType = 1;
@@ -76,127 +40,132 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A9F9DED32EA59F2A003FC66E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A9F9DECE2EA59F2A003FC66E /* PcVolumeControlWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		086A605B7329CBA602164155 /* Pods-PcVolumeControlUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests.release.xcconfig"; sourceTree = "<group>"; };
-		0BA2255E57FA4C02678D5451 /* Pods-PcVolumeControl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControl.release.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl.release.xcconfig"; sourceTree = "<group>"; };
-		495F5F7A5E85DDCE697DD73B /* Pods-PcVolumeControlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests.release.xcconfig"; sourceTree = "<group>"; };
-		784048895FDEE72E5BF0656F /* Pods-PcVolumeControl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl.debug.xcconfig"; sourceTree = "<group>"; };
-		99C84E6328E6B3ED66F99F6E /* Pods_PcVolumeControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A927E1471FC53AB10024D526 /* PcVolumeControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PcVolumeControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A927E14A1FC53AB10024D526 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A927E14C1FC53AB10024D526 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A927E14F1FC53AB10024D526 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A927E1511FC53AB10024D526 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A927E1561FC53AB10024D526 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A927E15B1FC53AB10024D526 /* PcVolumeControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PcVolumeControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A927E1661FC53AB10024D526 /* PcVolumeControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PcVolumeControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A92F6C6720105AEA0045180F /* Icon-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-100.png"; sourceTree = "<group>"; };
-		A92F6C6820105AEA0045180F /* Icon-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1024.png"; sourceTree = "<group>"; };
-		A92F6C6920105AEA0045180F /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
-		A92F6C6A20105AEA0045180F /* Icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-120.png"; sourceTree = "<group>"; };
-		A92F6C6B20105AEA0045180F /* Icon-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-128.png"; sourceTree = "<group>"; };
-		A92F6C6C20105AEA0045180F /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-144.png"; sourceTree = "<group>"; };
-		A92F6C6D20105AEA0045180F /* Icon-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-152.png"; sourceTree = "<group>"; };
-		A92F6C6E20105AEA0045180F /* Icon-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-16.png"; sourceTree = "<group>"; };
-		A92F6C6F20105AEA0045180F /* Icon-167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-167.png"; sourceTree = "<group>"; };
-		A92F6C7020105AEA0045180F /* Icon-172.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-172.png"; sourceTree = "<group>"; };
-		A92F6C7120105AEA0045180F /* Icon-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-180.png"; sourceTree = "<group>"; };
-		A92F6C7220105AEA0045180F /* Icon-196.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-196.png"; sourceTree = "<group>"; };
-		A92F6C7320105AEA0045180F /* Icon-20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-20.png"; sourceTree = "<group>"; };
-		A92F6C7420105AEA0045180F /* Icon-256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-256.png"; sourceTree = "<group>"; };
-		A92F6C7520105AEA0045180F /* Icon-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-29.png"; sourceTree = "<group>"; };
-		A92F6C7620105AEA0045180F /* Icon-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-32.png"; sourceTree = "<group>"; };
-		A92F6C7720105AEA0045180F /* Icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-40.png"; sourceTree = "<group>"; };
-		A92F6C7820105AEA0045180F /* Icon-48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-48.png"; sourceTree = "<group>"; };
-		A92F6C7920105AEA0045180F /* Icon-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-50.png"; sourceTree = "<group>"; };
-		A92F6C7A20105AEA0045180F /* Icon-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-512.png"; sourceTree = "<group>"; };
-		A92F6C7B20105AEA0045180F /* Icon-55.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-55.png"; sourceTree = "<group>"; };
-		A92F6C7C20105AEA0045180F /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-57.png"; sourceTree = "<group>"; };
-		A92F6C7D20105AEA0045180F /* Icon-58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-58.png"; sourceTree = "<group>"; };
-		A92F6C7E20105AEA0045180F /* Icon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60.png"; sourceTree = "<group>"; };
-		A92F6C7F20105AEA0045180F /* Icon-64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-64.png"; sourceTree = "<group>"; };
-		A92F6C8020105AEA0045180F /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
-		A92F6C8120105AEA0045180F /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
-		A92F6C8220105AEA0045180F /* Icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-80.png"; sourceTree = "<group>"; };
-		A92F6C8320105AEA0045180F /* Icon-87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-87.png"; sourceTree = "<group>"; };
-		A92F6C8420105AEA0045180F /* Icon-88.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-88.png"; sourceTree = "<group>"; };
-		A952C1651FE8D3A6002559B3 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
-		A971F24A1FF2B52B00AD9167 /* black-on-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "black-on-white.png"; path = "../../../../Desktop/pcvc_images/black-on-white.png"; sourceTree = "<group>"; };
-		A971F24C1FF2BD4C00AD9167 /* DesignableSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableSlider.swift; sourceTree = "<group>"; };
-		A971F2501FF2BDE800AD9167 /* volume-thumbslider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "volume-thumbslider.png"; path = "../../../../Desktop/pcvc_images/volume-thumbslider.png"; sourceTree = "<group>"; };
-		A97414AA1FDF98BC00062954 /* SliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderCell.swift; sourceTree = "<group>"; };
-		A97414AC1FE629AC00062954 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		A9A25CCD1FEB61DD009C985B /* StreamController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamController.swift; sourceTree = "<group>"; };
-		A9AC32C91FECEF1400D385A8 /* pcvg logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo.png"; path = "../../../../Desktop/pcvc_images/pcvg logo.png"; sourceTree = "<group>"; };
-		A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pcvg logo square.png"; path = "../../../../Desktop/pcvc_images/pcvg logo square.png"; sourceTree = "<group>"; };
-		A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerStart.swift; sourceTree = "<group>"; };
-		A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "pcvg logo square"; path = "../../../../Desktop/pcvg logo square"; sourceTree = "<group>"; };
-		BC0C05349FA2A35B69E7936E /* Pods-PcVolumeControlUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		D95E22BFE1DA0B3954E6D2E7 /* Pods_PcVolumeControlUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControlUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E497C089C2FB3C823939B7C5 /* Pods-PcVolumeControlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PcVolumeControlTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests.debug.xcconfig"; sourceTree = "<group>"; };
-		F56215ED55A4131802149D7F /* Pods_PcVolumeControlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PcVolumeControlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A92ED6DA2CE92F1A00D40FC4 /* PCVolumeControlApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PCVolumeControlApp.swift; sourceTree = "<group>"; };
+		A9B17AC0000000000000F001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A9B31EA42DF0F3DB00117327 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A9B31EBB2DF108B200117327 /* PcVolumeControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PcVolumeControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9F9DEB32EA59EE5003FC66E /* PcVolumeControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PcVolumeControl.entitlements; sourceTree = "<group>"; };
+		A9F9DEB82EA59F28003FC66E /* PcVolumeControlWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PcVolumeControlWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9F9DEBA2EA59F28003FC66E /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		A9F9DEBC2EA59F28003FC66E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		A9F9DED42EA5A056003FC66E /* PcVolumeControlWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PcVolumeControlWidgetExtension.entitlements; sourceTree = "<group>"; };
+		B1000001000000000000AA01 /* PcVolumeControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PcVolumeControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A9B31E692DF00FCE00117327 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				SavedServerManager.swift,
+			);
+			target = A927E1461FC53AB10024D526 /* PcVolumeControl */;
+		};
+		A9B31EC82DF1193C00117327 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A9B31EBA2DF108B200117327 /* PcVolumeControlTests */;
+		};
+		A9F9DED22EA59F2A003FC66E /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A9F9DEB72EA59F28003FC66E /* PcVolumeControlWidgetExtension */;
+		};
+		A9F9DED62EA5A125003FC66E /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Log.swift,
+				SharedConnectionState.swift,
+			);
+			target = A9F9DEB72EA59F28003FC66E /* PcVolumeControlWidgetExtension */;
+		};
+		B1000003000000000000AA01 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B1000007000000000000AA01 /* PcVolumeControlUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A9B31E642DECC25900117327 /* models */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A9F9DED62EA5A125003FC66E /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = models; sourceTree = "<group>"; };
+		A9B31E652DF00C4800117327 /* datasources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = datasources; sourceTree = "<group>"; };
+		A9B31E662DF00C7B00117327 /* views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = views; sourceTree = "<group>"; };
+		A9B31E672DF00C8A00117327 /* repos */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A9B31E692DF00FCE00117327 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = repos; sourceTree = "<group>"; };
+		A9B31E7E2DF01A1500117327 /* usecases */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = usecases; sourceTree = "<group>"; };
+		A9B31EBC2DF108B200117327 /* PcVolumeControlTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A9B31EC82DF1193C00117327 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PcVolumeControlTests; sourceTree = "<group>"; };
+		A9C1EAD12DF01A1500117327 /* viewmodels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = viewmodels; sourceTree = "<group>"; };
+		A9F9DEBE2EA59F28003FC66E /* PcVolumeControlWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A9F9DED22EA59F2A003FC66E /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PcVolumeControlWidget; sourceTree = "<group>"; };
+		B1000002000000000000AA01 /* PcVolumeControlUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B1000003000000000000AA01 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PcVolumeControlUITests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A927E1441FC53AB10024D526 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5550754A39B693CAFC993140 /* Pods_PcVolumeControl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A927E1581FC53AB10024D526 /* Frameworks */ = {
+		A9B31EB82DF108B200117327 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				348891E8769139D2690DB42B /* Pods_PcVolumeControlTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A927E1631FC53AB10024D526 /* Frameworks */ = {
+		A9F9DEB52EA59F28003FC66E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEDA50CCF6A917C7E1D4A1CD /* Pods_PcVolumeControlUITests.framework in Frameworks */,
+				A9F9DEBD2EA59F28003FC66E /* SwiftUI.framework in Frameworks */,
+				A9F9DEBB2EA59F28003FC66E /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1000004000000000000AA01 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		05289F2B48ABC96006296323 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				784048895FDEE72E5BF0656F /* Pods-PcVolumeControl.debug.xcconfig */,
-				0BA2255E57FA4C02678D5451 /* Pods-PcVolumeControl.release.xcconfig */,
-				E497C089C2FB3C823939B7C5 /* Pods-PcVolumeControlTests.debug.xcconfig */,
-				495F5F7A5E85DDCE697DD73B /* Pods-PcVolumeControlTests.release.xcconfig */,
-				BC0C05349FA2A35B69E7936E /* Pods-PcVolumeControlUITests.debug.xcconfig */,
-				086A605B7329CBA602164155 /* Pods-PcVolumeControlUITests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		9C6066ABCCE4BFEE4290D8AC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				99C84E6328E6B3ED66F99F6E /* Pods_PcVolumeControl.framework */,
-				F56215ED55A4131802149D7F /* Pods_PcVolumeControlTests.framework */,
-				D95E22BFE1DA0B3954E6D2E7 /* Pods_PcVolumeControlUITests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		A927E13E1FC53AB10024D526 = {
 			isa = PBXGroup;
 			children = (
+				A9F9DED42EA5A056003FC66E /* PcVolumeControlWidgetExtension.entitlements */,
+				A9B31EA42DF0F3DB00117327 /* Localizable.xcstrings */,
 				A927E1491FC53AB10024D526 /* PcVolumeControl */,
+				A9B31EBC2DF108B200117327 /* PcVolumeControlTests */,
+				A9F9DEBE2EA59F28003FC66E /* PcVolumeControlWidget */,
+				B1000002000000000000AA01 /* PcVolumeControlUITests */,
+				A9F9DEB92EA59F28003FC66E /* Frameworks */,
 				A927E1481FC53AB10024D526 /* Products */,
-				05289F2B48ABC96006296323 /* Pods */,
-				9C6066ABCCE4BFEE4290D8AC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -204,8 +173,9 @@
 			isa = PBXGroup;
 			children = (
 				A927E1471FC53AB10024D526 /* PcVolumeControl.app */,
-				A927E15B1FC53AB10024D526 /* PcVolumeControlTests.xctest */,
-				A927E1661FC53AB10024D526 /* PcVolumeControlUITests.xctest */,
+				A9B31EBB2DF108B200117327 /* PcVolumeControlTests.xctest */,
+				A9F9DEB82EA59F28003FC66E /* PcVolumeControlWidgetExtension.appex */,
+				B1000001000000000000AA01 /* PcVolumeControlUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,64 +183,28 @@
 		A927E1491FC53AB10024D526 /* PcVolumeControl */ = {
 			isa = PBXGroup;
 			children = (
-				A92F6C6620105AEA0045180F /* iosicons */,
-				A971F2461FF1DA5D00AD9167 /* Launch Screen.storyboard */,
-				A927E14E1FC53AB10024D526 /* Main.storyboard */,
-				A9B66A221FECE1910051C4C5 /* ViewControllerStart.swift */,
-				A927E14C1FC53AB10024D526 /* ViewController.swift */,
-				A971F2481FF2ABBB00AD9167 /* AboutViewController.swift */,
-				A9A25CCD1FEB61DD009C985B /* StreamController.swift */,
-				A97414AA1FDF98BC00062954 /* SliderCell.swift */,
-				A97414AC1FE629AC00062954 /* Session.swift */,
-				A971F24C1FF2BD4C00AD9167 /* DesignableSlider.swift */,
-				A952C1651FE8D3A6002559B3 /* Alert.swift */,
-				A927E14A1FC53AB10024D526 /* AppDelegate.swift */,
+				A9F9DEB32EA59EE5003FC66E /* PcVolumeControl.entitlements */,
+				A9B31E7E2DF01A1500117327 /* usecases */,
+				A9B31E672DF00C8A00117327 /* repos */,
+				A9B31E662DF00C7B00117327 /* views */,
+				A9B31E652DF00C4800117327 /* datasources */,
+				A9B31E642DECC25900117327 /* models */,
+				A9C1EAD12DF01A1500117327 /* viewmodels */,
 				A927E1511FC53AB10024D526 /* Assets.xcassets */,
-				A9FDBC6E1FECFCE300DAE6D7 /* pcvg logo square */,
 				A927E1561FC53AB10024D526 /* Info.plist */,
-				A971F24A1FF2B52B00AD9167 /* black-on-white.png */,
-				A971F2501FF2BDE800AD9167 /* volume-thumbslider.png */,
-				A9AC32CB1FECF78400D385A8 /* pcvg logo square.png */,
-				A9AC32C91FECEF1400D385A8 /* pcvg logo.png */,
+				A9B17AC0000000000000F001 /* PrivacyInfo.xcprivacy */,
+				A92ED6DA2CE92F1A00D40FC4 /* PCVolumeControlApp.swift */,
 			);
 			path = PcVolumeControl;
 			sourceTree = "<group>";
 		};
-		A92F6C6620105AEA0045180F /* iosicons */ = {
+		A9F9DEB92EA59F28003FC66E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A92F6C6720105AEA0045180F /* Icon-100.png */,
-				A92F6C6820105AEA0045180F /* Icon-1024.png */,
-				A92F6C6920105AEA0045180F /* Icon-114.png */,
-				A92F6C6A20105AEA0045180F /* Icon-120.png */,
-				A92F6C6B20105AEA0045180F /* Icon-128.png */,
-				A92F6C6C20105AEA0045180F /* Icon-144.png */,
-				A92F6C6D20105AEA0045180F /* Icon-152.png */,
-				A92F6C6E20105AEA0045180F /* Icon-16.png */,
-				A92F6C6F20105AEA0045180F /* Icon-167.png */,
-				A92F6C7020105AEA0045180F /* Icon-172.png */,
-				A92F6C7120105AEA0045180F /* Icon-180.png */,
-				A92F6C7220105AEA0045180F /* Icon-196.png */,
-				A92F6C7320105AEA0045180F /* Icon-20.png */,
-				A92F6C7420105AEA0045180F /* Icon-256.png */,
-				A92F6C7520105AEA0045180F /* Icon-29.png */,
-				A92F6C7620105AEA0045180F /* Icon-32.png */,
-				A92F6C7720105AEA0045180F /* Icon-40.png */,
-				A92F6C7820105AEA0045180F /* Icon-48.png */,
-				A92F6C7920105AEA0045180F /* Icon-50.png */,
-				A92F6C7A20105AEA0045180F /* Icon-512.png */,
-				A92F6C7B20105AEA0045180F /* Icon-55.png */,
-				A92F6C7C20105AEA0045180F /* Icon-57.png */,
-				A92F6C7D20105AEA0045180F /* Icon-58.png */,
-				A92F6C7E20105AEA0045180F /* Icon-60.png */,
-				A92F6C7F20105AEA0045180F /* Icon-64.png */,
-				A92F6C8020105AEA0045180F /* Icon-72.png */,
-				A92F6C8120105AEA0045180F /* Icon-76.png */,
-				A92F6C8220105AEA0045180F /* Icon-80.png */,
-				A92F6C8320105AEA0045180F /* Icon-87.png */,
-				A92F6C8420105AEA0045180F /* Icon-88.png */,
+				A9F9DEBA2EA59F28003FC66E /* WidgetKit.framework */,
+				A9F9DEBC2EA59F28003FC66E /* SwiftUI.framework */,
 			);
-			path = iosicons;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,59 +214,93 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A927E16F1FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControl" */;
 			buildPhases = (
-				1065C93B38DACFF50F89DF79 /* [CP] Check Pods Manifest.lock */,
 				A927E1431FC53AB10024D526 /* Sources */,
 				A927E1441FC53AB10024D526 /* Frameworks */,
 				A927E1451FC53AB10024D526 /* Resources */,
-				BEBDDB816B648C94BC6671EB /* [CP] Embed Pods Frameworks */,
+				A9F9DED32EA59F2A003FC66E /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A9F9DECD2EA59F2A003FC66E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A9B31E642DECC25900117327 /* models */,
+				A9B31E652DF00C4800117327 /* datasources */,
+				A9B31E662DF00C7B00117327 /* views */,
+				A9B31E672DF00C8A00117327 /* repos */,
+				A9B31E7E2DF01A1500117327 /* usecases */,
+				A9C1EAD12DF01A1500117327 /* viewmodels */,
 			);
 			name = PcVolumeControl;
 			productName = PcVolumeControl;
 			productReference = A927E1471FC53AB10024D526 /* PcVolumeControl.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A927E15A1FC53AB10024D526 /* PcVolumeControlTests */ = {
+		A9B31EBA2DF108B200117327 /* PcVolumeControlTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A927E1721FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlTests" */;
+			buildConfigurationList = A9B31EC12DF108B200117327 /* Build configuration list for PBXNativeTarget "PcVolumeControlTests" */;
 			buildPhases = (
-				F2BF7B3B20AD85363E2E2664 /* [CP] Check Pods Manifest.lock */,
-				A927E1571FC53AB10024D526 /* Sources */,
-				A927E1581FC53AB10024D526 /* Frameworks */,
-				A927E1591FC53AB10024D526 /* Resources */,
-				6AEFFD5810991B954268EDC0 /* [CP] Embed Pods Frameworks */,
+				A9B31EB72DF108B200117327 /* Sources */,
+				A9B31EB82DF108B200117327 /* Frameworks */,
+				A9B31EB92DF108B200117327 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A927E15D1FC53AB10024D526 /* PBXTargetDependency */,
+				A9B31EC02DF108B200117327 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A9B31EBC2DF108B200117327 /* PcVolumeControlTests */,
 			);
 			name = PcVolumeControlTests;
+			packageProductDependencies = (
+			);
 			productName = PcVolumeControlTests;
-			productReference = A927E15B1FC53AB10024D526 /* PcVolumeControlTests.xctest */;
+			productReference = A9B31EBB2DF108B200117327 /* PcVolumeControlTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		A927E1651FC53AB10024D526 /* PcVolumeControlUITests */ = {
+		A9F9DEB72EA59F28003FC66E /* PcVolumeControlWidgetExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A927E1751FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlUITests" */;
+			buildConfigurationList = A9F9DECF2EA59F2A003FC66E /* Build configuration list for PBXNativeTarget "PcVolumeControlWidgetExtension" */;
 			buildPhases = (
-				26B7CE52DF6445914DB830BE /* [CP] Check Pods Manifest.lock */,
-				A927E1621FC53AB10024D526 /* Sources */,
-				A927E1631FC53AB10024D526 /* Frameworks */,
-				A927E1641FC53AB10024D526 /* Resources */,
-				3AC8693A686B4605AD24E0C6 /* [CP] Embed Pods Frameworks */,
+				A9F9DEB42EA59F28003FC66E /* Sources */,
+				A9F9DEB52EA59F28003FC66E /* Frameworks */,
+				A9F9DEB62EA59F28003FC66E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A927E1681FC53AB10024D526 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A9F9DEBE2EA59F28003FC66E /* PcVolumeControlWidget */,
+			);
+			name = PcVolumeControlWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = PcVolumeControlWidgetExtension;
+			productReference = A9F9DEB82EA59F28003FC66E /* PcVolumeControlWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		B1000007000000000000AA01 /* PcVolumeControlUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B100000C000000000000AA01 /* Build configuration list for PBXNativeTarget "PcVolumeControlUITests" */;
+			buildPhases = (
+				B1000006000000000000AA01 /* Sources */,
+				B1000004000000000000AA01 /* Frameworks */,
+				B1000005000000000000AA01 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B1000009000000000000AA01 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B1000002000000000000AA01 /* PcVolumeControlUITests */,
 			);
 			name = PcVolumeControlUITests;
 			productName = PcVolumeControlUITests;
-			productReference = A927E1661FC53AB10024D526 /* PcVolumeControlUITests.xctest */;
+			productReference = B1000001000000000000AA01 /* PcVolumeControlUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -341,22 +309,26 @@
 		A927E13F1FC53AB10024D526 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 1200;
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
 				ORGANIZATIONNAME = PcVolumeControl;
 				TargetAttributes = {
 					A927E1461FC53AB10024D526 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = BP75F4S5N3;
-						LastSwiftMigration = 1020;
+						LastSwiftMigration = 1620;
 						ProvisioningStyle = Automatic;
 					};
-					A927E15A1FC53AB10024D526 = {
-						CreatedOnToolsVersion = 7.3.1;
+					A9B31EBA2DF108B200117327 = {
+						CreatedOnToolsVersion = 16.2;
 						TestTargetID = A927E1461FC53AB10024D526;
 					};
-					A927E1651FC53AB10024D526 = {
-						CreatedOnToolsVersion = 7.3.1;
+					A9F9DEB72EA59F28003FC66E = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					B1000007000000000000AA01 = {
+						CreatedOnToolsVersion = 26.0.1;
 						TestTargetID = A927E1461FC53AB10024D526;
 					};
 				};
@@ -375,8 +347,9 @@
 			projectRoot = "";
 			targets = (
 				A927E1461FC53AB10024D526 /* PcVolumeControl */,
-				A927E15A1FC53AB10024D526 /* PcVolumeControlTests */,
-				A927E1651FC53AB10024D526 /* PcVolumeControlUITests */,
+				A9B31EBA2DF108B200117327 /* PcVolumeControlTests */,
+				A9F9DEB72EA59F28003FC66E /* PcVolumeControlWidgetExtension */,
+				B1000007000000000000AA01 /* PcVolumeControlUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -386,55 +359,27 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A92F6C8A20105AEA0045180F /* Icon-144.png in Resources */,
-				A971F2471FF1DA5D00AD9167 /* Launch Screen.storyboard in Resources */,
-				A92F6C8720105AEA0045180F /* Icon-114.png in Resources */,
-				A92F6C8D20105AEA0045180F /* Icon-167.png in Resources */,
-				A92F6C8620105AEA0045180F /* Icon-1024.png in Resources */,
-				A92F6C8920105AEA0045180F /* Icon-128.png in Resources */,
-				A971F2511FF2BDE800AD9167 /* volume-thumbslider.png in Resources */,
-				A92F6C8E20105AEA0045180F /* Icon-172.png in Resources */,
-				A92F6C9120105AEA0045180F /* Icon-20.png in Resources */,
-				A92F6C8820105AEA0045180F /* Icon-120.png in Resources */,
-				A9FDBC6F1FECFCE300DAE6D7 /* pcvg logo square in Resources */,
 				A927E1521FC53AB10024D526 /* Assets.xcassets in Resources */,
-				A92F6C9B20105AEA0045180F /* Icon-58.png in Resources */,
-				A92F6C8F20105AEA0045180F /* Icon-180.png in Resources */,
-				A9AC32CC1FECF78400D385A8 /* pcvg logo square.png in Resources */,
-				A92F6C9020105AEA0045180F /* Icon-196.png in Resources */,
-				A92F6C9920105AEA0045180F /* Icon-55.png in Resources */,
-				A92F6C9F20105AEA0045180F /* Icon-76.png in Resources */,
-				A927E1501FC53AB10024D526 /* Main.storyboard in Resources */,
-				A92F6C8C20105AEA0045180F /* Icon-16.png in Resources */,
-				A92F6CA020105AEA0045180F /* Icon-80.png in Resources */,
-				A92F6C9420105AEA0045180F /* Icon-32.png in Resources */,
-				A92F6C9620105AEA0045180F /* Icon-48.png in Resources */,
-				A92F6C9A20105AEA0045180F /* Icon-57.png in Resources */,
-				A92F6C9320105AEA0045180F /* Icon-29.png in Resources */,
-				A92F6C9720105AEA0045180F /* Icon-50.png in Resources */,
-				A9AC32CA1FECEF1400D385A8 /* pcvg logo.png in Resources */,
-				A92F6C9220105AEA0045180F /* Icon-256.png in Resources */,
-				A92F6CA220105AEA0045180F /* Icon-88.png in Resources */,
-				A92F6C9C20105AEA0045180F /* Icon-60.png in Resources */,
-				A92F6C8520105AEA0045180F /* Icon-100.png in Resources */,
-				A92F6C8B20105AEA0045180F /* Icon-152.png in Resources */,
-				A92F6C9D20105AEA0045180F /* Icon-64.png in Resources */,
-				A92F6C9820105AEA0045180F /* Icon-512.png in Resources */,
-				A92F6C9E20105AEA0045180F /* Icon-72.png in Resources */,
-				A971F24B1FF2B52C00AD9167 /* black-on-white.png in Resources */,
-				A92F6CA120105AEA0045180F /* Icon-87.png in Resources */,
-				A92F6C9520105AEA0045180F /* Icon-40.png in Resources */,
+				A9B17AC0000000000000B001 /* PrivacyInfo.xcprivacy in Resources */,
+				A9B31EA52DF0F3DB00117327 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A927E1591FC53AB10024D526 /* Resources */ = {
+		A9B31EB92DF108B200117327 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A927E1641FC53AB10024D526 /* Resources */ = {
+		A9F9DEB62EA59F28003FC66E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1000005000000000000AA01 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -443,160 +388,30 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		1065C93B38DACFF50F89DF79 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PcVolumeControl-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		26B7CE52DF6445914DB830BE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PcVolumeControlUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3AC8693A686B4605AD24E0C6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
-				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlUITests/Pods-PcVolumeControlUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6AEFFD5810991B954268EDC0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
-				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControlTests/Pods-PcVolumeControlTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BEBDDB816B648C94BC6671EB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PcVolumeControl/Pods-PcVolumeControl-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F2BF7B3B20AD85363E2E2664 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PcVolumeControlTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		A927E1431FC53AB10024D526 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A952C1661FE8D3A6002559B3 /* Alert.swift in Sources */,
-				A9B66A231FECE1910051C4C5 /* ViewControllerStart.swift in Sources */,
-				A9A25CCE1FEB61DD009C985B /* StreamController.swift in Sources */,
-				A97414AD1FE629AC00062954 /* Session.swift in Sources */,
-				A927E14D1FC53AB10024D526 /* ViewController.swift in Sources */,
-				A97414AB1FDF98BC00062954 /* SliderCell.swift in Sources */,
-				A971F2491FF2ABBB00AD9167 /* AboutViewController.swift in Sources */,
-				A971F24D1FF2BD4C00AD9167 /* DesignableSlider.swift in Sources */,
-				A927E14B1FC53AB10024D526 /* AppDelegate.swift in Sources */,
+				A92ED6E32CE92F1A00D40FC4 /* PCVolumeControlApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A927E1571FC53AB10024D526 /* Sources */ = {
+		A9B31EB72DF108B200117327 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A927E1621FC53AB10024D526 /* Sources */ = {
+		A9F9DEB42EA59F28003FC66E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1000006000000000000AA01 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -606,34 +421,29 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A927E15D1FC53AB10024D526 /* PBXTargetDependency */ = {
+		A9B31EC02DF108B200117327 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A927E1461FC53AB10024D526 /* PcVolumeControl */;
-			targetProxy = A927E15C1FC53AB10024D526 /* PBXContainerItemProxy */;
+			targetProxy = A9B31EBF2DF108B200117327 /* PBXContainerItemProxy */;
 		};
-		A927E1681FC53AB10024D526 /* PBXTargetDependency */ = {
+		A9F9DECD2EA59F2A003FC66E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A9F9DEB72EA59F28003FC66E /* PcVolumeControlWidgetExtension */;
+			targetProxy = A9F9DECC2EA59F2A003FC66E /* PBXContainerItemProxy */;
+		};
+		B1000009000000000000AA01 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A927E1461FC53AB10024D526 /* PcVolumeControl */;
-			targetProxy = A927E1671FC53AB10024D526 /* PBXContainerItemProxy */;
+			targetProxy = B1000008000000000000AA01 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		A927E14E1FC53AB10024D526 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A927E14F1FC53AB10024D526 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A927E16D1FC53AB10024D526 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -663,8 +473,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = BP75F4S5N3;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -680,10 +492,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -694,6 +508,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -723,8 +538,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = BP75F4S5N3;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -734,10 +551,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -746,102 +566,288 @@
 		};
 		A927E1701FC53AB10024D526 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 784048895FDEE72E5BF0656F /* Pods-PcVolumeControl.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BP75F4S5N3;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PcVolumeControl/PcVolumeControl.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				"DEVELOPMENT_TEAM[sdk=*]" = BP75F4S5N3;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BP75F4S5N3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$PODS_CONFIGURATION_BUILD_DIR/SwiftSocket\"",
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = PcVolumeControl/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=*]" = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development moronbros.PcVolumeControl";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		A927E1711FC53AB10024D526 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BA2255E57FA4C02678D5451 /* Pods-PcVolumeControl.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BP75F4S5N3;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PcVolumeControl/PcVolumeControl.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BP75F4S5N3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$PODS_CONFIGURATION_BUILD_DIR/SwiftSocket\"",
 					"$(SRCROOT)",
 				);
 				INFOPLIST_FILE = PcVolumeControl/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development moronbros.PcVolumeControl";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		A927E1731FC53AB10024D526 /* Debug */ = {
+		A9B31EC22DF108B200117327 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E497C089C2FB3C823939B7C5 /* Pods-PcVolumeControlTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = PcVolumeControlTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 2.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PcVolumeControl.app/PcVolumeControl";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PcVolumeControl.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PcVolumeControl";
 			};
 			name = Debug;
 		};
-		A927E1741FC53AB10024D526 /* Release */ = {
+		A9B31EC32DF108B200117327 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 495F5F7A5E85DDCE697DD73B /* Pods-PcVolumeControlTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = PcVolumeControlTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 2.0;
+				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PcVolumeControl.app/PcVolumeControl";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PcVolumeControl.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PcVolumeControl";
 			};
 			name = Release;
 		};
-		A927E1761FC53AB10024D526 /* Debug */ = {
+		A9F9DED02EA59F2A003FC66E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC0C05349FA2A35B69E7936E /* Pods-PcVolumeControlUITests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				INFOPLIST_FILE = PcVolumeControlUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = PcVolumeControlWidgetExtension.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BP75F4S5N3;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PcVolumeControlWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PcVolumeControlWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 PcVolumeControl. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 2.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControl.PcVolumeControlWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development moronbros.PcVolumeControl.PcVolumeControlWidget";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A9F9DED12EA59F2A003FC66E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = PcVolumeControlWidgetExtension.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BP75F4S5N3;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PcVolumeControlWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PcVolumeControlWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 PcVolumeControl. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 2.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControl.PcVolumeControlWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development moronbros.PcVolumeControl.PcVolumeControlWidget";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B100000A000000000000AA01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 2.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControlUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = PcVolumeControl;
 			};
 			name = Debug;
 		};
-		A927E1771FC53AB10024D526 /* Release */ = {
+		B100000B000000000000AA01 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 086A605B7329CBA602164155 /* Pods-PcVolumeControlUITests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				INFOPLIST_FILE = PcVolumeControlUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 2.0;
+				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = moronbros.PcVolumeControlUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = PcVolumeControl;
 			};
 			name = Release;
@@ -867,20 +873,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		A927E1721FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlTests" */ = {
+		A9B31EC12DF108B200117327 /* Build configuration list for PBXNativeTarget "PcVolumeControlTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A927E1731FC53AB10024D526 /* Debug */,
-				A927E1741FC53AB10024D526 /* Release */,
+				A9B31EC22DF108B200117327 /* Debug */,
+				A9B31EC32DF108B200117327 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		A927E1751FC53AB10024D526 /* Build configuration list for PBXNativeTarget "PcVolumeControlUITests" */ = {
+		A9F9DECF2EA59F2A003FC66E /* Build configuration list for PBXNativeTarget "PcVolumeControlWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A927E1761FC53AB10024D526 /* Debug */,
-				A927E1771FC53AB10024D526 /* Release */,
+				A9F9DED02EA59F2A003FC66E /* Debug */,
+				A9F9DED12EA59F2A003FC66E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B100000C000000000000AA01 /* Build configuration list for PBXNativeTarget "PcVolumeControlUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B100000A000000000000AA01 /* Debug */,
+				B100000B000000000000AA01 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

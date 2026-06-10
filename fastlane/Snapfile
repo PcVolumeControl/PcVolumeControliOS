@@ -1,0 +1,7 @@
+devices(["iPhone 17 Pro Max", "iPad Pro 13-inch (M4)"])
+languages(["en-US"])
+scheme("PcVolumeControl")
+output_directory("./fastlane/screenshots")
+clear_previous_screenshots(true)
+override_status_bar(true)
+only_testing("PcVolumeControlUITests/ScreenshotTests")

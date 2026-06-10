@@ -1,0 +1,114 @@
+opt_out_usage
+
+# Workaround: simctl gem 1.6.10 is incompatible with Ruby 4.0.
+# SimCtl::Device#devicetype returns a String (the identifier) when the device
+# type lookup fails. fastlane's TestCommandGenerator then calls .name on that
+# String, which raises NoMethodError. When the return value is a String, fall
+# back to the device name itself -- it contains "iPhone"/"iPad" and satisfies
+# the OS-family check that this method feeds into.
+require 'snapshot'
+Snapshot::TestCommandGenerator.define_singleton_method(:get_device_type_with_simctl) do |device_names|
+  return device_names if FastlaneCore::Helper.test?
+  require 'simctl'
+  device_names.map do |device_name|
+    device = SimCtl.device(name: device_name)
+    next unless device
+    dt = device.devicetype
+    dt.is_a?(String) ? device_name : dt.name
+  end.compact
+end
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build the app without running tests"
+  lane :build do
+    match(type: "development", readonly: is_ci)
+    run_tests(
+      scheme: "PcVolumeControl",
+      device: "iPhone 17 Pro Max (26.0)",
+      build_for_testing: true
+    )
+  end
+
+  desc "Run unit tests"
+  lane :test do
+    # Unit tests run on the simulator, which needs no code signing. Deliberately
+    # skip match so CI passes on fork PRs (which have no MATCH_* secrets) and for
+    # contributors without access to the private match repo.
+    run_tests(
+      scheme: "PcVolumeControl",
+      devices: ["iPhone 17 Pro Max (26.0)"],
+      only_testing: ["PcVolumeControlTests"]
+    )
+  end
+
+  desc "Scan for unused (dead) code with periphery"
+  lane :periphery do
+    # Reads .periphery.yml at the repo root. --strict makes the scan exit
+    # non-zero when unused code is found so CI fails on findings; plain
+    # `periphery scan` always exits 0. github-actions format emits inline PR
+    # annotations on CI; xcode format is friendlier locally.
+    format = is_ci ? "github-actions" : "xcode"
+    sh("cd .. && periphery scan --strict --disable-update-check --format #{format}")
+  end
+
+  desc "Build release IPA"
+  lane :build_release do
+    match(type: "appstore", readonly: is_ci)
+    gym(
+      project: "PcVolumeControl.xcodeproj",
+      scheme: "PcVolumeControl",
+      export_method: "app-store",
+      output_directory: "./build",
+      output_name: "PcVolumeControl.ipa",
+      export_options: {
+        provisioningProfiles: {
+          "moronbros.PcVolumeControl" => "match AppStore moronbros.PcVolumeControl",
+          "moronbros.PcVolumeControl.PcVolumeControlWidget" => "match AppStore moronbros.PcVolumeControl.PcVolumeControlWidget"
+        }
+      }
+    )
+  end
+
+  desc "Capture App Store screenshots"
+  lane :screenshots do
+    match(type: "development", readonly: is_ci)
+    snapshot
+  end
+
+  desc "Upload to TestFlight"
+  lane :beta do
+    build_release
+
+    app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_filepath: File.expand_path("~/.appstoreconnect/private_keys/AuthKey_#{ENV['APP_STORE_CONNECT_API_KEY_ID']}.p8")
+    )
+
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Build, screenshot, and upload to App Store Connect"
+  lane :deploy do
+    screenshots
+    build_release
+
+    app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_filepath: File.expand_path("~/.appstoreconnect/private_keys/AuthKey_#{ENV['APP_STORE_CONNECT_API_KEY_ID']}.p8")
+    )
+
+    upload_to_app_store(
+      skip_screenshots: false,
+      skip_metadata: true,
+      submit_for_review: false,
+      force: false,
+      precheck_include_in_app_purchases: false
+    )
+  end
+end
