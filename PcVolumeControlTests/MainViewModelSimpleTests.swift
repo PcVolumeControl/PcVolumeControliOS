@@ -212,6 +212,45 @@ final class MainViewModelSimpleTests: XCTestCase {
         XCTAssertEqual(sut.connectionStatus, .lost)
     }
 
+    // MARK: - Server List Deletion Tests
+
+    func testDeletingServerThatIsBothDiscoveredAndRecentClearsItInOneSwipe() {
+        // Given a server that is both live-discovered over mDNS and a saved
+        // recent connection (same address:port, different DiscoveredServer
+        // instances). The unified list dedupes these into a single row.
+        let discovered = DiscoveredServer(address: "192.168.0.42", port: 3000, computerName: "CHOSS")
+        let recent = DiscoveredServer(address: "192.168.0.42", port: 3000, computerName: nil)
+        sut.discoveredServers = [discovered]
+        sut.recentServers = [recent]
+
+        let rowsBefore = sut.unifiedServerList.filter { !$0.isManual }
+        XCTAssertEqual(rowsBefore.count, 1, "Discovered and recent duplicates should collapse to one row")
+        XCTAssertTrue(rowsBefore.first?.isDiscovered ?? false)
+
+        // When the user swipes to delete that single row once
+        sut.deleteServerFromList(rowsBefore[0])
+
+        // Then the row must not resurface as a "recent connection" duplicate
+        let rowsAfter = sut.unifiedServerList.filter { !$0.isManual }
+        XCTAssertEqual(rowsAfter.count, 0, "One delete should remove both the discovered and recent representations")
+        XCTAssertTrue(sut.discoveredServers.isEmpty)
+        XCTAssertTrue(sut.recentServers.isEmpty)
+    }
+
+    func testDeletingPlainRecentServerStillWorks() {
+        // Regression: a recent-only server (no live discovery) still deletes.
+        let recent = DiscoveredServer(address: "10.0.0.5", port: 8080, computerName: nil)
+        sut.recentServers = [recent]
+
+        let rows = sut.unifiedServerList.filter { !$0.isManual }
+        XCTAssertEqual(rows.count, 1)
+
+        sut.deleteServerFromList(rows[0])
+
+        XCTAssertTrue(sut.recentServers.isEmpty)
+        XCTAssertEqual(sut.unifiedServerList.filter { !$0.isManual }.count, 0)
+    }
+
     // MARK: - Integration Tests
 
     func testConnectDisconnectCycle() async {

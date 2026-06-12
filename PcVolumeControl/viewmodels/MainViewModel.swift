@@ -577,20 +577,30 @@ final class MainViewModel: ObservableObject {
     }
     
     func deleteServerFromList(_ item: ServerListItem) {
-        switch item {
-        case .discovered(let server):
-            // Remove discovered server from the list (it may reappear if still broadcasting)
-            if let index = discoveredServers.firstIndex(where: { $0.id == server.id }) {
-                discoveredServers.remove(at: index)
-            }
-        case .recent(let server):
-            if let index = recentServers.firstIndex(where: { $0.id == server.id }) {
-                recentServers.remove(at: index)
-                serversRepo.saveRecent(recentServers)
-            }
-        case .manual:
-            // The manual-entry row is not deletable.
-            break
+        // The manual-entry row has no backing server and is not deletable.
+        guard let server = item.server else { return }
+
+        // A server can be both live-discovered (mDNS) and a saved recent
+        // connection. unifiedServerList dedupes those into a single row, so a
+        // single swipe-to-delete must clear BOTH representations -- otherwise the
+        // hidden recent duplicate resurfaces as a separate "recent connection" row.
+        // (A still-broadcasting server may reappear on the next discovery cycle.)
+        let isSameServer: (DiscoveredServer) -> Bool = {
+            $0.address == server.address && $0.port == server.port
+        }
+
+        discoveredServers.removeAll(where: isSameServer)
+
+        let recentCountBefore = recentServers.count
+        recentServers.removeAll(where: isSameServer)
+        if recentServers.count != recentCountBefore {
+            serversRepo.saveRecent(recentServers)
+        }
+
+        // Clear any auto-discovery bookkeeping tied to the deleted server.
+        if let current = currentDiscoveredServer, isSameServer(current) {
+            currentDiscoveredServer = nil
+            isAutoDiscovered = false
         }
     }
 }
