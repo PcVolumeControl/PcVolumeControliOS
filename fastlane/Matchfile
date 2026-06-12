@@ -1,0 +1,6 @@
+git_url("https://github.com/cwbooth5/pcvolumecontrol-match.git")
+storage_mode("git")
+type("development")
+app_identifier(["moronbros.PcVolumeControl", "moronbros.PcVolumeControl.PcVolumeControlWidget"])
+team_id("BP75F4S5N3")
+username("moronbros@gmail.com")
