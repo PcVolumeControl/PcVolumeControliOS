@@ -97,7 +97,7 @@ final class MainViewModel: ObservableObject {
         }
     }
 
-    func connectToServer(address: String, port: UInt16) {
+    func connectToServer(address: String, port: UInt16, silent: Bool = false) {
         // Resolve a blank port (0) to the default so UI state and saved recents reflect the real port.
         let resolvedPort = port == 0 ? Self.defaultPort : port
         self.port = resolvedPort
@@ -127,7 +127,10 @@ final class MainViewModel: ObservableObject {
             } catch {
                 isLoading = false
                 connectionStatus = .connected
-                self.error = error.localizedDescription
+                // Auto-connect on launch fails silently (no alert); manual connects surface the error.
+                if !silent {
+                    self.error = error.localizedDescription
+                }
                 currentRepo = nil
                 fullState = nil
             }
@@ -449,7 +452,16 @@ final class MainViewModel: ObservableObject {
         port = server.port
         connectToServer(address: address, port: port)
     }
-    
+
+    /// Cold-launch auto-connect to the most recently used server. Fails silently
+    /// (no error alert): on failure the user simply lands on the connect screen.
+    func autoConnectToLastServer() {
+        guard let server = recentServers.first else { return }
+        address = server.address
+        port = server.port
+        connectToServer(address: server.address, port: server.port, silent: true)
+    }
+
     func saveSuccessfulConnection() {
         let newServer = DiscoveredServer(address: address, port: port, computerName: nil)
         

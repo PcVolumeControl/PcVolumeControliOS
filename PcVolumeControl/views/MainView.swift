@@ -20,6 +20,9 @@ struct MainView: View {
     @AppStorage(UserDefaultsKeys.hasSeenIntroTour) private var hasSeenIntroTour = false
     @State private var showIntroTour = false
     @State private var showSetupGuide = false
+    @State private var showSettings = false
+    @AppStorage(UserDefaultsKeys.autoReconnectOnLaunch) private var autoReconnectOnLaunch = false
+    @State private var hasAttemptedAutoConnect = false
 
     init() {
         let local = ServersLocalDataSource()
@@ -110,6 +113,24 @@ struct MainView: View {
                         .accessibilityElement(children: .combine)
                     }
                     .accessibilityHint("Opens the Windows server setup guide")
+
+                    // Quiet, secondary entry point to app settings. Placed at the
+                    // bottom of the screen so it stays unobtrusive on the connection
+                    // screen rather than competing with the logo header up top.
+                    Button {
+                        showSettings = true
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "gearshape")
+                            Text("Settings")
+                        }
+                        .font(.footnote)
+                        .foregroundStyle(.white.opacity(0.7))
+                        .padding(.bottom, 12)
+                        .accessibilityElement(children: .combine)
+                    }
+                    .accessibilityLabel("Settings")
+                    .accessibilityHint("Opens app settings")
                 }
                 .readableContentWidth()
             }
@@ -133,6 +154,9 @@ struct MainView: View {
                             }
                         }
                 }
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
             }
             .fullScreenCover(isPresented: $showIntroTour) {
                 IntroTourView {
@@ -186,6 +210,17 @@ struct MainView: View {
                 #endif
                 viewModel.loadRecentServers()
                 mdnsService.startDiscovery()
+
+                // Cold-launch auto-connect. The one-shot flag persists for the app
+                // process, so returning to this screen (e.g. after a manual
+                // disconnect) does NOT re-trigger a connection.
+                if !hasAttemptedAutoConnect,
+                   AutoReconnectGate.shouldAutoConnect(
+                       isEnabled: autoReconnectOnLaunch,
+                       hasRecentServer: !viewModel.recentServers.isEmpty) {
+                    hasAttemptedAutoConnect = true
+                    viewModel.autoConnectToLastServer()
+                }
             }
             .onDisappear {
                 mdnsService.stopDiscovery()

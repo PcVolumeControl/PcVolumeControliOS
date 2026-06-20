@@ -251,6 +251,86 @@ final class MainViewModelSimpleTests: XCTestCase {
         XCTAssertEqual(sut.unifiedServerList.filter { !$0.isManual }.count, 0)
     }
 
+    func testWithdrawnDiscoveredServerRevertsToRecentConnectionRow() {
+        // Given a server that is both live-discovered over mDNS and a saved recent
+        // connection. The unified list collapses them into one green "Auto-discovered"
+        // row while the server is broadcasting.
+        let discovered = DiscoveredServer(address: "192.168.0.42", port: 3000, computerName: "CHOSS")
+        let recent = DiscoveredServer(address: "192.168.0.42", port: 3000, computerName: nil)
+        sut.discoveredServers = [discovered]
+        sut.recentServers = [recent]
+
+        let rowsBefore = sut.unifiedServerList.filter { !$0.isManual }
+        XCTAssertEqual(rowsBefore.count, 1)
+        XCTAssertTrue(rowsBefore.first?.isDiscovered ?? false,
+                      "While broadcasting, the row is the green auto-discovered one")
+
+        // When the server withdraws from mDNS, discovery no longer reports it. MainView
+        // forwards that empty list to the view model via handleDiscoveredServers(_:).
+        sut.handleDiscoveredServers([])
+
+        // Then the row stays (it is a previous/recent connection) but loses the green:
+        // no auto-discovered indicator, shown as a plain "Recent connection".
+        let rowsAfter = sut.unifiedServerList.filter { !$0.isManual }
+        XCTAssertEqual(rowsAfter.count, 1, "A previously-connected server stays in the list")
+        XCTAssertFalse(rowsAfter.first?.isDiscovered ?? true,
+                       "The green auto-discovered indicator is gone after withdrawal")
+        XCTAssertTrue(rowsAfter.first?.isRecent ?? false,
+                      "The row is now a plain recent connection")
+    }
+
+    // MARK: - Auto-Connect On Launch Tests
+
+    func testConnectToServerSurfacesErrorOnFailureByDefault() async {
+        // The default (non-silent) path must still surface a failure as an alert-driving error.
+        sut.connectToServer(address: "192.0.2.1", port: 3000)
+
+        // Wait for the internal connect Task to run and hit its catch block.
+        for _ in 0..<200 {
+            if sut.error != nil { break }
+            try? await Task.sleep(nanoseconds: 5_000_000) // 5ms
+        }
+
+        XCTAssertNotNil(sut.error, "Default connect must surface the failure")
+        XCTAssertNil(sut.fullState)
+        XCTAssertFalse(sut.hasActiveConnection)
+    }
+
+    func testAutoConnectToLastServerWithNoRecentsIsNoOp() {
+        XCTAssertTrue(sut.recentServers.isEmpty)
+
+        sut.autoConnectToLastServer()
+
+        // Nothing was selected and no attempt was started.
+        XCTAssertEqual(sut.address, "")
+        XCTAssertEqual(sut.port, 0)
+        XCTAssertFalse(sut.isLoading)
+        XCTAssertNil(sut.error)
+        XCTAssertFalse(sut.hasActiveConnection)
+    }
+
+    func testAutoConnectToLastServerSelectsRecentAndFailsSilently() async {
+        // Given a saved recent server (mock TCP always throws -> connect fails).
+        sut.recentServers = [DiscoveredServer(address: "192.0.2.1", port: 3000, computerName: nil)]
+
+        // When auto-connecting on launch.
+        sut.autoConnectToLastServer()
+
+        // The chosen server is reflected immediately.
+        XCTAssertEqual(sut.address, "192.0.2.1")
+        XCTAssertEqual(sut.port, 3000)
+
+        // Wait out the same failure window the non-silent test needs; error must stay nil.
+        for _ in 0..<200 {
+            try? await Task.sleep(nanoseconds: 5_000_000) // 5ms, ~1s total
+            if sut.error != nil { break } // only on a regression
+        }
+
+        XCTAssertNil(sut.error, "Auto-connect on launch must fail silently (no alert)")
+        XCTAssertNil(sut.fullState)
+        XCTAssertFalse(sut.hasActiveConnection)
+    }
+
     // MARK: - Integration Tests
 
     func testConnectDisconnectCycle() async {

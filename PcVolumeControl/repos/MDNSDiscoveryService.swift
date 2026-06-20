@@ -8,6 +8,12 @@ class MDNSDiscoveryService: ObservableObject {
     private var browser: NWBrowser?
     private let browserQueue = DispatchQueue(label: "mdns.browser.queue")
 
+    // Maps a Bonjour service instance name (e.g. "MYPC-pcvolumecontrol-3000") to the
+    // server resolved for it. A withdrawal (.removed) only gives us the service name,
+    // while discoveredServers is keyed by resolved IP+port, so this map is the only
+    // reliable link from a goodbye packet back to the row that must be removed.
+    private var resolvedByServiceName: [String: DiscoveredServer] = [:]
+
     func startDiscovery() {
         guard browser == nil else { return }
 
@@ -45,6 +51,7 @@ class MDNSDiscoveryService: ObservableObject {
         DispatchQueue.main.async {
             self.isDiscovering = false
             self.discoveredServers.removeAll()
+            self.resolvedByServiceName.removeAll()
         }
     }
 
@@ -56,7 +63,7 @@ class MDNSDiscoveryService: ObservableObject {
                     resolveService(result: result)
                 }
             case .removed(let result):
-                removeServer(result: result)
+                handleRemoval(result: result)
             case .changed(old: _, new: let newResult, flags: _):
                 resolveService(result: newResult)
             default:
@@ -84,9 +91,7 @@ class MDNSDiscoveryService: ObservableObject {
                     let server = DiscoveredServer(address: cleanedAddress, port: port.rawValue, computerName: computerName)
 
                     DispatchQueue.main.async {
-                        // Remove any existing server with the same address and add the new one
-                        self?.discoveredServers.removeAll { $0.address == cleanedAddress }
-                        self?.discoveredServers.append(server)
+                        self?.recordResolvedServer(server, forServiceName: serviceName)
                     }
                 }
                 connection.cancel()
@@ -100,14 +105,29 @@ class MDNSDiscoveryService: ObservableObject {
         connection.start(queue: browserQueue)
     }
 
-    private func removeServer(result: NWBrowser.Result) {
+    // Records a freshly resolved service and publishes it. Must run on the main queue.
+    // Keyed by serviceName so a later withdrawal can find the exact server to remove.
+    func recordResolvedServer(_ server: DiscoveredServer, forServiceName serviceName: String) {
+        resolvedByServiceName[serviceName] = server
+        // Replace any existing entry for the same address, then add the new one.
+        discoveredServers.removeAll { $0.address == server.address }
+        discoveredServers.append(server)
+    }
+
+    private func handleRemoval(result: NWBrowser.Result) {
         guard case let .service(name: serviceName, type: _, domain: _, interface: _) = result.endpoint else {
             return
         }
-
-        DispatchQueue.main.async {
-            self.discoveredServers.removeAll { $0.id.contains(serviceName) }
+        DispatchQueue.main.async { [weak self] in
+            self?.removeServer(forServiceName: serviceName)
         }
+    }
+
+    // Removes a withdrawn service (Bonjour goodbye / NWBrowser .removed). Must run on
+    // the main queue. No-op when the service was never resolved into a server.
+    func removeServer(forServiceName serviceName: String) {
+        guard let server = resolvedByServiceName.removeValue(forKey: serviceName) else { return }
+        discoveredServers.removeAll { $0 == server }
     }
 
     private func cleanIPAddress(_ rawAddress: String) -> String {

@@ -11,16 +11,27 @@ struct UserDefaultsKeys {
     static let preserveSessionOrder = "preserveSessionOrder"
     static let hasSeenChatBalanceInfo = "hasSeenChatBalanceInfo"
     static let hasSeenIntroTour = "hasSeenIntroTour"
+    static let autoReconnectOnLaunch = "autoReconnectOnLaunch"
 }
 
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @AppStorage(UserDefaultsKeys.preserveSessionOrder) private var preserveSessionOrder = true
+    @AppStorage(UserDefaultsKeys.autoReconnectOnLaunch) private var autoReconnectOnLaunch = false
     @State private var showIntroTour = false
 
     var body: some View {
         NavigationStack {
             Form {
+                Section(header: Text("Connection")) {
+                    Toggle("Reconnect to last server on launch", isOn: $autoReconnectOnLaunch)
+                        .tint(.sliderPink)
+
+                    Text("When enabled, the app connects to your most recently used server automatically when it opens.")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+
                 Section(header: Text("Session Preferences")) {
                     Toggle("Preserve Session Order", isOn: $preserveSessionOrder)
                         .tint(.sliderPink)
