@@ -1,3 +1,4 @@
+// periphery:ignore
 //
 //  PcVolumeControlWidget.swift
 //  PcVolumeControlWidget

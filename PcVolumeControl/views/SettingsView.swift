@@ -1,3 +1,4 @@
+// periphery:ignore
 //
 //  SettingsView.swift
 //  PcVolumeControl

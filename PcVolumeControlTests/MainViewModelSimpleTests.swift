@@ -438,14 +438,14 @@ class MockLocalDataSource: ServersLocalDataSourceProtocol {
     func loadRecent() -> [DiscoveredServer] {
         return []
     }
-    
-    func saveRecent(_ list: [DiscoveredServer]) {
-        // Mock implementation
+
+    func saveRecent(_: [DiscoveredServer]) {
     }
 }
 
 class MockTCPDataSource: TCPConnectionDataSourceProtocol {
-    func openConnection(to server: DiscoveredServer) async throws -> Connection {
+    func openConnection(to _server: DiscoveredServer) async throws -> Connection {
+
         // For testing, we'll throw an error to simulate connection failure
         throw NSError(domain: "MockConnectionError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Mock connection failed"])
     }

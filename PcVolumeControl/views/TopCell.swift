@@ -210,11 +210,11 @@ struct TopCell: View {
             }
         }
     }
-    
+
     // Dialog state for editing master device alias
     @State private var isEditingAlias = false
     @State private var newAlias = ""
-    
+
     private func showAliasEditingPrompt() {
         // Initialize with current alias if exists
         if let device = internalDefault {
@@ -294,13 +294,13 @@ private struct DevicePickerSheet: View {
         name: "External Speakers",
         sessions: []
     )
-    
+
     @Previewable @State var mockDevices = [
         "speaker-12345": "External Speakers",
         "headphones-67890": "Headphones (Bluetooth)",
         "monitor-11111": "Monitor Audio (HDMI)"
     ]
-    
+
     TopCell(
         internalDefault: $mockDevice,
         internalDevices: $mockDevices,
@@ -324,13 +324,13 @@ private struct DevicePickerSheet: View {
         name: "Speakers (Realtek High Definition Audio)",
         sessions: []
     )
-    
+
     @Previewable @State var mockDevices = [
         "speaker-12345": "Speakers (Realtek High Definition Audio)",
         "headphones-67890": "Headphones (Bluetooth)",
         "monitor-11111": "Monitor Audio (HDMI)"
     ]
-    
+
     TopCell(
         internalDefault: $mockDevice,
         internalDevices: $mockDevices,
