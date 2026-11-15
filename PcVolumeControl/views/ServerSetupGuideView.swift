@@ -2,7 +2,7 @@
 //  ServerSetupGuideView.swift
 //  PcVolumeControl
 //
-//  Step-by-step guide for installing the Windows companion server.
+//  Step-by-step guide for installing the companion server.
 //  Designed to work both pushed onto a NavigationStack (intro tour,
 //  Settings) and wrapped in a sheet (connect screen footer).
 //
@@ -50,7 +50,7 @@ struct ServerSetupGuideView: View {
                 }
 
                 SetupStepRow(number: 3, title: "Find the address") {
-                    Text("The server window shows your PC's IP address and port. The default port is 3000.")
+                    Text("The server's Status page shows your PC's IP address and port. The default port is 3000.")
                 }
 
                 SetupStepRow(number: 4, title: "Connect from this app") {
@@ -62,7 +62,7 @@ struct ServerSetupGuideView: View {
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
-                    Text("Make sure this device and PC are on the same network, the server is allowed through Windows Firewall, and no VPN is active on either device. VPNs often block local discovery.")
+                    Text("Make sure this device and PC are on the same network, the PC's firewall allows TCP port 3000 and mDNS (UDP 5353), and no VPN is active on either device. VPNs often block local discovery.")
                         .font(.footnote)
                         .foregroundColor(.gray)
                 }

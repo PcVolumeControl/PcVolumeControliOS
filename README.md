@@ -1,14 +1,14 @@
 # PC Volume Control — iOS
 
-Control your Windows PC's application audio volumes remotely from your iPhone or iPad.
+Control your PC's application audio volumes remotely from your iPhone or iPad.
 
 <img src="meta/03_SliderScreen.png" width="250">
 
 ## What it does
 
-PC Volume Control lets you adjust the volume of individual applications running on your Windows PC from your iOS device. This was designed primarily for remote volume control while gaming or streaming.
+PC Volume Control lets you adjust the volume of individual applications running on your PC from your iOS device. This was designed primarily for remote volume control while gaming or streaming.
 
-The app connects to a free companion Windows server over your local network, displaying all running applications and their volume levels in a clean, responsive interface. Adjust volumes, mute/unmute, and switch between output devices (speakers, headphones, etc.) all from your phone or tablet.
+The app connects to a free companion server on your PC (Windows or Linux) over your local network, displaying all running applications and their volume levels in a clean, responsive interface. Adjust volumes, mute/unmute, and switch between output devices (speakers, headphones, etc.) all from your phone or tablet.
 
 **Features:**
 - Remote application volume control
@@ -59,7 +59,7 @@ PC Volume Control requires the free companion server, [PcVolumeControlServer](ht
 
 ### Troubleshooting
 
-- **Can't connect?** Check Windows Firewall isn't blocking the server.
+- **Can't connect?** Check that the PC's firewall allows TCP port 3000 and mDNS (UDP 5353); on Windows, that Windows Firewall isn't blocking the server.
 - **No audio output?** Use the master device selector (top of the volume screen) to switch between multiple audio outputs.
 
 ## Contributing
