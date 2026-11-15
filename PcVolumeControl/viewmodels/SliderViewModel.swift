@@ -175,14 +175,9 @@ final class SliderViewModel: ObservableObject {
     private func updateSessionsRespectingDebounce(with incoming: [FullState.Session]) {
         // Apply new naming protocol to sessions
         let processedSessions = incoming.map { session in
-            let displayName = parseSessionDisplayName(sessionId: session.id, fallbackName: session.name)
-            return FullState.Session(
-                id: session.id,
-                muted: session.muted,
-                name: displayName,
-                volume: session.volume,
-                iconId: session.iconId
-            )
+            var processed = session
+            processed.name = parseSessionDisplayName(sessionId: session.id, fallbackName: session.name)
+            return processed
         }
 
         // If preserving order and we have a saved order, use it
@@ -204,14 +199,7 @@ final class SliderViewModel: ObservableObject {
                 sessions = sortedSessions.map { incoming in
                     if editingIds.contains(incoming.id),
                        let existing = sessions.first(where: { $0.id == incoming.id }) {
-                        // Keep current values for editing session
-                        return FullState.Session(
-                            id: existing.id,
-                            muted: existing.muted,
-                            name: incoming.name,
-                            volume: existing.volume,
-                            iconId: incoming.iconId
-                        )
+                        return incoming.keepingUserValues(of: existing)
                     } else {
                         return incoming
                     }
@@ -255,15 +243,7 @@ final class SliderViewModel: ObservableObject {
             if let session = incomingDict[sessionId] {
                 if editingIds.contains(sessionId), 
                    let existingIdx = sessions.firstIndex(where: { $0.id == sessionId }) {
-                    // Keep current values for editing session
-                    let existing = sessions[existingIdx]
-                    orderedSessions.append(FullState.Session(
-                        id: sessionId,
-                        muted: existing.muted,
-                        name: session.name,
-                        volume: existing.volume,
-                        iconId: session.iconId
-                    ))
+                    orderedSessions.append(session.keepingUserValues(of: sessions[existingIdx]))
                 } else {
                     orderedSessions.append(session)
                 }
@@ -299,14 +279,7 @@ final class SliderViewModel: ObservableObject {
             guard let incoming = incomingDict[session.id] else { continue }
             
             if editingIds.contains(session.id) {
-                // Keep current values for editing session
-                updatedSessions.append(FullState.Session(
-                    id: session.id,
-                    muted: session.muted,
-                    name: incoming.name,
-                    volume: session.volume,
-                    iconId: incoming.iconId
-                ))
+                updatedSessions.append(incoming.keepingUserValues(of: session))
             } else {
                 updatedSessions.append(incoming)
             }
@@ -324,5 +297,15 @@ final class SliderViewModel: ObservableObject {
         if preserveSessionOrder {
             savedOrder = sessions.map { $0.id }
         }
+    }
+}
+
+private extension FullState.Session {
+    /// This incoming session with the volume and mute of `existing`, for a session the user is editing.
+    func keepingUserValues(of existing: FullState.Session) -> FullState.Session {
+        var merged = self
+        merged.muted = existing.muted
+        merged.volume = existing.volume
+        return merged
     }
 }

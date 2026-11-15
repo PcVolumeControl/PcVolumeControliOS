@@ -26,10 +26,29 @@ final class VolumeControlRepositoryTests: XCTestCase {
             switch line {
             case .state: kinds.append("state")
             case .icon: kinds.append("icon")
-            case .ignored: kinds.append("ignored")
             }
         }
         XCTAssertEqual(kinds, ["state", "icon", "state"])
+    }
+
+    func testUndecodableFullStateEndsTheStream() async {
+        let transport = ScriptedTransport(lines: [
+            ServerLineTests.v7State,
+            #"{"protocolVersion":7,"defaultDevice":{"deviceId":"x"}}"#,
+            ServerLineTests.v7State,
+        ])
+        let repo = VolumeControlRepository(transport: transport)
+
+        var states = 0
+        do {
+            for try await _ in repo.serverLines() {
+                states += 1
+            }
+            XCTFail("Expected the stream to end with an error")
+        } catch {
+            XCTAssertTrue(error is MalformedStateError)
+        }
+        XCTAssertEqual(states, 1)
     }
 }
 

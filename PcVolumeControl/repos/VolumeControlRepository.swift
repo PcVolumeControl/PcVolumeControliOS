@@ -7,21 +7,20 @@ struct VolumeControlRepository {
     let deviceIdLookup = DeviceIdLookup()
 
     /// Full states and icon replies from the server; lines of any other kind are dropped.
+    /// Ends with an error for a full state that cannot be decoded.
     func serverLines() -> AsyncThrowingStream<ServerLine, Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
                     for try await bytes in transport.incoming() {
-                        let line = ServerLine.classify(bytes)
-                        switch line {
-                        case .state(let state):
-                            deviceIdLookup.ingest(state.deviceIds)
-                            continuation.yield(line)
-                        case .icon:
-                            continuation.yield(line)
-                        case .ignored:
+                        guard let line = try ServerLine.classify(bytes) else {
                             appLog("Ignoring unrecognized server line (\(bytes.count) bytes)")
+                            continue
                         }
+                        if case .state(let state) = line {
+                            deviceIdLookup.ingest(state.deviceIds)
+                        }
+                        continuation.yield(line)
                     }
                     continuation.finish()
                 } catch {

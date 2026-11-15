@@ -33,7 +33,7 @@ struct LineFramer {
                 if lineEnd > lineStart, buffer[lineEnd - 1] == 0x0D {
                     lineEnd -= 1
                 }
-                if lineEnd > lineStart {
+                if lineEnd > lineStart, lineEnd - lineStart <= maxLineLength {
                     lines.append(Data(buffer[lineStart..<lineEnd]))
                 }
             }

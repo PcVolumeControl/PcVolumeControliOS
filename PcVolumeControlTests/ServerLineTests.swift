@@ -31,14 +31,14 @@ final class ServerLineTests: XCTestCase {
     {"protocolVersion":7,"icon":{"id":"0000notarealid","error":"notFound"}}
     """#
 
-    private func classify(_ text: String) -> ServerLine {
-        ServerLine.classify(Data(text.utf8))
+    private func classify(_ text: String) throws -> ServerLine? {
+        try ServerLine.classify(Data(text.utf8))
     }
 
     // MARK: - Full state decoding
 
     func testV7StateDecodesWithoutV8Fields() throws {
-        guard case .state(let state) = classify(Self.v7State) else {
+        guard case .state(let state) = try classify(Self.v7State) else {
             return XCTFail("Expected a full state")
         }
         XCTAssertNil(state.features)
@@ -48,7 +48,7 @@ final class ServerLineTests: XCTestCase {
     }
 
     func testV8StateDecodesFeaturesAndIconIds() throws {
-        guard case .state(let state) = classify(Self.v8State) else {
+        guard case .state(let state) = try classify(Self.v8State) else {
             return XCTFail("Expected a full state")
         }
         XCTAssertEqual(state.features, ["icons"])
@@ -65,7 +65,7 @@ final class ServerLineTests: XCTestCase {
             of: #""applicationVersion":"v10","#,
             with: #""applicationVersion":"v10","features":["somethingNew"],"#
         )
-        guard case .state(let state) = classify(text) else {
+        guard case .state(let state) = try classify(text) else {
             return XCTFail("Expected a full state")
         }
         XCTAssertEqual(state.features, ["somethingNew"])
@@ -74,7 +74,7 @@ final class ServerLineTests: XCTestCase {
     // MARK: - Icon replies
 
     func testIconImageReplyDecodesToPNG() throws {
-        guard case .icon(let reply) = classify(Self.iconImageReply) else {
+        guard case .icon(let reply) = try classify(Self.iconImageReply) else {
             return XCTFail("Expected an icon reply")
         }
         XCTAssertEqual(reply.id, "6b58026ae167f8f2e802f2531657443c")
@@ -85,60 +85,75 @@ final class ServerLineTests: XCTestCase {
         XCTAssertEqual(image.size.height * image.scale, 16)
     }
 
-    func testIconNotFoundReplyHasNoImage() {
-        guard case .icon(let reply) = classify(Self.iconNotFoundReply) else {
+    func testIconNotFoundReplyHasNoImage() throws {
+        guard case .icon(let reply) = try classify(Self.iconNotFoundReply) else {
             return XCTFail("Expected an icon reply")
         }
         XCTAssertEqual(reply.id, "0000notarealid")
         XCTAssertNil(reply.png)
     }
 
-    func testIconReplyWithUnknownErrorHasNoImage() {
+    func testIconReplyWithUnknownErrorHasNoImage() throws {
         let text = #"{"protocolVersion":7,"icon":{"id":"abc","error":"somethingElse","data":"iVBORw0KGgo="}}"#
-        guard case .icon(let reply) = classify(text) else {
+        guard case .icon(let reply) = try classify(text) else {
             return XCTFail("Expected an icon reply")
         }
         XCTAssertNil(reply.png)
     }
 
-    func testIconReplyWithInvalidBase64StillAnswersTheId() {
+    func testIconReplyWithInvalidBase64StillAnswersTheId() throws {
         let text = #"{"protocolVersion":7,"icon":{"id":"abc","size":16,"mime":"image/png","data":"not base64!"}}"#
-        guard case .icon(let reply) = classify(text) else {
+        guard case .icon(let reply) = try classify(text) else {
             return XCTFail("Expected an icon reply")
         }
         XCTAssertEqual(reply.id, "abc")
         XCTAssertNil(reply.png)
     }
 
-    // MARK: - Classification
-
-    func testUnknownLineIsIgnored() {
-        guard case .ignored = classify(#"{"protocolVersion":7,"somethingNew":{"a":1}}"#) else {
-            return XCTFail("Expected the line to be ignored")
+    func testIconReplyWithNonStringErrorHasNoImage() throws {
+        let text = #"{"protocolVersion":7,"icon":{"id":"abc","error":{"code":3},"data":"iVBORw0KGgo="}}"#
+        guard case .icon(let reply) = try classify(text) else {
+            return XCTFail("Expected an icon reply")
         }
+        XCTAssertNil(reply.png)
     }
 
-    func testMalformedLinesAreIgnored() {
+    func testIconReplyWithEmptyDataHasNoImage() throws {
+        let text = #"{"protocolVersion":7,"icon":{"id":"abc","size":16,"mime":"image/png","data":""}}"#
+        guard case .icon(let reply) = try classify(text) else {
+            return XCTFail("Expected an icon reply")
+        }
+        XCTAssertNil(reply.png)
+    }
+
+    // MARK: - Classification
+
+    func testUnknownLineIsIgnored() throws {
+        XCTAssertNil(try classify(#"{"protocolVersion":7,"somethingNew":{"a":1}}"#))
+    }
+
+    func testMalformedLinesAreIgnored() throws {
         for text in [
             #"{"protocolVersion":7,"defaultDevice":{"deviceId":"#,
-            #"{"protocolVersion":7,"defaultDevice":{"deviceId":"x"}}"#,
             #"{"protocolVersion":7,"icon":{"error":"notFound"}}"#,
             "[1,2,3]",
             "not json",
         ] {
-            guard case .ignored = classify(text) else {
-                return XCTFail("Expected \(text) to be ignored")
-            }
+            XCTAssertNil(try classify(text), text)
         }
     }
 
-    func testLineWithBothStateAndIconIsIgnored() {
+    func testLineWithBothStateAndIconIsIgnored() throws {
         let text = Self.v7State.replacingOccurrences(
             of: #""protocolVersion":7,"#,
             with: #""protocolVersion":7,"icon":{"id":"abc","error":"notFound"},"#
         )
-        guard case .ignored = classify(text) else {
-            return XCTFail("Expected the line to be ignored")
+        XCTAssertNil(try classify(text))
+    }
+
+    func testUndecodableFullStateThrows() {
+        XCTAssertThrowsError(try classify(#"{"protocolVersion":7,"defaultDevice":{"deviceId":"x"}}"#)) { error in
+            XCTAssertTrue(error is MalformedStateError)
         }
     }
 }

@@ -71,4 +71,9 @@ final class LineFramerTests: XCTestCase {
         XCTAssertEqual(strings(framer.append(Data("tail\nok\n".utf8))), ["ok"])
         XCTAssertEqual(strings(framer.append(Data("fine\n".utf8))), ["fine"])
     }
+
+    func testOverlongLineCompletedInOneReadIsDiscarded() {
+        var framer = LineFramer(maxLineLength: 8)
+        XCTAssertEqual(strings(framer.append(Data("0123456789\n12345678\n".utf8))), ["12345678"])
+    }
 }
