@@ -93,6 +93,27 @@ The app communicates with the PC server using a JSON protocol:
   - Master volume/mute changes
   - Individual application volume/mute changes
 
+The canonical spec is `docs/PROTOCOL.md` in the PcVolumeControlServer repo.
+
+### v8 icon extension
+
+`protocolVersion` stays 7 on the wire; support is detected per feature.
+
+- A server with icon support adds `"features": ["icons"]` to the full state and an
+  optional `iconId` (`[a-z0-9]{1,64}`, content-derived) to sessions. Older servers send
+  neither, and the app then never sends an icon request.
+- Lines are classified in `models/ServerLine.swift`: `defaultDevice` means a full
+  state, `icon` means an icon reply, anything else is ignored. A full state that
+  cannot be decoded still ends the connection.
+- `datasources/LineFramer.swift` frames the byte stream; icon lines can be several
+  hundred KiB.
+- `usecases/IconRequestPlanner.swift` decides what to request: at most 32 ids per
+  `iconRequest`, at most 64 outstanding, `notFound` ids not asked for again until the
+  user connects anew, outstanding ids reset when the connection drops.
+- `repos/IconRepository.swift` (memory) and `datasources/IconDiskCacheDataSource.swift`
+  (Caches/AppIcons) cache icons by id and requested pixel size.
+- Rows show `views/SessionIconView.swift`: the icon, or a placeholder of the same size.
+
 ## Related Resources
 
 - Demo Video: https://youtu.be/OgueVzguP3w
