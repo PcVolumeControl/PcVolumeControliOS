@@ -71,6 +71,7 @@ final class MainViewModel: ObservableObject {
     private var iconGeneration = 0
     // Bumped when `iconPlanner` is replaced.
     private var iconPlannerEpoch = 0
+
     init(connect: ConnectToServerUseCase,
          defUpdate: SendDefaultDeviceUpdateUseCase,
          masterUpdate: SendMasterChannelUpdateUseCase,
