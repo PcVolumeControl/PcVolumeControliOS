@@ -6,14 +6,22 @@ struct VolumeControlRepository {
     let transport: VolumeTransportDataSourceProtocol
     let deviceIdLookup = DeviceIdLookup()
 
-    func fullStateStream() -> AsyncThrowingStream<FullState, Error> {
+    /// Full states and icon replies from the server; lines of any other kind are dropped.
+    func serverLines() -> AsyncThrowingStream<ServerLine, Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    for try await msgBytes in transport.incoming() {
-                        let state = try JSONDecoder().decode(FullState.self, from: msgBytes)
-                        deviceIdLookup.ingest(state.deviceIds)
-                        continuation.yield(state)
+                    for try await bytes in transport.incoming() {
+                        let line = ServerLine.classify(bytes)
+                        switch line {
+                        case .state(let state):
+                            deviceIdLookup.ingest(state.deviceIds)
+                            continuation.yield(line)
+                        case .icon:
+                            continuation.yield(line)
+                        case .ignored:
+                            appLog("Ignoring unrecognized server line (\(bytes.count) bytes)")
+                        }
                     }
                     continuation.finish()
                 } catch {

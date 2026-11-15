@@ -341,9 +341,10 @@ final class MainViewModel: ObservableObject {
     private func subscribe(to repo: VolumeControlRepository) {
         streamTask = Task {
             do {
-                for try await state in repo.fullStateStream() {
+                for try await line in repo.serverLines() {
                     // Stop applying updates after cancellation so an in-flight value can't resurrect state.
                     if Task.isCancelled { break }
+                    guard case .state(let state) = line else { continue }
                     fullState = state // view state only here
                     connectionStatus = .connected
                     updateSharedState(with: state) // Update widget state
@@ -614,7 +615,8 @@ class FullState: Codable, Equatable {
                lhs.defaultDevice.masterMuted == rhs.defaultDevice.masterMuted &&
                lhs.defaultDevice.masterVolume == rhs.defaultDevice.masterVolume &&
                lhs.defaultDevice.name == rhs.defaultDevice.name &&
-               lhs.defaultDevice.sessions == rhs.defaultDevice.sessions
+               lhs.defaultDevice.sessions == rhs.defaultDevice.sessions &&
+               lhs.features == rhs.features
     }
     struct theDefaultDevice: Codable, Equatable {
         let deviceId: String
@@ -628,14 +630,19 @@ class FullState: Codable, Equatable {
         var muted: Bool
         var name: String
         var volume: Double
+        // v8: content-derived icon id; absent on older servers and until the server resolves the icon.
+        var iconId: String? = nil
     }
     var defaultDevice: theDefaultDevice
     let deviceIds: [String: String]
     let protocolVersion: Int
+    // v8: protocol extensions the server supports; absent on older servers.
+    let features: [String]?
     
-    init(protocolVersion: Int, deviceIds: [String:String], defaultDevice: theDefaultDevice) {
+    init(protocolVersion: Int, deviceIds: [String:String], defaultDevice: theDefaultDevice, features: [String]? = nil) {
         self.protocolVersion = protocolVersion
         self.deviceIds = deviceIds
         self.defaultDevice = defaultDevice
+        self.features = features
     }
 }

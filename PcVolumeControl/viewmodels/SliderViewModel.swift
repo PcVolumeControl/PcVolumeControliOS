@@ -180,7 +180,8 @@ final class SliderViewModel: ObservableObject {
                 id: session.id,
                 muted: session.muted,
                 name: displayName,
-                volume: session.volume
+                volume: session.volume,
+                iconId: session.iconId
             )
         }
 
@@ -208,7 +209,8 @@ final class SliderViewModel: ObservableObject {
                             id: existing.id,
                             muted: existing.muted,
                             name: incoming.name,
-                            volume: existing.volume
+                            volume: existing.volume,
+                            iconId: incoming.iconId
                         )
                     } else {
                         return incoming
@@ -259,7 +261,8 @@ final class SliderViewModel: ObservableObject {
                         id: sessionId,
                         muted: existing.muted,
                         name: session.name,
-                        volume: existing.volume
+                        volume: existing.volume,
+                        iconId: session.iconId
                     ))
                 } else {
                     orderedSessions.append(session)
@@ -301,7 +304,8 @@ final class SliderViewModel: ObservableObject {
                     id: session.id,
                     muted: session.muted,
                     name: incoming.name,
-                    volume: session.volume
+                    volume: session.volume,
+                    iconId: incoming.iconId
                 ))
             } else {
                 updatedSessions.append(incoming)
