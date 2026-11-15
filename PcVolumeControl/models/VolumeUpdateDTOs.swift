@@ -38,3 +38,13 @@ struct OneSession : Codable {
     let volume: Double
     let muted: Bool
 }
+
+// v8: ask for application icons; only sent to a server whose full state lists "icons" in features
+struct AIconRequest : Codable {
+    struct Payload : Codable {
+        let ids: [String]
+        let size: Int
+    }
+    let protocolVersion: Int
+    let iconRequest: Payload
+}

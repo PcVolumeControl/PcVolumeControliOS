@@ -50,6 +50,20 @@ final class VolumeControlRepositoryTests: XCTestCase {
         }
         XCTAssertEqual(states, 1)
     }
+
+    func testIconRequestEncoding() async throws {
+        let transport = MockVolumeTransport()
+        let repo = VolumeControlRepository(transport: transport)
+        try await repo.requestIcons(ids: ["abc", "def"], size: 66)
+
+        let sent = try XCTUnwrap(transport.sentData.first)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: sent) as? [String: Any])
+        XCTAssertEqual(json["protocolVersion"] as? Int, 7)
+        XCTAssertNil(json["defaultDevice"])
+        let request = try XCTUnwrap(json["iconRequest"] as? [String: Any])
+        XCTAssertEqual(request["ids"] as? [String], ["abc", "def"])
+        XCTAssertEqual(request["size"] as? Int, 66)
+    }
 }
 
 /// A transport that delivers a fixed list of lines, then ends.

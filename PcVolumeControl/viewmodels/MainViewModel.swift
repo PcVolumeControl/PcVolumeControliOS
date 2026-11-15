@@ -28,6 +28,9 @@ final class MainViewModel: ObservableObject {
     /// True only when the connection is live; controls are interactive only then.
     var isConnectionLive: Bool { connectionStatus == .connected }
 
+    /// Decoded icons for the current sessions, by icon id.
+    @Published private(set) var icons: [String: UIImage] = [:]
+
     private let connect: ConnectToServerUseCase
     private var defUpdate: SendDefaultDeviceUpdateUseCase
     private var masterUpdate: SendMasterChannelUpdateUseCase
@@ -53,17 +56,28 @@ final class MainViewModel: ObservableObject {
     private var connectedOverWiFi = false
     private var connectedOverCellular = false
 
+    // Icons (protocol v8 `icons` feature).
+    private let iconRepo: IconRepository
+    private var iconPlanner = IconRequestPlanner()
+    // Set by the session list; no icons are requested until then.
+    private var iconPixelSize: Int?
+    private var iconCacheLookups = Set<String>()
+    // Ids looked up in the local cache and not found there: only these are requested.
+    private var iconsMissingFromCache = Set<String>()
+
     init(connect: ConnectToServerUseCase,
          defUpdate: SendDefaultDeviceUpdateUseCase,
          masterUpdate: SendMasterChannelUpdateUseCase,
          sessionUpdate: SendSessionUpdateUseCase,
-         serversRepo: ServersRepository)
+         serversRepo: ServersRepository,
+         iconRepo: IconRepository = IconRepository())
     {
         self.connect = connect
         self.defUpdate = defUpdate
         self.masterUpdate = masterUpdate
         self.sessionUpdate = sessionUpdate
         self.serversRepo = serversRepo
+        self.iconRepo = iconRepo
         
         NotificationCenter.default.addObserver(
             forName: UIApplication.didEnterBackgroundNotification,
@@ -156,6 +170,8 @@ final class MainViewModel: ObservableObject {
             closeConnection(repo)
             currentRepo = nil
         }
+        // The next connection may be to another server, so forget its unavailable icons too.
+        iconPlanner = IconRequestPlanner()
 
         // Clear the full state to trigger UI reset
         fullState = nil
@@ -198,6 +214,7 @@ final class MainViewModel: ObservableObject {
             repo.transport.close()
             currentRepo = nil
         }
+        iconPlanner.connectionDropped()
         startReconnectLoop(to: server)
     }
 
@@ -223,6 +240,7 @@ final class MainViewModel: ObservableObject {
             repo.transport.close()
             currentRepo = nil
         }
+        iconPlanner.connectionDropped()
         updateSharedStateDisconnected()
 
         guard let server = lastConnectedServer else {
@@ -344,10 +362,15 @@ final class MainViewModel: ObservableObject {
                 for try await line in repo.serverLines() {
                     // Stop applying updates after cancellation so an in-flight value can't resurrect state.
                     if Task.isCancelled { break }
-                    guard case .state(let state) = line else { continue }
-                    fullState = state // view state only here
-                    connectionStatus = .connected
-                    updateSharedState(with: state) // Update widget state
+                    switch line {
+                    case .state(let state):
+                        fullState = state // view state only here
+                        connectionStatus = .connected
+                        updateSharedState(with: state) // Update widget state
+                        resolveIcons(for: state)
+                    case .icon(let reply):
+                        handleIconReply(reply)
+                    }
                 }
                 // Stream ended without throwing (server closed the connection).
                 if !Task.isCancelled { handleConnectionLost() }
@@ -375,6 +398,78 @@ final class MainViewModel: ObservableObject {
                 if !Task.isCancelled, let state = fullState {
                     updateSharedState(with: state)
                 }
+            }
+        }
+    }
+
+    // MARK: - Icons
+
+    /// Called by the session list with the pixel size it draws icons at.
+    func setIconPixelSize(_ size: Int) {
+        guard size != iconPixelSize else { return }
+        iconPixelSize = size
+        requestMissingIcons()
+    }
+
+    private func resolveIcons(for state: FullState) {
+        guard state.supportsIcons else { return }
+        let ids = state.iconIds
+        let current = Set(ids)
+        if icons.keys.contains(where: { !current.contains($0) }) {
+            icons = icons.filter { current.contains($0.key) }
+        }
+        iconsMissingFromCache.formIntersection(current)
+
+        let unchecked = ids.filter {
+            icons[$0] == nil && !iconCacheLookups.contains($0) && !iconsMissingFromCache.contains($0)
+        }
+        if !unchecked.isEmpty {
+            loadCachedIcons(unchecked)
+        }
+        requestMissingIcons()
+    }
+
+    private func loadCachedIcons(_ ids: [String]) {
+        iconCacheLookups.formUnion(ids)
+        Task {
+            for id in ids {
+                let image = await iconRepo.cachedIcon(for: id)
+                iconCacheLookups.remove(id)
+                if let image {
+                    icons[id] = image
+                } else {
+                    iconsMissingFromCache.insert(id)
+                }
+            }
+            requestMissingIcons()
+        }
+    }
+
+    private func requestMissingIcons() {
+        guard let state = fullState, let size = iconPixelSize, let repo = currentRepo else { return }
+        let skipping = Set(state.iconIds).subtracting(iconsMissingFromCache)
+        let batches = iconPlanner.requests(for: state.iconIds, supportsIcons: state.supportsIcons, skipping: skipping)
+        for ids in batches {
+            Task { try? await repo.requestIcons(ids: ids, size: size) }
+        }
+    }
+
+    private func handleIconReply(_ reply: IconReply) {
+        defer {
+            // Ids left out at the outstanding limit are requested once earlier replies are in.
+            if iconPlanner.outstanding.isEmpty { requestMissingIcons() }
+        }
+        guard let png = reply.png else {
+            iconPlanner.recordReply(for: reply.id, available: false)
+            return
+        }
+        iconPlanner.recordReply(for: reply.id, available: true)
+        iconsMissingFromCache.remove(reply.id)
+        Task {
+            if let image = await iconRepo.store(png: png, for: reply.id) {
+                icons[reply.id] = image
+            } else {
+                iconPlanner.recordReply(for: reply.id, available: false)
             }
         }
     }
@@ -644,5 +739,15 @@ class FullState: Codable, Equatable {
         self.deviceIds = deviceIds
         self.defaultDevice = defaultDevice
         self.features = features
+    }
+
+    var supportsIcons: Bool {
+        features?.contains("icons") ?? false
+    }
+
+    /// Distinct icon ids of the default device's sessions, in session order.
+    var iconIds: [String] {
+        var seen = Set<String>()
+        return defaultDevice.sessions.compactMap(\.iconId).filter { seen.insert($0).inserted }
     }
 }

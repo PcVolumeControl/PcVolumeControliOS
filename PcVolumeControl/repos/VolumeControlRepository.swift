@@ -64,6 +64,14 @@ struct VolumeControlRepository {
         try await send(dto)
     }
 
+    func requestIcons(ids: [String], size: Int) async throws {
+        let dto = AIconRequest(
+            protocolVersion: VolumeControlRepository.protocolVersion,
+            iconRequest: AIconRequest.Payload(ids: ids, size: size)
+        )
+        try await send(dto)
+    }
+
     private func send<T: Encodable>(_ dto: T) async throws {
         try await transport.outgoing(JSONEncoder().encode(dto))
     }

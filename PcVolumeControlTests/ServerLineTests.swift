@@ -60,6 +60,17 @@ final class ServerLineTests: XCTestCase {
         ])
     }
 
+    func testIconHelpersOnFullState() throws {
+        guard case .state(let v8) = try classify(Self.v8State),
+              case .state(let v7) = try classify(Self.v7State) else {
+            return XCTFail("Expected full states")
+        }
+        XCTAssertTrue(v8.supportsIcons)
+        XCTAssertEqual(v8.iconIds, ["4b13f0d55a3779a6ff892414f951be3f", "6b58026ae167f8f2e802f2531657443c"])
+        XCTAssertFalse(v7.supportsIcons)
+        XCTAssertEqual(v7.iconIds, [])
+    }
+
     func testUnknownFeatureNamesAreKept() throws {
         let text = Self.v7State.replacingOccurrences(
             of: #""applicationVersion":"v10","#,
@@ -69,6 +80,7 @@ final class ServerLineTests: XCTestCase {
             return XCTFail("Expected a full state")
         }
         XCTAssertEqual(state.features, ["somethingNew"])
+        XCTAssertFalse(state.supportsIcons)
     }
 
     // MARK: - Icon replies

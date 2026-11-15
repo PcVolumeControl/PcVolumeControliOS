@@ -140,6 +140,7 @@ struct RecessedCapsuleToggleStyle: ToggleStyle {
 
 struct SessionCell: View {
     @Binding var session: FullState.Session
+    var icon: UIImage? = nil
     var isChat: Bool = false
     var chatMode: Bool = false
     var isMasterMuted: Bool = false
@@ -201,6 +202,8 @@ struct SessionCell: View {
             }
 
             HStack {
+                SessionIconView(image: icon)
+
                 // Chat balance indicator
                 if isChat {
                     Image(systemName: "arrow.up.arrow.down.circle.fill")
