@@ -179,6 +179,56 @@ struct SessionCell: View {
         (muted || masterMuted) ? 0 : volume
     }
 
+    // Alias if the user set one, otherwise the session's name.
+    private var displayName: String {
+        aliasManager.displayNameForSession(sessionId: session.id, originalName: session.name)
+    }
+
+    private var detail: String? {
+        guard let detail = session.detail, !detail.isEmpty else { return nil }
+        return detail
+    }
+
+    /// The row's spoken name: the display name, then the detail when there is one.
+    nonisolated static func spokenName(_ displayName: String, detail: String?) -> String {
+        guard let detail else { return displayName }
+        return "\(displayName), \(detail)"
+    }
+
+    // The hidden stack reserves the detail's line in every row, so a row keeps its height
+    // when a detail appears, changes or disappears; without one the name is centred in it.
+    private var nameAndDetail: some View {
+        ZStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(verbatim: "X")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                Text(verbatim: "X")
+                    .font(.caption)
+            }
+            .hidden()
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text(displayName)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                if let detail {
+                    Text(detail)
+                        .font(.caption)
+                        .foregroundColor(.white.opacity(0.6))
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                }
+            }
+        }
+        .animation(nil, value: detail)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(SessionCell.spokenName(displayName, detail: detail))
+    }
+
     private var displayVolume: Double {
         SessionCell.displayVolume(
             volume: session.volume,
@@ -211,13 +261,7 @@ struct SessionCell: View {
                         .font(.system(size: 16))
                 }
 
-                // Use alias if available, otherwise use original name
-                Text(aliasManager.displayNameForSession(sessionId: session.id, originalName: session.name))
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
+                nameAndDetail
 
                 Spacer()
 
@@ -270,7 +314,7 @@ struct SessionCell: View {
                     value: $localVolume,
                     range: 0...100,
                     steps: 10,
-                    accessibilityLabel: "Volume for \(aliasManager.displayNameForSession(sessionId: session.id, originalName: session.name))",
+                    accessibilityLabel: "Volume for \(SessionCell.spokenName(displayName, detail: detail))",
                     onEditingChanged: { editing in
                         if editing {
                             ignoreServerUpdates = true
@@ -399,7 +443,8 @@ struct SessionCell: View {
         id: "radio.exe",
         muted: false,
         name: "Radio",
-        volume: 75.0
+        volume: 75.0,
+        detail: "Morning Show - Live"
     )
     
     SessionCell(

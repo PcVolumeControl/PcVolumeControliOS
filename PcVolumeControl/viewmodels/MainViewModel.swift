@@ -763,6 +763,9 @@ class FullState: Codable, Equatable {
         var volume: Double
         // v8: content-derived icon id; absent on older servers and until the server resolves the icon.
         var iconId: String? = nil
+        // v8: display-only label telling same-named sessions apart (a browser tab title).
+        // Never an identity: aliases and saved state key on `id`.
+        var detail: String? = nil
     }
     var defaultDevice: theDefaultDevice
     let deviceIds: [String: String]

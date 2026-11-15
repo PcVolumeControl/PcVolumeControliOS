@@ -15,7 +15,7 @@ The app connects to a free companion Windows server over your local network, dis
 - Per-app mute/unmute
 - Master volume and mute for the default output device
 - Auto-discovery of the server on your local network (or manual IP/port entry)
-- Application icons next to each app, when the server supports them
+- Application icons next to each app, and details such as a browser tab's title under the app name, when the server sends them
 
 ## Demo
 

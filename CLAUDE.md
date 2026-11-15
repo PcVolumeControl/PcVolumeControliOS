@@ -124,6 +124,19 @@ below are relative to `PcVolumeControl/`.
   only through the actor). Both are keyed by icon id and requested pixel size.
 - Rows show `views/SessionIconView.swift`: the icon, or a placeholder of the same size.
 
+### v8 session details
+
+- A session may carry an optional `detail` (one line, at most 120 characters), such as a
+  browser tab title, that tells apart sessions with the same `name`. It is not a feature:
+  nothing is detected or requested, it is shown whenever present, and servers may be
+  configured never to send it.
+- It is display text only. Aliases, saved order and anything else remembered about a
+  session keep keying on the session `id`; outgoing updates never include it.
+- `SessionCell` shows it under the name (or alias) in a smaller, dimmer style on one
+  line, truncated at the tail. Every row reserves that line, so heights do not change
+  when a detail appears, changes (up to once a second) or disappears; it is not
+  animated, and VoiceOver reads it after the name.
+
 ## Related Resources
 
 - Demo Video: https://youtu.be/OgueVzguP3w

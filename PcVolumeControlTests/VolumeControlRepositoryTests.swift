@@ -51,6 +51,25 @@ final class VolumeControlRepositoryTests: XCTestCase {
         XCTAssertEqual(states, 1)
     }
 
+    func testSessionUpdateDoesNotSendDetail() async throws {
+        let transport = MockVolumeTransport()
+        let repo = VolumeControlRepository(transport: transport)
+        let session = FullState.Session(
+            id: "dev-a|961", muted: false, name: "Firefox", volume: 40,
+            iconId: "4b13f0d55a3779a6ff892414f951be3f", detail: "Big Buck Bunny - YouTube"
+        )
+        try await repo.pushSessionValues(name: session.name, id: session.id, volume: session.volume, muted: session.muted)
+
+        let sent = try XCTUnwrap(transport.sentData.first)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: sent) as? [String: Any])
+        XCTAssertEqual(Set(json.keys), ["protocolVersion", "defaultDevice"])
+        let device = try XCTUnwrap(json["defaultDevice"] as? [String: Any])
+        XCTAssertEqual(Set(device.keys), ["sessions", "deviceId"])
+        let sessions = try XCTUnwrap(device["sessions"] as? [[String: Any]])
+        XCTAssertEqual(sessions.count, 1)
+        XCTAssertEqual(Set(sessions[0].keys), ["name", "id", "volume", "muted"])
+    }
+
     func testIconRequestEncoding() async throws {
         let transport = MockVolumeTransport()
         let repo = VolumeControlRepository(transport: transport)
