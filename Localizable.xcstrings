@@ -111,6 +111,9 @@
     "Enter a custom name for \"%@\"" : {
 
     },
+    "Enter a custom name for \"%@\" (%@)" : {
+
+    },
     "Enter new name" : {
 
     },

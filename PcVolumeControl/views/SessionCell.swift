@@ -166,6 +166,8 @@ struct SessionCell: View {
     // Show a dialog to edit the alias for this session
     @State private var isEditingAlias = false
     @State private var newAlias = ""
+    // Captured when the prompt opens: the live detail can change while the user types.
+    @State private var aliasPromptDetail: String? = nil
 
     private var isInEditMode: Bool {
         editMode?.wrappedValue == .active
@@ -429,7 +431,7 @@ struct SessionCell: View {
             
             Button("Cancel", role: .cancel) {}
         } message: {
-            if let detail {
+            if let detail = aliasPromptDetail {
                 Text("Enter a custom name for \"\(session.name)\" (\(detail))")
             } else {
                 Text("Enter a custom name for \"\(session.name)\"")
@@ -440,6 +442,7 @@ struct SessionCell: View {
     private func showAliasEditingPrompt() {
         // Initialize with current alias if exists
         newAlias = aliasManager.sessionAliases[session.id] ?? ""
+        aliasPromptDetail = detail
         isEditingAlias = true
     }
 }

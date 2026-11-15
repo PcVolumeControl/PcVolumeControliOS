@@ -55,7 +55,7 @@ final class SliderViewModel: ObservableObject {
     func reorder(from source: IndexSet, to destination: Int) {
         sessions.move(fromOffsets: source, toOffset: destination)
         if preserveSessionOrder {
-            savedOrder = sessions.map { $0.id }
+            saveOrderIfChanged()
         }
     }
 
@@ -237,7 +237,9 @@ final class SliderViewModel: ObservableObject {
         var remainingSessions = [FullState.Session]()
         
         // Add sessions in saved order
-        for sessionId in savedOrder {
+        let saved = savedOrder
+        let savedIds = Set(saved)
+        for sessionId in saved {
             if let session = incomingDict[sessionId] {
                 if editingIds.contains(sessionId), 
                    let existingIdx = sessions.firstIndex(where: { $0.id == sessionId }) {
@@ -250,7 +252,7 @@ final class SliderViewModel: ObservableObject {
         
         // Add new sessions not in saved order
         for session in incomingSessions {
-            if !savedOrder.contains(session.id) {
+            if !savedIds.contains(session.id) {
                 remainingSessions.append(session)
             }
         }
@@ -303,13 +305,18 @@ final class SliderViewModel: ObservableObject {
         }
     }
 
-    // By name; same-named sessions (told apart only by their detail) by id, so their order
-    // is stable and never depends on the detail.
+    // By name; same-named sessions (told apart only by their detail) by id, numbers in ids
+    // compared numerically, so their order is stable and never depends on the detail.
     private static func inDisplayOrder(_ lhs: FullState.Session, _ rhs: FullState.Session) -> Bool {
         switch lhs.name.localizedCaseInsensitiveCompare(rhs.name) {
         case .orderedAscending: return true
         case .orderedDescending: return false
-        case .orderedSame: return lhs.id < rhs.id
+        case .orderedSame:
+            switch lhs.id.localizedStandardCompare(rhs.id) {
+            case .orderedAscending: return true
+            case .orderedDescending: return false
+            case .orderedSame: return lhs.id < rhs.id
+            }
         }
     }
 }
