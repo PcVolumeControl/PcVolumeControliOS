@@ -72,6 +72,9 @@ final class MainViewModel: ObservableObject {
     // Bumped when `iconPlanner` is replaced.
     private var iconPlannerEpoch = 0
 
+    // Master volume last written to the widget's shared state; nil once it says disconnected.
+    private var sharedMasterVolume: Double?
+
     init(connect: ConnectToServerUseCase,
          defUpdate: SendDefaultDeviceUpdateUseCase,
          masterUpdate: SendMasterChannelUpdateUseCase,
@@ -378,7 +381,10 @@ final class MainViewModel: ObservableObject {
                     case .state(let state):
                         fullState = state // view state only here
                         connectionStatus = .connected
-                        updateSharedState(with: state) // Update widget state
+                        // The widget shows only the master volume; the heartbeat keeps it fresh otherwise.
+                        if state.defaultDevice.masterVolume != sharedMasterVolume {
+                            updateSharedState(with: state)
+                        }
                         resolveIcons(for: state)
                     case .icon(let reply):
                         handleIconReply(reply)
@@ -525,11 +531,13 @@ final class MainViewModel: ObservableObject {
         )
 
         SharedStateManager.writeState(sharedState)
+        sharedMasterVolume = state.defaultDevice.masterVolume
 
         WidgetCenter.shared.reloadTimelines(ofKind: "PcVolumeControlWidget")
     }
 
     private func updateSharedStateDisconnected() {
+        sharedMasterVolume = nil
         if var existingState = SharedStateManager.readState() {
             existingState.isConnected = false
             SharedStateManager.writeState(existingState)

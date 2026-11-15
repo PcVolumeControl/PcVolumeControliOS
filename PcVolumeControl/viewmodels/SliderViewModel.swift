@@ -190,9 +190,7 @@ final class SliderViewModel: ObservableObject {
         }
         // Otherwise sort alphabetically, but respect editingIds
         else {
-            let sortedSessions = processedSessions.sorted {
-                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
-            }
+            let sortedSessions = processedSessions.sorted(by: Self.inDisplayOrder)
 
             // If any sessions are being edited, preserve their values
             if !editingIds.isEmpty {
@@ -257,11 +255,11 @@ final class SliderViewModel: ObservableObject {
             }
         }
         
-        remainingSessions.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        remainingSessions.sort(by: Self.inDisplayOrder)
         sessions = orderedSessions + remainingSessions
         
         // Update saved order
-        savedOrder = sessions.map { $0.id }
+        saveOrderIfChanged()
     }
     
     private func updatePreservingCurrentOrder(incomingSessions: [FullState.Session]) {
@@ -288,14 +286,30 @@ final class SliderViewModel: ObservableObject {
         // Add new sessions at the end
         let existingIds = Set(sessions.map { $0.id })
         let newSessions = incomingSessions.filter { !existingIds.contains($0.id) }
-        let sortedNewSessions = newSessions.sorted { 
-            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending 
-        }
+        let sortedNewSessions = newSessions.sorted(by: Self.inDisplayOrder)
         
         sessions = updatedSessions + sortedNewSessions
         
         if preserveSessionOrder {
-            savedOrder = sessions.map { $0.id }
+            saveOrderIfChanged()
+        }
+    }
+
+    // States can arrive every second (session details), so skip writes that change nothing.
+    private func saveOrderIfChanged() {
+        let order = sessions.map { $0.id }
+        if order != savedOrder {
+            savedOrder = order
+        }
+    }
+
+    // By name; same-named sessions (told apart only by their detail) by id, so their order
+    // is stable and never depends on the detail.
+    private static func inDisplayOrder(_ lhs: FullState.Session, _ rhs: FullState.Session) -> Bool {
+        switch lhs.name.localizedCaseInsensitiveCompare(rhs.name) {
+        case .orderedAscending: return true
+        case .orderedDescending: return false
+        case .orderedSame: return lhs.id < rhs.id
         }
     }
 }

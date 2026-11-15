@@ -120,6 +120,24 @@ final class MainViewModelSimpleTests: XCTestCase {
         XCTAssertFalse(mockRepository.sentData.isEmpty)
     }
     
+    func testSessionUpdateDoesNotSendDetail() async throws {
+        let session = FullState.Session(
+            id: "dev-a|961", muted: false, name: "Firefox", volume: 40,
+            iconId: "4b13f0d55a3779a6ff892414f951be3f", detail: "Big Buck Bunny - YouTube"
+        )
+
+        try await sut.updateSession(session)
+
+        let sent = try XCTUnwrap(mockRepository.sentData.first)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: sent) as? [String: Any])
+        XCTAssertEqual(Set(json.keys), ["protocolVersion", "defaultDevice"])
+        let device = try XCTUnwrap(json["defaultDevice"] as? [String: Any])
+        XCTAssertEqual(Set(device.keys), ["sessions", "deviceId"])
+        let sessions = try XCTUnwrap(device["sessions"] as? [[String: Any]])
+        XCTAssertEqual(sessions.count, 1)
+        XCTAssertEqual(Set(sessions[0].keys), ["name", "id", "volume", "muted"])
+    }
+
     // MARK: - Error Handling Tests
     
     func testConnectToServerWithInvalidAddress() async {

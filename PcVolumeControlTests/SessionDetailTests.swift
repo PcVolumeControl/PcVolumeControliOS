@@ -33,6 +33,8 @@ final class SessionDetailTests: XCTestCase {
         let vm = SliderViewModel()
         vm.fullState = state(details: ["Tab A", "Tab B", nil])
         let ids = vm.sessions.map(\.id)
+        // Same-named sessions are ordered by id, never by detail.
+        XCTAssertEqual(ids, ["dev-a|0", "dev-a|1", "dev-a|2"])
 
         vm.fullState = state(details: ["Tab A2", nil, "Tab C"])
 

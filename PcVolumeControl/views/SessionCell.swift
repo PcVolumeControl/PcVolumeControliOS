@@ -185,12 +185,13 @@ struct SessionCell: View {
     }
 
     private var detail: String? {
-        guard let detail = session.detail, !detail.isEmpty else { return nil }
+        guard let detail = session.detail?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !detail.isEmpty else { return nil }
         return detail
     }
 
     /// The row's spoken name: the display name, then the detail when there is one.
-    nonisolated static func spokenName(_ displayName: String, detail: String?) -> String {
+    static func spokenName(_ displayName: String, detail: String?) -> String {
         guard let detail else { return displayName }
         return "\(displayName), \(detail)"
     }
@@ -200,26 +201,18 @@ struct SessionCell: View {
     private var nameAndDetail: some View {
         ZStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 1) {
-                Text(verbatim: "X")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                Text(verbatim: "X")
-                    .font(.caption)
+                nameLine("X")
+                detailLine("X")
             }
             .hidden()
 
             VStack(alignment: .leading, spacing: 1) {
-                Text(displayName)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
+                nameLine(displayName)
                     .foregroundColor(.white)
-                    .lineLimit(1)
                     .truncationMode(.middle)
                 if let detail {
-                    Text(detail)
-                        .font(.caption)
+                    detailLine(detail)
                         .foregroundColor(.white.opacity(0.6))
-                        .lineLimit(1)
                         .truncationMode(.tail)
                 }
             }
@@ -227,6 +220,15 @@ struct SessionCell: View {
         .animation(nil, value: detail)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(SessionCell.spokenName(displayName, detail: detail))
+    }
+
+    // Shared by the visible lines and the hidden ones that reserve their height.
+    private func nameLine(_ text: String) -> some View {
+        Text(text).font(.subheadline).fontWeight(.medium).lineLimit(1)
+    }
+
+    private func detailLine(_ text: String) -> some View {
+        Text(text).font(.caption).lineLimit(1)
     }
 
     private var displayVolume: Double {
@@ -427,7 +429,11 @@ struct SessionCell: View {
             
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Enter a custom name for \"\(session.name)\"")
+            if let detail {
+                Text("Enter a custom name for \"\(session.name)\" (\(detail))")
+            } else {
+                Text("Enter a custom name for \"\(session.name)\"")
+            }
         }
     }
     
