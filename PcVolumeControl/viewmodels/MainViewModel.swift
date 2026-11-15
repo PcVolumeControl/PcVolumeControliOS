@@ -69,6 +69,8 @@ final class MainViewModel: ObservableObject {
     private var iconsMissingFromCache = Set<String>()
     // Bumped when in-flight lookups and decodes no longer apply (new pixel size, user disconnect).
     private var iconGeneration = 0
+    // Bumped when `iconPlanner` is replaced.
+    private var iconPlannerEpoch = 0
 
     init(connect: ConnectToServerUseCase,
          defUpdate: SendDefaultDeviceUpdateUseCase,
@@ -177,6 +179,7 @@ final class MainViewModel: ObservableObject {
         }
         // The next connection may be to another server, so forget its unavailable icons too.
         iconPlanner = IconRequestPlanner()
+        iconPlannerEpoch += 1
         icons = [:]
         resetIconResolution()
 
@@ -200,6 +203,8 @@ final class MainViewModel: ObservableObject {
         reconnectTask?.cancel()
         reconnectTask = nil
         stopPathMonitor()
+        // Replies still in flight are no longer read once the stream is cancelled.
+        iconPlanner.connectionDropped()
     }
 
     private func appWillEnterForeground() {
@@ -485,21 +490,23 @@ final class MainViewModel: ObservableObject {
 
         let id = reply.id
         let generation = iconGeneration
+        let plannerEpoch = iconPlannerEpoch
         let isCurrentSize = size == iconPixelSize
         if isCurrentSize {
             iconsResolving.insert(id)
         }
         Task {
             let image = await iconRepo.store(png: png, for: id, size: size)
-            guard generation == iconGeneration, isCurrentSize else { return }
-            iconsResolving.remove(id)
-            if let image {
-                icons[id] = image
-                iconsAtCurrentSize.insert(id)
-                iconsMissingFromCache.remove(id)
-            } else {
+            // An undecodable image stays unavailable whatever size is drawn now.
+            if image == nil, plannerEpoch == iconPlannerEpoch {
                 iconPlanner.markUnavailable(id)
             }
+            guard generation == iconGeneration, isCurrentSize else { return }
+            iconsResolving.remove(id)
+            guard let image else { return }
+            icons[id] = image
+            iconsAtCurrentSize.insert(id)
+            iconsMissingFromCache.remove(id)
         }
     }
 

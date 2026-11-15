@@ -203,16 +203,16 @@ final class MainViewModelSimpleTests: XCTestCase {
         // Record every published status: polling can miss the short .reconnecting phase
         // when the main thread is busy for longer than the reconnect window.
         var statuses: [MainViewModel.ConnectionStatus] = []
-        let subscription = sut.$connectionStatus.sink { statuses.append($0) }
+        let lost = expectation(description: "Reconnect loop gives up")
+        let subscription = sut.$connectionStatus.sink { status in
+            statuses.append(status)
+            if status == .lost { lost.fulfill() }
+        }
         sut.startReconnectLoop(to: DiscoveredServer(address: "192.0.2.1", port: 3000))
 
-        // It should enter .reconnecting before settling on .lost
-        for _ in 0..<300 {
-            if sut.connectionStatus == .lost { break }
-            try? await Task.sleep(nanoseconds: 10_000_000)
-        }
+        await fulfillment(of: [lost], timeout: 10)
         subscription.cancel()
-        XCTAssertTrue(statuses.contains(.reconnecting))
+        XCTAssertEqual(statuses, [.connected, .reconnecting, .lost])
         XCTAssertEqual(sut.connectionStatus, .lost)
     }
 

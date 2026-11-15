@@ -102,19 +102,20 @@ below are relative to `PcVolumeControl/`.
 
 `protocolVersion` stays 7 on the wire; support is detected per feature.
 
-- A server with icon support includes `icons` in a `features` array on the full state
-  (other entries may be present and are ignored) and adds an optional `iconId`
+- A server with icon support includes `icons` in a `features` array of strings on the
+  full state (other feature names may be present and are ignored) and adds an optional `iconId`
   (`[a-z0-9]{1,64}`, content-derived) to sessions. Older servers send neither, and the
   app then never sends an icon request.
 - Lines are classified in `models/ServerLine.swift`: `defaultDevice` means a full
   state, `icon` means an icon reply, anything else is ignored. Not every line is a
   full state. A full state that cannot be decoded ends the stream, which goes through
-  the normal connection-lost and reconnect path, as before v8.
+  the normal connection-lost and reconnect path, as before v8 (so a server that keeps
+  sending one makes the app reconnect repeatedly).
 - `datasources/LineFramer.swift` frames the byte stream; icon lines can be several
   hundred KiB.
 - `usecases/IconRequestPlanner.swift` decides what to request: at most 32 ids per
   `iconRequest`, at most 64 outstanding, outstanding ids reset when the connection
-  drops. Ids without a usable image (`notFound` or any other `error`, missing or bad
+  drops or the app goes to the background (both end the stream). Ids without a usable image (`notFound` or any other `error`, missing or bad
   data, a PNG that does not decode) are not asked for again until the user connects
   anew.
 - `repos/IconRepository.swift` is the entry point for icons: an actor that decodes
