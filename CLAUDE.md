@@ -87,31 +87,40 @@ automatically. A clean run reports `No unused code detected.`. Notes:
 
 The app communicates with the PC server using a JSON protocol:
 
-- **Server → Client**: Sends `FullState` with all devices and sessions information
+- **Server → Client**: Sends `FullState` with all devices and sessions information,
+  and (v8) icon replies to the client's own icon requests
 - **Client → Server**: Sends updates for:
   - Default device changes
   - Master volume/mute changes
   - Individual application volume/mute changes
+  - (v8) `iconRequest` for application icons
 
-The canonical spec is `docs/PROTOCOL.md` in the PcVolumeControlServer repo.
+The canonical spec is `docs/PROTOCOL.md` in the PcVolumeControlServer repo. Paths
+below are relative to `PcVolumeControl/`.
 
 ### v8 icon extension
 
 `protocolVersion` stays 7 on the wire; support is detected per feature.
 
-- A server with icon support adds `"features": ["icons"]` to the full state and an
-  optional `iconId` (`[a-z0-9]{1,64}`, content-derived) to sessions. Older servers send
-  neither, and the app then never sends an icon request.
+- A server with icon support includes `icons` in a `features` array on the full state
+  (other entries may be present and are ignored) and adds an optional `iconId`
+  (`[a-z0-9]{1,64}`, content-derived) to sessions. Older servers send neither, and the
+  app then never sends an icon request.
 - Lines are classified in `models/ServerLine.swift`: `defaultDevice` means a full
-  state, `icon` means an icon reply, anything else is ignored. A full state that
-  cannot be decoded still ends the connection.
+  state, `icon` means an icon reply, anything else is ignored. Not every line is a
+  full state. A full state that cannot be decoded ends the stream, which goes through
+  the normal connection-lost and reconnect path, as before v8.
 - `datasources/LineFramer.swift` frames the byte stream; icon lines can be several
   hundred KiB.
 - `usecases/IconRequestPlanner.swift` decides what to request: at most 32 ids per
-  `iconRequest`, at most 64 outstanding, `notFound` ids not asked for again until the
-  user connects anew, outstanding ids reset when the connection drops.
-- `repos/IconRepository.swift` (memory) and `datasources/IconDiskCacheDataSource.swift`
-  (Caches/AppIcons) cache icons by id and requested pixel size.
+  `iconRequest`, at most 64 outstanding, outstanding ids reset when the connection
+  drops. Ids without a usable image (`notFound` or any other `error`, missing or bad
+  data, a PNG that does not decode) are not asked for again until the user connects
+  anew.
+- `repos/IconRepository.swift` is the entry point for icons: an actor that decodes
+  PNGs off the main thread and keeps a bounded memory cache over
+  `datasources/IconDiskCacheDataSource.swift` (Caches/AppIcons, not thread-safe, used
+  only through the actor). Both are keyed by icon id and requested pixel size.
 - Rows show `views/SessionIconView.swift`: the icon, or a placeholder of the same size.
 
 ## Related Resources
