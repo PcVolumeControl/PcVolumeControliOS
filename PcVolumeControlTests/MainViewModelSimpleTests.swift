@@ -6,6 +6,7 @@
 //  Copyright © 2025 PcVolumeControl. All rights reserved.
 //
 
+import Combine
 import XCTest
 import UIKit
 @testable import PcVolumeControl
@@ -199,16 +200,19 @@ final class MainViewModelSimpleTests: XCTestCase {
         sut.reconnectInitialDelaySeconds = 0.02
         sut.reconnectMaxDelaySeconds = 0.02
         sut.reconnectWindowSeconds = 0.1
+        // Record every published status: polling can miss the short .reconnecting phase
+        // when the main thread is busy for longer than the reconnect window.
+        var statuses: [MainViewModel.ConnectionStatus] = []
+        let subscription = sut.$connectionStatus.sink { statuses.append($0) }
         sut.startReconnectLoop(to: DiscoveredServer(address: "192.0.2.1", port: 3000))
 
         // It should enter .reconnecting before settling on .lost
-        var sawReconnecting = false
         for _ in 0..<300 {
-            if sut.connectionStatus == .reconnecting { sawReconnecting = true }
             if sut.connectionStatus == .lost { break }
             try? await Task.sleep(nanoseconds: 10_000_000)
         }
-        XCTAssertTrue(sawReconnecting)
+        subscription.cancel()
+        XCTAssertTrue(statuses.contains(.reconnecting))
         XCTAssertEqual(sut.connectionStatus, .lost)
     }
 
