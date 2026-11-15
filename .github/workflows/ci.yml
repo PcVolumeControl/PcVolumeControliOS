@@ -24,6 +24,20 @@ jobs:
       - name: Run tests
         run: bundle exec fastlane test
 
+      # The console output is condensed by xcbeautify; keep the raw log, the result
+      # bundle and any crash reports so failures can be diagnosed.
+      - name: Upload test diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-diagnostics
+          path: |
+            ~/Library/Logs/scan
+            ~/Library/Developer/Xcode/DerivedData/*/Logs/Test/*.xcresult
+            ~/Library/Logs/DiagnosticReports
+          if-no-files-found: ignore
+          retention-days: 7
+
   periphery:
     runs-on: macos-latest
     steps:
