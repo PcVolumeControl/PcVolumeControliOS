@@ -13,9 +13,9 @@ final class VolumeControlRepositoryTests: XCTestCase {
 
     func testUnknownAndMalformedLinesDoNotEndTheStream() async throws {
         let transport = ScriptedTransport(lines: [
-            ServerLineTests.v7State,
+            ServerLineTests.plainState,
             "not json",
-            #"{"protocolVersion":7,"somethingNew":true}"#,
+            #"{"protocolVersion":8,"somethingNew":true}"#,
             ServerLineTests.iconNotFoundReply,
             ServerLineTests.v8State,
         ])
@@ -33,9 +33,9 @@ final class VolumeControlRepositoryTests: XCTestCase {
 
     func testUndecodableFullStateEndsTheStream() async {
         let transport = ScriptedTransport(lines: [
-            ServerLineTests.v7State,
-            #"{"protocolVersion":7,"defaultDevice":{"deviceId":"x"}}"#,
-            ServerLineTests.v7State,
+            ServerLineTests.plainState,
+            #"{"protocolVersion":8,"defaultDevice":{"deviceId":"x"}}"#,
+            ServerLineTests.plainState,
         ])
         let repo = VolumeControlRepository(transport: transport)
 
@@ -51,6 +51,37 @@ final class VolumeControlRepositoryTests: XCTestCase {
         XCTAssertEqual(states, 1)
     }
 
+    func testOlderServerEndsTheStreamWithAVersionMismatch() async {
+        let transport = ScriptedTransport(lines: [ServerLineTests.olderServerState, ServerLineTests.plainState])
+        let repo = VolumeControlRepository(transport: transport)
+
+        var states = 0
+        do {
+            for try await _ in repo.serverLines() {
+                states += 1
+            }
+            XCTFail("Expected the stream to end with an error")
+        } catch {
+            XCTAssertEqual((error as? ProtocolVersionMismatch)?.serverVersion, 7)
+        }
+        XCTAssertEqual(states, 0)
+    }
+
+    func testEveryOutgoingMessageSaysVersion8() async throws {
+        let transport = MockVolumeTransport()
+        let repo = VolumeControlRepository(transport: transport)
+        try await repo.pushDefaultDevice(id: "dev-a")
+        try await repo.pushMasterValues(id: "dev-a", muted: false, volume: 50)
+        try await repo.pushSessionValues(name: "Firefox", id: "s1", volume: 40, muted: false, deviceId: "dev-a")
+        try await repo.requestIcons(ids: ["abc"], size: 66)
+
+        XCTAssertEqual(transport.sentData.count, 4)
+        for data in transport.sentData {
+            let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+            XCTAssertEqual(json["protocolVersion"] as? Int, 8)
+        }
+    }
+
     func testIconRequestEncoding() async throws {
         let transport = MockVolumeTransport()
         let repo = VolumeControlRepository(transport: transport)
@@ -58,7 +89,7 @@ final class VolumeControlRepositoryTests: XCTestCase {
 
         let sent = try XCTUnwrap(transport.sentData.first)
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: sent) as? [String: Any])
-        XCTAssertEqual(json["protocolVersion"] as? Int, 7)
+        XCTAssertEqual(json["protocolVersion"] as? Int, 8)
         XCTAssertNil(json["defaultDevice"])
         let request = try XCTUnwrap(json["iconRequest"] as? [String: Any])
         XCTAssertEqual(request["ids"] as? [String], ["abc", "def"])

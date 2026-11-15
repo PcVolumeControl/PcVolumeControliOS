@@ -112,6 +112,8 @@ final class MainViewModelSimpleTests: XCTestCase {
             volume: 80.0
         )
         
+        sut.fullState = createMockFullState()
+
         // When - this will call the actual use case but with mock transport
         try await sut.updateSession(testSession)
         
@@ -119,12 +121,35 @@ final class MainViewModelSimpleTests: XCTestCase {
         XCTAssertTrue(mockRepository.outgoingDataCalled)
         XCTAssertFalse(mockRepository.sentData.isEmpty)
     }
+
+    func testSessionUpdateGoesToTheDefaultDeviceWhateverTheSessionId() async throws {
+        // Session ids are opaque: this one does not contain any device id.
+        sut.fullState = createMockFullState()
+        let session = FullState.Session(id: "stream-42", muted: false, name: "Firefox", volume: 30)
+
+        try await sut.updateSession(session)
+
+        let sent = try XCTUnwrap(mockRepository.sentData.first)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: sent) as? [String: Any])
+        XCTAssertEqual(json["protocolVersion"] as? Int, 8)
+        let device = try XCTUnwrap(json["defaultDevice"] as? [String: Any])
+        XCTAssertEqual(device["deviceId"] as? String, "device1")
+        let sessions = try XCTUnwrap(device["sessions"] as? [[String: Any]])
+        XCTAssertEqual(sessions.first?["id"] as? String, "stream-42")
+    }
+
+    func testSessionUpdateWithoutAStateSendsNothing() async throws {
+        let session = FullState.Session(id: "stream-42", muted: false, name: "Firefox", volume: 30)
+        try await sut.updateSession(session)
+        XCTAssertTrue(mockRepository.sentData.isEmpty)
+    }
     
     func testSessionUpdateDoesNotSendDetail() async throws {
         let session = FullState.Session(
             id: "dev-a|961", muted: false, name: "Firefox", volume: 40,
             iconId: "4b13f0d55a3779a6ff892414f951be3f", detail: "Big Buck Bunny - YouTube"
         )
+        sut.fullState = createMockFullState()
 
         try await sut.updateSession(session)
 
@@ -165,7 +190,7 @@ final class MainViewModelSimpleTests: XCTestCase {
         
         // Then
         XCTAssertNotNil(sut.fullState)
-        XCTAssertEqual(sut.fullState?.protocolVersion, 7)
+        XCTAssertEqual(sut.fullState?.protocolVersion, 8)
         XCTAssertEqual(sut.fullState?.defaultDevice.deviceId, "device1")
     }
     
@@ -345,7 +370,7 @@ final class MainViewModelSimpleTests: XCTestCase {
         let deviceIds = ["device1": "Default Device", "device2": "Secondary Device"]
         
         return FullState(
-            protocolVersion: 7,
+            protocolVersion: 8,
             deviceIds: deviceIds,
             defaultDevice: defaultDevice
         )

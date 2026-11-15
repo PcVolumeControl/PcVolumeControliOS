@@ -39,7 +39,7 @@ struct OneSession : Codable {
     let muted: Bool
 }
 
-// v8: ask for application icons; only sent to a server whose full state lists "icons" in features
+// ask for application icons by icon id
 struct AIconRequest : Codable {
     struct Payload : Codable {
         let ids: [String]

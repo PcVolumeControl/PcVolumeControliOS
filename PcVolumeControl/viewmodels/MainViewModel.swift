@@ -386,6 +386,12 @@ final class MainViewModel: ObservableObject {
                 }
                 // Stream ended without throwing (server closed the connection).
                 if !Task.isCancelled { handleConnectionLost() }
+            } catch let mismatch as ProtocolVersionMismatch {
+                // Reconnecting cannot help: leave the server and tell the user which side to update.
+                if !Task.isCancelled {
+                    disconnect()
+                    self.error = mismatch.localizedDescription
+                }
             } catch {
                 // RST / keepalive timeout / read error.
                 if !Task.isCancelled { handleConnectionLost() }
@@ -432,7 +438,7 @@ final class MainViewModel: ObservableObject {
     }
 
     private func resolveIcons(for state: FullState) {
-        guard state.supportsIcons, let size = iconPixelSize else { return }
+        guard let size = iconPixelSize else { return }
         let ids = state.iconIds
         let current = Set(ids)
         if icons.keys.contains(where: { !current.contains($0) }) {
@@ -469,9 +475,7 @@ final class MainViewModel: ObservableObject {
     private func requestMissingIcons() {
         guard let state = fullState, let size = iconPixelSize, let repo = currentRepo else { return }
         let skipping = Set(state.iconIds).subtracting(iconsMissingFromCache).union(iconsResolving)
-        let batches = iconPlanner.requests(
-            for: state.iconIds, size: size, supportsIcons: state.supportsIcons, skipping: skipping
-        )
+        let batches = iconPlanner.requests(for: state.iconIds, size: size, skipping: skipping)
         // A failed send means the connection is failing; its loss resets the outstanding ids.
         for ids in batches {
             Task { try? await repo.requestIcons(ids: ids, size: size) }
@@ -555,12 +559,17 @@ final class MainViewModel: ObservableObject {
     func updateMaster(id: String, muted: Bool, vol: Double) {
         Task { try? await masterUpdate.execute(id: id, muted: muted, volume: vol) }
     }
+    // Sessions shown are those of the current default device, so updates go to it.
     func updateSession(name: String, id: String, vol: Double, muted: Bool) {
-        Task { try? await sessionUpdate.execute(name: name, id: id, vol: vol, muted: muted) }
+        guard let deviceId = fullState?.defaultDevice.deviceId else { return }
+        Task { try? await sessionUpdate.execute(name: name, id: id, vol: vol, muted: muted, deviceId: deviceId) }
     }
     
     func updateSession(_ session: FullState.Session) async throws {
-        try await sessionUpdate.execute(name: session.name, id: session.id, vol: session.volume, muted: session.muted)
+        guard let deviceId = fullState?.defaultDevice.deviceId else { return }
+        try await sessionUpdate.execute(
+            name: session.name, id: session.id, vol: session.volume, muted: session.muted, deviceId: deviceId
+        )
     }
     
     // MARK: - Server Management
@@ -746,8 +755,7 @@ class FullState: Codable, Equatable {
                lhs.defaultDevice.masterMuted == rhs.defaultDevice.masterMuted &&
                lhs.defaultDevice.masterVolume == rhs.defaultDevice.masterVolume &&
                lhs.defaultDevice.name == rhs.defaultDevice.name &&
-               lhs.defaultDevice.sessions == rhs.defaultDevice.sessions &&
-               lhs.features == rhs.features
+               lhs.defaultDevice.sessions == rhs.defaultDevice.sessions
     }
     struct theDefaultDevice: Codable, Equatable {
         let deviceId: String
@@ -761,27 +769,20 @@ class FullState: Codable, Equatable {
         var muted: Bool
         var name: String
         var volume: Double
-        // v8: content-derived icon id; absent on older servers and until the server resolves the icon.
+        // Content-derived icon id; absent until the server resolves the icon, or if it has none.
         var iconId: String? = nil
-        // v8: display-only label telling same-named sessions apart (a browser tab title).
+        // Display-only label telling same-named sessions apart (a browser tab title).
         // Never an identity: aliases and saved state key on `id`.
         var detail: String? = nil
     }
     var defaultDevice: theDefaultDevice
     let deviceIds: [String: String]
     let protocolVersion: Int
-    // v8: protocol extensions the server supports; absent on older servers.
-    let features: [String]?
     
-    init(protocolVersion: Int, deviceIds: [String:String], defaultDevice: theDefaultDevice, features: [String]? = nil) {
+    init(protocolVersion: Int, deviceIds: [String:String], defaultDevice: theDefaultDevice) {
         self.protocolVersion = protocolVersion
         self.deviceIds = deviceIds
         self.defaultDevice = defaultDevice
-        self.features = features
-    }
-
-    var supportsIcons: Bool {
-        features?.contains("icons") ?? false
     }
 
     /// Distinct icon ids of the default device's sessions, in session order.

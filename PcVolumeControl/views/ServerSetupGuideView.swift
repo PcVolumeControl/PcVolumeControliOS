@@ -9,11 +9,11 @@
 
 import SwiftUI
 
-// Single source of truth for the Windows server download location.
+// Single source of truth for the server download location.
 enum ServerDownload {
-    static let releasesURL = URL(string: "https://github.com/PcVolumeControl/PcVolumeControlWindows/releases/latest")!
+    static let releasesURL = URL(string: "https://github.com/PcVolumeControl/PcVolumeControlServer/releases/latest")!
     static let organizationURL = URL(string: "https://github.com/PcVolumeControl")!
-    static var supportedProtocolVersion: Int { VolumeControlRepository.protocolVersion }
+    static var supportedProtocolVersion: Int { WireProtocol.version }
 }
 
 struct ServerSetupGuideView: View {
@@ -29,12 +29,12 @@ struct ServerSetupGuideView: View {
                     Link(destination: ServerDownload.releasesURL) {
                         HStack(spacing: 4) {
                             Image(systemName: "link")
-                            Text("PcVolumeControlWindows releases")
+                            Text("PcVolumeControlServer releases")
                         }
                         .font(.footnote)
                         .foregroundColor(.sliderPink)
                     }
-                    .accessibilityLabel("Download PcVolumeControlWindows releases on GitHub")
+                    .accessibilityLabel("Download PcVolumeControlServer releases on GitHub")
                     ShareLink(item: ServerDownload.releasesURL) {
                         HStack(spacing: 4) {
                             Image(systemName: "square.and.arrow.up")

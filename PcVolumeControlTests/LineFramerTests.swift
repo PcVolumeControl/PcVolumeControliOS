@@ -23,7 +23,7 @@ final class LineFramerTests: XCTestCase {
         var framer = LineFramer()
         XCTAssertEqual(framer.append(Data(#"{"protocol"#.utf8)), [])
         XCTAssertEqual(framer.append(Data(#"Version":7,"#.utf8)), [])
-        XCTAssertEqual(strings(framer.append(Data((#""x":1}"# + "\n{").utf8))), [#"{"protocolVersion":7,"x":1}"#])
+        XCTAssertEqual(strings(framer.append(Data((#""x":1}"# + "\n{").utf8))), [#"{"protocolVersion":8,"x":1}"#])
         XCTAssertEqual(strings(framer.append(Data("}\n".utf8))), ["{}"])
     }
 

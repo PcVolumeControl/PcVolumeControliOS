@@ -16,13 +16,7 @@ final class IconRequestPlannerTests: XCTestCase {
     }
 
     private func plan(_ planner: inout IconRequestPlanner, _ ids: [String], skipping: Set<String> = []) -> [[String]] {
-        planner.requests(for: ids, size: 66, supportsIcons: true, skipping: skipping)
-    }
-
-    func testNoRequestsWithoutTheIconsFeature() {
-        var planner = IconRequestPlanner()
-        XCTAssertEqual(planner.requests(for: ["a", "b"], size: 66, supportsIcons: false, skipping: []), [])
-        XCTAssertTrue(planner.outstanding.isEmpty)
+        planner.requests(for: ids, size: 66, skipping: skipping)
     }
 
     func testDuplicatesAreRequestedOnce() {
@@ -104,8 +98,8 @@ final class IconRequestPlannerTests: XCTestCase {
 
     func testReplyReportsTheRequestedSize() {
         var planner = IconRequestPlanner()
-        _ = planner.requests(for: ["a"], size: 48, supportsIcons: true, skipping: [])
-        _ = planner.requests(for: ["b"], size: 96, supportsIcons: true, skipping: [])
+        _ = planner.requests(for: ["a"], size: 48, skipping: [])
+        _ = planner.requests(for: ["b"], size: 96, skipping: [])
         XCTAssertEqual(planner.recordReply(for: "a", available: true), 48)
         XCTAssertEqual(planner.recordReply(for: "b", available: true), 96)
     }

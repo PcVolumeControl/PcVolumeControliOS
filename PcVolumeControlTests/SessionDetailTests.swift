@@ -20,12 +20,11 @@ final class SessionDetailTests: XCTestCase {
             )
         }
         return FullState(
-            protocolVersion: 7,
+            protocolVersion: 8,
             deviceIds: ["dev-a": "Speakers"],
             defaultDevice: FullState.theDefaultDevice(
                 deviceId: "dev-a", masterMuted: false, masterVolume: 80, name: "Speakers", sessions: sessions
-            ),
-            features: ["icons"]
+            )
         )
     }
 

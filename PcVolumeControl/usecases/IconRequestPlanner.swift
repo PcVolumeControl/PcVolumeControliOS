@@ -21,10 +21,8 @@ struct IconRequestPlanner {
     /// The requests to send now for `ids`, in order, at `size` pixels. Leaves out ids that
     /// are invalid, repeated, in `skipping` (cached or being resolved locally), already
     /// outstanding, or unavailable, and stops at the outstanding limit; the rest are
-    /// planned once replies free up room. Returns nothing unless the server supports icons.
-    mutating func requests(for ids: [String], size: Int, supportsIcons: Bool, skipping: Set<String>) -> [[String]] {
-        guard supportsIcons else { return [] }
-
+    /// planned once replies free up room.
+    mutating func requests(for ids: [String], size: Int, skipping: Set<String>) -> [[String]] {
         let capacity = Self.maxOutstanding - outstanding.count
         var planned: [String] = []
         var seen = Set<String>()
