@@ -6,30 +6,35 @@
 //
 
 import XCTest
+import SwiftUI
 @testable import PcVolumeControl
 
 final class IconRequestPlannerTests: XCTestCase {
 
-    private func ids(_ count: Int, prefix: String = "id") -> [String] {
-        (0..<count).map { "\(prefix)\($0)" }
+    private func ids(_ count: Int) -> [String] {
+        (0..<count).map { "id\($0)" }
+    }
+
+    private func plan(_ planner: inout IconRequestPlanner, _ ids: [String], skipping: Set<String> = []) -> [[String]] {
+        planner.requests(for: ids, size: 66, supportsIcons: true, skipping: skipping)
     }
 
     func testNoRequestsWithoutTheIconsFeature() {
         var planner = IconRequestPlanner()
-        XCTAssertEqual(planner.requests(for: ["a", "b"], supportsIcons: false, skipping: []), [])
+        XCTAssertEqual(planner.requests(for: ["a", "b"], size: 66, supportsIcons: false, skipping: []), [])
         XCTAssertTrue(planner.outstanding.isEmpty)
     }
 
     func testDuplicatesAreRequestedOnce() {
         var planner = IconRequestPlanner()
-        XCTAssertEqual(planner.requests(for: ["a", "b", "a", "b", "c"], supportsIcons: true, skipping: []), [["a", "b", "c"]])
+        XCTAssertEqual(plan(&planner, ["a", "b", "a", "b", "c"]), [["a", "b", "c"]])
     }
 
     func testSkippedAndInvalidIdsAreNotRequested() {
         var planner = IconRequestPlanner()
-        let batches = planner.requests(
-            for: ["cached", "UPPER", "", "has-dash", String(repeating: "a", count: 65), "wanted"],
-            supportsIcons: true,
+        let batches = plan(
+            &planner,
+            ["cached", "UPPER", "", "has-dash", String(repeating: "a", count: 65), "wanted"],
             skipping: ["cached"]
         )
         XCTAssertEqual(batches, [["wanted"]])
@@ -37,14 +42,14 @@ final class IconRequestPlannerTests: XCTestCase {
 
     func testOutstandingIdsAreNotRequestedAgain() {
         var planner = IconRequestPlanner()
-        XCTAssertEqual(planner.requests(for: ["a", "b"], supportsIcons: true, skipping: []), [["a", "b"]])
-        XCTAssertEqual(planner.requests(for: ["a", "b", "c"], supportsIcons: true, skipping: []), [["c"]])
-        XCTAssertEqual(planner.outstanding, ["a", "b", "c"])
+        XCTAssertEqual(plan(&planner, ["a", "b"]), [["a", "b"]])
+        XCTAssertEqual(plan(&planner, ["a", "b", "c"]), [["c"]])
+        XCTAssertEqual(planner.outstanding, ["a": 66, "b": 66, "c": 66])
     }
 
     func testBatchesHoldAtMost32Ids() {
         var planner = IconRequestPlanner()
-        let batches = planner.requests(for: ids(40), supportsIcons: true, skipping: [])
+        let batches = plan(&planner, ids(40))
         XCTAssertEqual(batches.map(\.count), [32, 8])
         XCTAssertEqual(batches.flatMap { $0 }, ids(40))
     }
@@ -52,50 +57,78 @@ final class IconRequestPlannerTests: XCTestCase {
     func testAtMost64IdsAreOutstanding() {
         var planner = IconRequestPlanner()
         let all = ids(100)
-        let first = planner.requests(for: all, supportsIcons: true, skipping: [])
-        XCTAssertEqual(first.map(\.count), [32, 32])
+        XCTAssertEqual(plan(&planner, all).map(\.count), [32, 32])
         XCTAssertEqual(planner.outstanding.count, 64)
+        XCTAssertFalse(planner.hasRoomForFullBatch)
 
         // Full: nothing more until replies arrive.
-        XCTAssertEqual(planner.requests(for: all, supportsIcons: true, skipping: []), [])
+        XCTAssertEqual(plan(&planner, all), [])
 
         for id in all.prefix(10) {
-            planner.recordReply(for: id, available: true)
+            XCTAssertEqual(planner.recordReply(for: id, available: true), 66)
         }
         // Answered ids are now cached by the caller and skipped.
-        let next = planner.requests(for: all, supportsIcons: true, skipping: Set(all.prefix(10)))
-        XCTAssertEqual(next, [Array(all[64..<74])])
+        XCTAssertEqual(plan(&planner, all, skipping: Set(all.prefix(10))), [Array(all[64..<74])])
         XCTAssertEqual(planner.outstanding.count, 64)
+    }
+
+    func testRoomForFullBatchOnceEnoughRepliesArrive() {
+        var planner = IconRequestPlanner()
+        let all = ids(64)
+        _ = plan(&planner, all)
+        for id in all.prefix(31) {
+            _ = planner.recordReply(for: id, available: true)
+        }
+        XCTAssertFalse(planner.hasRoomForFullBatch)
+        _ = planner.recordReply(for: all[31], available: true)
+        XCTAssertTrue(planner.hasRoomForFullBatch)
     }
 
     func testUnavailableIdsAreNotRequestedAgain() {
         var planner = IconRequestPlanner()
-        _ = planner.requests(for: ["a", "b"], supportsIcons: true, skipping: [])
-        planner.recordReply(for: "a", available: false)
-        planner.recordReply(for: "b", available: true)
+        _ = plan(&planner, ["a", "b", "c"])
+        _ = planner.recordReply(for: "a", available: false)
+        _ = planner.recordReply(for: "b", available: true)
+        _ = planner.recordReply(for: "c", available: true)
+        planner.markUnavailable("c")
         XCTAssertTrue(planner.outstanding.isEmpty)
-        XCTAssertEqual(planner.requests(for: ["a", "b"], supportsIcons: true, skipping: ["b"]), [])
+        XCTAssertEqual(plan(&planner, ["a", "b", "c"], skipping: ["b"]), [])
+    }
+
+    func testReplyThatWasNotRequestedIsReported() {
+        var planner = IconRequestPlanner()
+        XCTAssertNil(planner.recordReply(for: "a", available: false))
+        // ... and does not mark the id unavailable.
+        XCTAssertEqual(plan(&planner, ["a"]), [["a"]])
+    }
+
+    func testReplyReportsTheRequestedSize() {
+        var planner = IconRequestPlanner()
+        _ = planner.requests(for: ["a"], size: 48, supportsIcons: true, skipping: [])
+        _ = planner.requests(for: ["b"], size: 96, supportsIcons: true, skipping: [])
+        XCTAssertEqual(planner.recordReply(for: "a", available: true), 48)
+        XCTAssertEqual(planner.recordReply(for: "b", available: true), 96)
     }
 
     func testDroppedConnectionClearsOutstandingButRemembersUnavailable() {
         var planner = IconRequestPlanner()
-        _ = planner.requests(for: ["a", "b", "c"], supportsIcons: true, skipping: [])
-        planner.recordReply(for: "a", available: false)
+        _ = plan(&planner, ["a", "b", "c"])
+        _ = planner.recordReply(for: "a", available: false)
 
         planner.connectionDropped()
         XCTAssertTrue(planner.outstanding.isEmpty)
 
         // After reconnecting only the still-unknown ids are requested again.
-        XCTAssertEqual(planner.requests(for: ["a", "b", "c"], supportsIcons: true, skipping: []), [["b", "c"]])
+        XCTAssertEqual(plan(&planner, ["a", "b", "c"]), [["b", "c"]])
     }
 
     func testNewPlannerRetriesUnavailableIds() {
         var planner = IconRequestPlanner()
-        _ = planner.requests(for: ["a"], supportsIcons: true, skipping: [])
-        planner.recordReply(for: "a", available: false)
+        _ = plan(&planner, ["a"])
+        _ = planner.recordReply(for: "a", available: false)
 
         planner = IconRequestPlanner()
-        XCTAssertEqual(planner.requests(for: ["a"], supportsIcons: true, skipping: []), [["a"]])
+        XCTAssertEqual(plan(&planner, ["a"]), [["a"]])
     }
 
     func testPixelSizeIsRoundedAndClamped() {
@@ -103,5 +136,11 @@ final class IconRequestPlannerTests: XCTestCase {
         XCTAssertEqual(IconRequestPlanner.pixelSize(points: 22.4, scale: 2), 45)
         XCTAssertEqual(IconRequestPlanner.pixelSize(points: 4, scale: 2), 16)
         XCTAssertEqual(IconRequestPlanner.pixelSize(points: 120, scale: 3), 256)
+    }
+
+    func testIconPointSizeFollowsDynamicType() {
+        XCTAssertEqual(SessionIconView.pointSize(for: .large), 22, accuracy: 0.5)
+        XCTAssertGreaterThan(SessionIconView.pointSize(for: .accessibility3), SessionIconView.pointSize(for: .large))
+        XCTAssertLessThan(SessionIconView.pointSize(for: .xSmall), SessionIconView.pointSize(for: .large))
     }
 }

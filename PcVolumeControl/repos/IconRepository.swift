@@ -1,8 +1,8 @@
 import UIKit
 
-/// Decoded application icons by icon id, cached in memory (bounded) and on disk. Ids are
-/// content-derived, so entries never need invalidating. Decoding runs on this actor,
-/// off the main thread.
+/// Decoded application icons by icon id and requested pixel size, cached in memory
+/// (bounded) and on disk. Ids are content-derived, so entries never need invalidating.
+/// Decoding runs on this actor, off the main thread.
 actor IconRepository {
     private let disk: IconDiskCacheDataSourceProtocol
     private let memory = NSCache<NSString, UIImage>()
@@ -12,23 +12,32 @@ actor IconRepository {
         memory.countLimit = 128
     }
 
-    /// The cached icon for `id` from memory or disk, or nil if it is not cached.
-    func cachedIcon(for id: String) -> UIImage? {
-        if let image = memory.object(forKey: id as NSString) {
-            return image
+    /// The icons among `ids` that are cached at `size`, from memory or disk.
+    func cachedIcons(for ids: [String], size: Int) -> [String: UIImage] {
+        var found: [String: UIImage] = [:]
+        for id in ids {
+            let key = Self.key(id, size)
+            if let image = memory.object(forKey: key) {
+                found[id] = image
+            } else if let png = disk.load(id: id, size: size), let image = Self.decode(png) {
+                memory.setObject(image, forKey: key)
+                found[id] = image
+            }
         }
-        guard let png = disk.load(id: id), let image = Self.decode(png) else { return nil }
-        memory.setObject(image, forKey: id as NSString)
+        return found
+    }
+
+    /// Decodes `png`, requested at `size`, and caches it under `id`. Returns nil, caching
+    /// nothing, when the data is not a usable image.
+    func store(png: Data, for id: String, size: Int) -> UIImage? {
+        guard let image = Self.decode(png) else { return nil }
+        memory.setObject(image, forKey: Self.key(id, size))
+        disk.store(png, id: id, size: size)
         return image
     }
 
-    /// Decodes `png` and caches it under `id`. Returns nil, caching nothing, when the data
-    /// is not a usable image.
-    func store(png: Data, for id: String) -> UIImage? {
-        guard let image = Self.decode(png) else { return nil }
-        memory.setObject(image, forKey: id as NSString)
-        disk.store(png, id: id)
-        return image
+    private static func key(_ id: String, _ size: Int) -> NSString {
+        NSString(string: "\(id)_\(size)")
     }
 
     private static func decode(_ png: Data) -> UIImage? {

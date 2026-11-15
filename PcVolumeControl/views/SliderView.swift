@@ -9,10 +9,9 @@ struct SliderView: View {
     @State private var showOverlay  = false
 
     @Environment(\.displayScale) private var displayScale
-    // Matches SessionIconView's size so icons are requested at the pixel size they are drawn at.
-    @ScaledMetric(relativeTo: .subheadline) private var iconPointSize = SessionIconView.basePointSize
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     private var iconPixelSize: Int {
-        IconRequestPlanner.pixelSize(points: iconPointSize, scale: displayScale)
+        IconRequestPlanner.pixelSize(points: SessionIconView.pointSize(for: dynamicTypeSize), scale: displayScale)
     }
 
     // Connection-status banner; lives outside the disabled content so its buttons stay tappable.

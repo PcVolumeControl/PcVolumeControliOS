@@ -4,14 +4,19 @@ import SwiftUI
 /// while the icon is unknown, loading or unavailable. Decorative for VoiceOver: the
 /// row's name already identifies the application.
 struct SessionIconView: View {
-    /// Edge length at the default Dynamic Type size; scales with `.subheadline` like the name.
-    static let basePointSize: CGFloat = 22
-
     let image: UIImage?
 
-    @ScaledMetric(relativeTo: .subheadline) private var size = SessionIconView.basePointSize
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    /// Edge length in points: 22 at the default Dynamic Type size, scaled like `.subheadline`
+    /// (the row's name).
+    nonisolated static func pointSize(for dynamicTypeSize: DynamicTypeSize) -> CGFloat {
+        let traits = UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory(dynamicTypeSize))
+        return UIFontMetrics(forTextStyle: .subheadline).scaledValue(for: 22, compatibleWith: traits)
+    }
 
     var body: some View {
+        let size = Self.pointSize(for: dynamicTypeSize)
         ZStack {
             if let image {
                 Image(uiImage: image)

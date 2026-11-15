@@ -56,14 +56,19 @@ final class MainViewModel: ObservableObject {
     private var connectedOverWiFi = false
     private var connectedOverCellular = false
 
-    // Icons (protocol v8 `icons` feature).
+    // Icons (protocol v8 `icons` feature). The sets describe ids at the current pixel size;
+    // `icons` keeps showing images of an earlier size until replacements arrive.
     private let iconRepo: IconRepository
     private var iconPlanner = IconRequestPlanner()
     // Set by the session list; no icons are requested until then.
     private var iconPixelSize: Int?
-    private var iconCacheLookups = Set<String>()
-    // Ids looked up in the local cache and not found there: only these are requested.
+    private var iconsAtCurrentSize = Set<String>()
+    // A cache lookup or decode is in flight.
+    private var iconsResolving = Set<String>()
+    // Looked up in the local cache and not found there: only these are requested.
     private var iconsMissingFromCache = Set<String>()
+    // Bumped when in-flight lookups and decodes no longer apply (new pixel size, user disconnect).
+    private var iconGeneration = 0
 
     init(connect: ConnectToServerUseCase,
          defUpdate: SendDefaultDeviceUpdateUseCase,
@@ -172,6 +177,8 @@ final class MainViewModel: ObservableObject {
         }
         // The next connection may be to another server, so forget its unavailable icons too.
         iconPlanner = IconRequestPlanner()
+        icons = [:]
+        resetIconResolution()
 
         // Clear the full state to trigger UI reset
         fullState = nil
@@ -408,47 +415,59 @@ final class MainViewModel: ObservableObject {
     func setIconPixelSize(_ size: Int) {
         guard size != iconPixelSize else { return }
         iconPixelSize = size
-        requestMissingIcons()
+        resetIconResolution()
+        if let state = fullState { resolveIcons(for: state) }
+    }
+
+    private func resetIconResolution() {
+        iconGeneration += 1
+        iconsAtCurrentSize.removeAll()
+        iconsResolving.removeAll()
+        iconsMissingFromCache.removeAll()
     }
 
     private func resolveIcons(for state: FullState) {
-        guard state.supportsIcons else { return }
+        guard state.supportsIcons, let size = iconPixelSize else { return }
         let ids = state.iconIds
         let current = Set(ids)
         if icons.keys.contains(where: { !current.contains($0) }) {
             icons = icons.filter { current.contains($0.key) }
         }
+        iconsAtCurrentSize.formIntersection(current)
         iconsMissingFromCache.formIntersection(current)
 
         let unchecked = ids.filter {
-            icons[$0] == nil && !iconCacheLookups.contains($0) && !iconsMissingFromCache.contains($0)
+            !iconsAtCurrentSize.contains($0) && !iconsResolving.contains($0) && !iconsMissingFromCache.contains($0)
         }
         if !unchecked.isEmpty {
-            loadCachedIcons(unchecked)
+            loadCachedIcons(unchecked, size: size)
         }
         requestMissingIcons()
     }
 
-    private func loadCachedIcons(_ ids: [String]) {
-        iconCacheLookups.formUnion(ids)
+    private func loadCachedIcons(_ ids: [String], size: Int) {
+        let generation = iconGeneration
+        iconsResolving.formUnion(ids)
         Task {
-            for id in ids {
-                let image = await iconRepo.cachedIcon(for: id)
-                iconCacheLookups.remove(id)
-                if let image {
-                    icons[id] = image
-                } else {
-                    iconsMissingFromCache.insert(id)
-                }
+            let found = await iconRepo.cachedIcons(for: ids, size: size)
+            guard generation == iconGeneration else { return }
+            iconsResolving.subtract(ids)
+            if !found.isEmpty {
+                icons.merge(found) { _, cached in cached }
             }
+            iconsAtCurrentSize.formUnion(found.keys)
+            iconsMissingFromCache.formUnion(ids.filter { found[$0] == nil })
             requestMissingIcons()
         }
     }
 
     private func requestMissingIcons() {
         guard let state = fullState, let size = iconPixelSize, let repo = currentRepo else { return }
-        let skipping = Set(state.iconIds).subtracting(iconsMissingFromCache)
-        let batches = iconPlanner.requests(for: state.iconIds, supportsIcons: state.supportsIcons, skipping: skipping)
+        let skipping = Set(state.iconIds).subtracting(iconsMissingFromCache).union(iconsResolving)
+        let batches = iconPlanner.requests(
+            for: state.iconIds, size: size, supportsIcons: state.supportsIcons, skipping: skipping
+        )
+        // A failed send means the connection is failing; its loss resets the outstanding ids.
         for ids in batches {
             Task { try? await repo.requestIcons(ids: ids, size: size) }
         }
@@ -456,20 +475,30 @@ final class MainViewModel: ObservableObject {
 
     private func handleIconReply(_ reply: IconReply) {
         defer {
-            // Ids left out at the outstanding limit are requested once earlier replies are in.
-            if iconPlanner.outstanding.isEmpty { requestMissingIcons() }
+            // Ids left out at the outstanding limit are requested as replies free up room.
+            if iconPlanner.hasRoomForFullBatch { requestMissingIcons() }
         }
-        guard let png = reply.png else {
-            iconPlanner.recordReply(for: reply.id, available: false)
-            return
+        // A reply this connection did not ask for is dropped.
+        guard let size = iconPlanner.recordReply(for: reply.id, available: reply.png != nil),
+              let png = reply.png
+        else { return }
+
+        let id = reply.id
+        let generation = iconGeneration
+        let isCurrentSize = size == iconPixelSize
+        if isCurrentSize {
+            iconsResolving.insert(id)
         }
-        iconPlanner.recordReply(for: reply.id, available: true)
-        iconsMissingFromCache.remove(reply.id)
         Task {
-            if let image = await iconRepo.store(png: png, for: reply.id) {
-                icons[reply.id] = image
+            let image = await iconRepo.store(png: png, for: id, size: size)
+            guard generation == iconGeneration, isCurrentSize else { return }
+            iconsResolving.remove(id)
+            if let image {
+                icons[id] = image
+                iconsAtCurrentSize.insert(id)
+                iconsMissingFromCache.remove(id)
             } else {
-                iconPlanner.recordReply(for: reply.id, available: false)
+                iconPlanner.markUnavailable(id)
             }
         }
     }
