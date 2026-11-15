@@ -109,7 +109,7 @@ struct MainView: View {
                         .padding(.vertical, 12)
                         .accessibilityElement(children: .combine)
                     }
-                    .accessibilityHint("Opens the Windows server setup guide")
+                    .accessibilityHint("Opens the server setup guide")
                 }
                 .readableContentWidth()
             }

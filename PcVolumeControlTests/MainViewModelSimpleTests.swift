@@ -326,7 +326,6 @@ final class MainViewModelSimpleTests: XCTestCase {
         
         sut.updateDefaultDevice(id: "test-device")
         sut.updateMaster(id: "master-device", muted: true, vol: 50.0)
-        sut.updateSession(name: "Test", id: "test.exe", vol: 75.0, muted: false)
         
         // If we get here without crashing, the test passes
         XCTAssertNotNil(sut)

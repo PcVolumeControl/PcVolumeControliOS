@@ -56,7 +56,7 @@ final class MainViewModel: ObservableObject {
     private var connectedOverWiFi = false
     private var connectedOverCellular = false
 
-    // Icons (protocol v8 `icons` feature). The sets describe ids at the current pixel size;
+    // Icons. The sets describe ids at the current pixel size;
     // `icons` keeps showing images of an earlier size until replacements arrive.
     private let iconRepo: IconRepository
     private var iconPlanner = IconRequestPlanner()
@@ -560,11 +560,6 @@ final class MainViewModel: ObservableObject {
         Task { try? await masterUpdate.execute(id: id, muted: muted, volume: vol) }
     }
     // Sessions shown are those of the current default device, so updates go to it.
-    func updateSession(name: String, id: String, vol: Double, muted: Bool) {
-        guard let deviceId = fullState?.defaultDevice.deviceId else { return }
-        Task { try? await sessionUpdate.execute(name: name, id: id, vol: vol, muted: muted, deviceId: deviceId) }
-    }
-    
     func updateSession(_ session: FullState.Session) async throws {
         guard let deviceId = fullState?.defaultDevice.deviceId else { return }
         try await sessionUpdate.execute(

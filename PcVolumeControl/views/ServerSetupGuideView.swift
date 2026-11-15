@@ -13,19 +13,18 @@ import SwiftUI
 enum ServerDownload {
     static let releasesURL = URL(string: "https://github.com/PcVolumeControl/PcVolumeControlServer/releases/latest")!
     static let organizationURL = URL(string: "https://github.com/PcVolumeControl")!
-    static var supportedProtocolVersion: Int { WireProtocol.version }
 }
 
 struct ServerSetupGuideView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text("PcVolumeControl needs a small, free server running on your Windows PC. Set it up once and this app can find it automatically.")
+                Text("PcVolumeControl needs a small, free server running on your PC. Set it up once and this app can find it automatically.")
                     .font(.subheadline)
                     .foregroundColor(.gray)
 
                 SetupStepRow(number: 1, title: "Download the server") {
-                    Text("On your Windows PC, download the latest installer from GitHub.")
+                    Text("On your PC (Windows or Linux), download the latest release from GitHub.")
                     Link(destination: ServerDownload.releasesURL) {
                         HStack(spacing: 4) {
                             Image(systemName: "link")
@@ -47,7 +46,7 @@ struct ServerSetupGuideView: View {
                 }
 
                 SetupStepRow(number: 2, title: "Install and run it") {
-                    Text("Run the installer, then start the server. If Windows Firewall asks, click Allow so the server can accept connections on private networks.")
+                    Text("Install the server as its README describes, then start it. On Windows, if Windows Firewall asks, click Allow so the server can accept connections on private networks.")
                 }
 
                 SetupStepRow(number: 3, title: "Find the address") {
@@ -85,7 +84,7 @@ struct ServerSetupGuideView: View {
                 }
                 .padding(.top, 4)
 
-                Text("App \(Bundle.main.appVersion) · Server protocol v\(ServerDownload.supportedProtocolVersion)")
+                Text("App \(Bundle.main.appVersion) · Server protocol v\(WireProtocol.version)")
                     .font(.caption2)
                     .foregroundColor(.gray.opacity(0.5))
                     .frame(maxWidth: .infinity, alignment: .center)

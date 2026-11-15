@@ -145,52 +145,18 @@ final class SliderViewModel: ObservableObject {
         devices = state.deviceIds
     }
     
-    // Parse session name from ID and fallback name using new protocol
-    private func parseSessionDisplayName(sessionId: String, fallbackName: String) -> String {
-        // Check for new protocol format: |PCVC#<purpose>
-        if let pcvcRange = sessionId.range(of: "|PCVC#") {
-            let purposeStart = sessionId.index(pcvcRange.upperBound, offsetBy: 0)
-            let purpose = String(sessionId[purposeStart...])
-            
-            // Convert purpose to user-friendly display name
-            switch purpose.lowercased() {
-            case "discord-voice":
-                return "Discord (Voice)"
-            case "discord-notifications":
-                return "Discord (Notifications)"
-            default:
-                // For other purposes, capitalize and format nicely
-                let formattedPurpose = purpose.replacingOccurrences(of: "-", with: " ")
-                    .split(separator: " ")
-                    .map { $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }
-                    .joined(separator: " ")
-                return "\(fallbackName) (\(formattedPurpose))"
-            }
-        }
-        
-        // Use existing backward compatible logic
-        return fallbackName
-    }
-
     private func updateSessionsRespectingDebounce(with incoming: [FullState.Session]) {
-        // Apply new naming protocol to sessions
-        let processedSessions = incoming.map { session in
-            var processed = session
-            processed.name = parseSessionDisplayName(sessionId: session.id, fallbackName: session.name)
-            return processed
-        }
-
         // If preserving order and we have a saved order, use it
         if preserveSessionOrder && !savedOrder.isEmpty {
-            updateWithSavedOrder(incomingSessions: processedSessions)
+            updateWithSavedOrder(incomingSessions: incoming)
         }
         // If we have sessions and user has reordered, preserve current order
         else if !sessions.isEmpty {
-            updatePreservingCurrentOrder(incomingSessions: processedSessions)
+            updatePreservingCurrentOrder(incomingSessions: incoming)
         }
         // Otherwise sort alphabetically, but respect editingIds
         else {
-            let sortedSessions = processedSessions.sorted(by: Self.inDisplayOrder)
+            let sortedSessions = incoming.sorted(by: Self.inDisplayOrder)
 
             // If any sessions are being edited, preserve their values
             if !editingIds.isEmpty {
