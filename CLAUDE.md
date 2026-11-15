@@ -58,7 +58,8 @@ The project uses [periphery](https://github.com/peripheryapp/periphery) to detec
 
 In CI this runs as the `periphery` fastlane lane (`bundle exec fastlane periphery`),
 which adds `--strict` so the scan exits non-zero on findings. The
-`.github/workflows/ci.yml` workflow runs it on every push and pull request.
+`.github/workflows/ci.yml` workflow runs it, with a pinned periphery release, on
+pushes to and pull requests against `master` (and `main`).
 
 Configuration lives in the committed `.periphery.yml`; `periphery scan` reads it
 automatically. A clean run reports `No unused code detected.`. Notes:
