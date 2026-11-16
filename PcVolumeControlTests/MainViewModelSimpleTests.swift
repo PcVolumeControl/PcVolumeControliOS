@@ -6,6 +6,7 @@
 //  Copyright © 2025 PcVolumeControl. All rights reserved.
 //
 
+import Combine
 import XCTest
 import UIKit
 @testable import PcVolumeControl
@@ -111,6 +112,8 @@ final class MainViewModelSimpleTests: XCTestCase {
             volume: 80.0
         )
         
+        sut.fullState = createMockFullState()
+
         // When - this will call the actual use case but with mock transport
         try await sut.updateSession(testSession)
         
@@ -118,7 +121,48 @@ final class MainViewModelSimpleTests: XCTestCase {
         XCTAssertTrue(mockRepository.outgoingDataCalled)
         XCTAssertFalse(mockRepository.sentData.isEmpty)
     }
+
+    func testSessionUpdateGoesToTheDefaultDeviceWhateverTheSessionId() async throws {
+        // Session ids are opaque: this one does not contain any device id.
+        sut.fullState = createMockFullState()
+        let session = FullState.Session(id: "stream-42", muted: false, name: "Firefox", volume: 30)
+
+        try await sut.updateSession(session)
+
+        let sent = try XCTUnwrap(mockRepository.sentData.first)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: sent) as? [String: Any])
+        XCTAssertEqual(json["protocolVersion"] as? Int, 8)
+        let device = try XCTUnwrap(json["defaultDevice"] as? [String: Any])
+        XCTAssertEqual(device["deviceId"] as? String, "device1")
+        let sessions = try XCTUnwrap(device["sessions"] as? [[String: Any]])
+        XCTAssertEqual(sessions.first?["id"] as? String, "stream-42")
+    }
+
+    func testSessionUpdateWithoutAStateSendsNothing() async throws {
+        let session = FullState.Session(id: "stream-42", muted: false, name: "Firefox", volume: 30)
+        try await sut.updateSession(session)
+        XCTAssertTrue(mockRepository.sentData.isEmpty)
+    }
     
+    func testSessionUpdateDoesNotSendDetail() async throws {
+        let session = FullState.Session(
+            id: "dev-a|961", muted: false, name: "Firefox", volume: 40,
+            iconId: "4b13f0d55a3779a6ff892414f951be3f", detail: "Big Buck Bunny - YouTube"
+        )
+        sut.fullState = createMockFullState()
+
+        try await sut.updateSession(session)
+
+        let sent = try XCTUnwrap(mockRepository.sentData.first)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: sent) as? [String: Any])
+        XCTAssertEqual(Set(json.keys), ["protocolVersion", "defaultDevice"])
+        let device = try XCTUnwrap(json["defaultDevice"] as? [String: Any])
+        XCTAssertEqual(Set(device.keys), ["sessions", "deviceId"])
+        let sessions = try XCTUnwrap(device["sessions"] as? [[String: Any]])
+        XCTAssertEqual(sessions.count, 1)
+        XCTAssertEqual(Set(sessions[0].keys), ["name", "id", "volume", "muted"])
+    }
+
     // MARK: - Error Handling Tests
     
     func testConnectToServerWithInvalidAddress() async {
@@ -146,7 +190,7 @@ final class MainViewModelSimpleTests: XCTestCase {
         
         // Then
         XCTAssertNotNil(sut.fullState)
-        XCTAssertEqual(sut.fullState?.protocolVersion, 7)
+        XCTAssertEqual(sut.fullState?.protocolVersion, 8)
         XCTAssertEqual(sut.fullState?.defaultDevice.deviceId, "device1")
     }
     
@@ -199,16 +243,19 @@ final class MainViewModelSimpleTests: XCTestCase {
         sut.reconnectInitialDelaySeconds = 0.02
         sut.reconnectMaxDelaySeconds = 0.02
         sut.reconnectWindowSeconds = 0.1
+        // Record every published status: polling can miss the short .reconnecting phase
+        // when the main thread is busy for longer than the reconnect window.
+        var statuses: [MainViewModel.ConnectionStatus] = []
+        let lost = expectation(description: "Reconnect loop gives up")
+        let subscription = sut.$connectionStatus.sink { status in
+            statuses.append(status)
+            if status == .lost { lost.fulfill() }
+        }
         sut.startReconnectLoop(to: DiscoveredServer(address: "192.0.2.1", port: 3000))
 
-        // It should enter .reconnecting before settling on .lost
-        var sawReconnecting = false
-        for _ in 0..<300 {
-            if sut.connectionStatus == .reconnecting { sawReconnecting = true }
-            if sut.connectionStatus == .lost { break }
-            try? await Task.sleep(nanoseconds: 10_000_000)
-        }
-        XCTAssertTrue(sawReconnecting)
+        await fulfillment(of: [lost], timeout: 10)
+        subscription.cancel()
+        XCTAssertEqual(statuses, [.connected, .reconnecting, .lost])
         XCTAssertEqual(sut.connectionStatus, .lost)
     }
 
@@ -279,7 +326,6 @@ final class MainViewModelSimpleTests: XCTestCase {
         
         sut.updateDefaultDevice(id: "test-device")
         sut.updateMaster(id: "master-device", muted: true, vol: 50.0)
-        sut.updateSession(name: "Test", id: "test.exe", vol: 75.0, muted: false)
         
         // If we get here without crashing, the test passes
         XCTAssertNotNil(sut)
@@ -323,7 +369,7 @@ final class MainViewModelSimpleTests: XCTestCase {
         let deviceIds = ["device1": "Default Device", "device2": "Secondary Device"]
         
         return FullState(
-            protocolVersion: 7,
+            protocolVersion: 8,
             deviceIds: deviceIds,
             defaultDevice: defaultDevice
         )

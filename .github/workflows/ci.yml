@@ -2,9 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -20,6 +24,20 @@ jobs:
       - name: Run tests
         run: bundle exec fastlane test
 
+      # The console output is condensed by xcbeautify; keep the raw log, the result
+      # bundle and any crash reports so failures can be diagnosed.
+      - name: Upload test diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-diagnostics
+          path: |
+            ~/Library/Logs/scan
+            ~/Library/Developer/Xcode/DerivedData/*/Logs/Test/*.xcresult
+            ~/Library/Logs/DiagnosticReports
+          if-no-files-found: ignore
+          retention-days: 7
+
   periphery:
     runs-on: macos-latest
     steps:
@@ -30,8 +48,17 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      # The periphery Homebrew tap's cask fails on current Homebrew, so install a
+      # pinned release binary instead.
       - name: Install periphery
-        run: brew install peripheryapp/periphery/periphery
+        env:
+          PERIPHERY_VERSION: '3.8.0'
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/periphery.zip" \
+            "https://github.com/peripheryapp/periphery/releases/download/${PERIPHERY_VERSION}/periphery-${PERIPHERY_VERSION}.zip"
+          unzip -q "$RUNNER_TEMP/periphery.zip" -d "$RUNNER_TEMP/periphery"
+          echo "$RUNNER_TEMP/periphery" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/periphery/periphery" version
 
       - name: Scan for dead code
         run: bundle exec fastlane periphery

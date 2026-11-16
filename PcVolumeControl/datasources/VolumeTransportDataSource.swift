@@ -15,7 +15,7 @@ struct VolumeTransportDataSource: VolumeTransportDataSourceProtocol {
     }
 
     func incoming() -> AsyncThrowingStream<Data, Error> {
-        .streamNewlineDelimitedBytes(from: connection.bytes())
+        .streamLines(from: connection.bytes())
     }
     
     func close() {
@@ -24,19 +24,16 @@ struct VolumeTransportDataSource: VolumeTransportDataSourceProtocol {
 }
 
 private extension AsyncThrowingStream where Element == Data, Failure == Error {
-    static func streamNewlineDelimitedBytes(from upstream: AsyncThrowingStream<Data, Error>)
+    static func streamLines(from upstream: AsyncThrowingStream<Data, Error>)
         -> AsyncThrowingStream<Data, Error>
     {
         AsyncThrowingStream { continuation in
-            var buffer = Data()
             let task = Task {
+                var framer = LineFramer()
                 do {
                     for try await chunk in upstream {
-                        buffer.append(chunk)
-                        while let nl = buffer.firstIndex(of: 0x0A) {
-                            let frame = buffer.prefix(upTo: nl)
-                            buffer.removeSubrange(...nl)
-                            continuation.yield(Data(frame))
+                        for line in framer.append(chunk) {
+                            continuation.yield(line)
                         }
                     }
                     continuation.finish()

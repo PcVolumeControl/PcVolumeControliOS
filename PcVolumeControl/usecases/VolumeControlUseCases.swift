@@ -12,7 +12,7 @@ struct SendMasterChannelUpdateUseCase {
 
 struct SendSessionUpdateUseCase {
     let repo: VolumeControlRepository
-    func execute(name: String, id: String, vol: Double, muted: Bool) async throws {
-        try await repo.pushSessionValues(name: name, id: id, volume: vol, muted: muted)
+    func execute(name: String, id: String, vol: Double, muted: Bool, deviceId: String) async throws {
+        try await repo.pushSessionValues(name: name, id: id, volume: vol, muted: muted, deviceId: deviceId)
     }
 }

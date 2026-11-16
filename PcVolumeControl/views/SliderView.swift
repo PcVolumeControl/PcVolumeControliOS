@@ -8,6 +8,12 @@ struct SliderView: View {
     @State private var showSettings = false
     @State private var showOverlay  = false
 
+    @Environment(\.displayScale) private var displayScale
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    private var iconPixelSize: Int {
+        IconRequestPlanner.pixelSize(points: SessionIconView.pointSize(for: dynamicTypeSize), scale: displayScale)
+    }
+
     // Connection-status banner; lives outside the disabled content so its buttons stay tappable.
     @ViewBuilder
     private var connectionBanner: some View {
@@ -85,6 +91,7 @@ struct SliderView: View {
                     ForEach($vm.sessions) { $session in
                         SessionCell(
                             session: $session,
+                            icon: session.iconId.flatMap { mainVM.icons[$0] },
                             isChat:  vm.chatBalanceSessionId == session.id,
                             chatMode: vm.chatBalanceMode,
                             isMasterMuted: vm.isMasterMuted,
@@ -133,6 +140,10 @@ struct SliderView: View {
         .navigationBarBackButtonHidden()
         .onReceive(mainVM.$fullState) { newState in
             vm.fullState = newState
+        }
+        .onAppear { mainVM.setIconPixelSize(iconPixelSize) }
+        .onChange(of: iconPixelSize) { _, newSize in
+            mainVM.setIconPixelSize(newSize)
         }
     }
 }

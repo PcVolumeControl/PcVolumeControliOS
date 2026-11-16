@@ -11,7 +11,7 @@ PCVolumeControl is an iOS application that allows users to remotely control appl
 - **Platform**: iOS 17+ Swift app using SwiftUI
 - **Architecture Pattern**: MVVM (Model-View-ViewModel)
 - **Networking**: TCP socket communication using Apple's Network framework
-- **Protocol**: JSON-based protocol (version 7) for client-server communication
+- **Protocol**: JSON-based protocol (version 8) for client-server communication
 
 ## Key Components
 
@@ -58,7 +58,8 @@ The project uses [periphery](https://github.com/peripheryapp/periphery) to detec
 
 In CI this runs as the `periphery` fastlane lane (`bundle exec fastlane periphery`),
 which adds `--strict` so the scan exits non-zero on findings. The
-`.github/workflows/ci.yml` workflow runs it on every push and pull request.
+`.github/workflows/ci.yml` workflow runs it, with a pinned periphery release, on
+pushes to and pull requests against `master` (and `main`).
 
 Configuration lives in the committed `.periphery.yml`; `periphery scan` reads it
 automatically. A clean run reports `No unused code detected.`. Notes:
@@ -84,13 +85,64 @@ automatically. A clean run reports `No unused code detected.`. Notes:
 
 ## Protocol
 
-The app communicates with the PC server using a JSON protocol:
+The app speaks protocol version 8 only, a JSON protocol with one message per line:
 
-- **Server → Client**: Sends `FullState` with all devices and sessions information
-- **Client → Server**: Sends updates for:
-  - Default device changes
-  - Master volume/mute changes
-  - Individual application volume/mute changes
+- **Server → Client**: full states (all devices and the default device's sessions) and
+  icon replies to the client's own icon requests
+- **Client → Server**: updates for the default device, master volume/mute and session
+  volume/mute, and `iconRequest` for application icons
+
+The canonical spec is `docs/PROTOCOL.md` in the PcVolumeControlServer repo; sample
+messages are in `examples/` of the PcVolumeControlProtocol repo. This app does not work
+with the original C# PcVolumeControlWindows server (version 7).
+Paths below are relative to `PcVolumeControl/`.
+
+### Version and ids
+
+- Every outgoing message carries `protocolVersion` 8 (`WireProtocol.version` in
+  `models/ServerLine.swift`). A full state with another version throws
+  `ProtocolVersionMismatch`, checked before the rest of the state is decoded; the view
+  model then disconnects (no reconnect) and shows a localised message saying whether the
+  server (lower number) or the app (higher number) needs updating.
+- Session ids are opaque. A session update is sent with the current state's
+  `defaultDevice.deviceId`, the device whose sessions the app shows.
+- mDNS discovery does not read TXT records (servers advertise `protocol=8`); a server of
+  another version shows up in the list and is rejected with the message above when
+  connecting, which tells the user what to update instead of hiding the server.
+
+### Lines and icons
+
+- Lines are classified in `models/ServerLine.swift`: `defaultDevice` means a full
+  state, `icon` means an icon reply, anything else is ignored. Not every line is a
+  full state. A full state that cannot be decoded ends the stream, which goes through
+  the normal connection-lost and reconnect path (so a server that keeps sending one
+  makes the app reconnect repeatedly).
+- `datasources/LineFramer.swift` frames the byte stream; icon lines can be several
+  hundred KiB.
+- Sessions may carry an `iconId` (`[a-z0-9]{1,64}`, content-derived). Every server
+  answers `iconRequest`; one that serves no icons never sends an `iconId`.
+- `usecases/IconRequestPlanner.swift` decides what to request: at most 32 ids per
+  `iconRequest`, at most 64 outstanding, outstanding ids reset when the connection
+  drops or the app goes to the background (both end the stream). Ids without a usable
+  image (`notFound` or any other `error`, missing or bad data, a PNG that does not
+  decode) are not asked for again until the user connects anew.
+- `repos/IconRepository.swift` is the entry point for icons: an actor that decodes
+  PNGs off the main thread and keeps a bounded memory cache over
+  `datasources/IconDiskCacheDataSource.swift` (Caches/AppIcons, not thread-safe, used
+  only through the actor). Both are keyed by icon id and requested pixel size.
+- Rows show `views/SessionIconView.swift`: the icon, or a placeholder of the same size.
+
+### Session details
+
+- A session may carry an optional `detail` (one line, at most 120 characters), such as a
+  browser tab title, that tells apart sessions with the same `name`. It is shown
+  whenever present; servers may be configured never to send it.
+- It is display text only. Aliases, saved order and anything else remembered about a
+  session keep keying on the session `id`; outgoing updates never include it.
+- `SessionCell` shows it under the name (or alias) in a smaller, dimmer style on one
+  line, truncated at the tail. Every row reserves that line, so heights do not change
+  when a detail appears, changes (up to once a second) or disappears; it is not
+  animated, and VoiceOver reads it after the name.
 
 ## Related Resources
 

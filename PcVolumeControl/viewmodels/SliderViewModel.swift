@@ -55,7 +55,7 @@ final class SliderViewModel: ObservableObject {
     func reorder(from source: IndexSet, to destination: Int) {
         sessions.move(fromOffsets: source, toOffset: destination)
         if preserveSessionOrder {
-            savedOrder = sessions.map { $0.id }
+            saveOrderIfChanged()
         }
     }
 
@@ -145,71 +145,25 @@ final class SliderViewModel: ObservableObject {
         devices = state.deviceIds
     }
     
-    // Parse session name from ID and fallback name using new protocol
-    private func parseSessionDisplayName(sessionId: String, fallbackName: String) -> String {
-        // Check for new protocol format: |PCVC#<purpose>
-        if let pcvcRange = sessionId.range(of: "|PCVC#") {
-            let purposeStart = sessionId.index(pcvcRange.upperBound, offsetBy: 0)
-            let purpose = String(sessionId[purposeStart...])
-            
-            // Convert purpose to user-friendly display name
-            switch purpose.lowercased() {
-            case "discord-voice":
-                return "Discord (Voice)"
-            case "discord-notifications":
-                return "Discord (Notifications)"
-            default:
-                // For other purposes, capitalize and format nicely
-                let formattedPurpose = purpose.replacingOccurrences(of: "-", with: " ")
-                    .split(separator: " ")
-                    .map { $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }
-                    .joined(separator: " ")
-                return "\(fallbackName) (\(formattedPurpose))"
-            }
-        }
-        
-        // Use existing backward compatible logic
-        return fallbackName
-    }
-
     private func updateSessionsRespectingDebounce(with incoming: [FullState.Session]) {
-        // Apply new naming protocol to sessions
-        let processedSessions = incoming.map { session in
-            let displayName = parseSessionDisplayName(sessionId: session.id, fallbackName: session.name)
-            return FullState.Session(
-                id: session.id,
-                muted: session.muted,
-                name: displayName,
-                volume: session.volume
-            )
-        }
-
         // If preserving order and we have a saved order, use it
         if preserveSessionOrder && !savedOrder.isEmpty {
-            updateWithSavedOrder(incomingSessions: processedSessions)
+            updateWithSavedOrder(incomingSessions: incoming)
         }
         // If we have sessions and user has reordered, preserve current order
         else if !sessions.isEmpty {
-            updatePreservingCurrentOrder(incomingSessions: processedSessions)
+            updatePreservingCurrentOrder(incomingSessions: incoming)
         }
         // Otherwise sort alphabetically, but respect editingIds
         else {
-            let sortedSessions = processedSessions.sorted {
-                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
-            }
+            let sortedSessions = incoming.sorted(by: Self.inDisplayOrder)
 
             // If any sessions are being edited, preserve their values
             if !editingIds.isEmpty {
                 sessions = sortedSessions.map { incoming in
                     if editingIds.contains(incoming.id),
                        let existing = sessions.first(where: { $0.id == incoming.id }) {
-                        // Keep current values for editing session
-                        return FullState.Session(
-                            id: existing.id,
-                            muted: existing.muted,
-                            name: incoming.name,
-                            volume: existing.volume
-                        )
+                        return incoming.keepingUserValues(of: existing)
                     } else {
                         return incoming
                     }
@@ -249,18 +203,13 @@ final class SliderViewModel: ObservableObject {
         var remainingSessions = [FullState.Session]()
         
         // Add sessions in saved order
-        for sessionId in savedOrder {
+        let saved = savedOrder
+        let savedIds = Set(saved)
+        for sessionId in saved {
             if let session = incomingDict[sessionId] {
                 if editingIds.contains(sessionId), 
                    let existingIdx = sessions.firstIndex(where: { $0.id == sessionId }) {
-                    // Keep current values for editing session
-                    let existing = sessions[existingIdx]
-                    orderedSessions.append(FullState.Session(
-                        id: sessionId,
-                        muted: existing.muted,
-                        name: session.name,
-                        volume: existing.volume
-                    ))
+                    orderedSessions.append(session.keepingUserValues(of: sessions[existingIdx]))
                 } else {
                     orderedSessions.append(session)
                 }
@@ -269,16 +218,16 @@ final class SliderViewModel: ObservableObject {
         
         // Add new sessions not in saved order
         for session in incomingSessions {
-            if !savedOrder.contains(session.id) {
+            if !savedIds.contains(session.id) {
                 remainingSessions.append(session)
             }
         }
         
-        remainingSessions.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        remainingSessions.sort(by: Self.inDisplayOrder)
         sessions = orderedSessions + remainingSessions
         
         // Update saved order
-        savedOrder = sessions.map { $0.id }
+        saveOrderIfChanged()
     }
     
     private func updatePreservingCurrentOrder(incomingSessions: [FullState.Session]) {
@@ -296,13 +245,7 @@ final class SliderViewModel: ObservableObject {
             guard let incoming = incomingDict[session.id] else { continue }
             
             if editingIds.contains(session.id) {
-                // Keep current values for editing session
-                updatedSessions.append(FullState.Session(
-                    id: session.id,
-                    muted: session.muted,
-                    name: incoming.name,
-                    volume: session.volume
-                ))
+                updatedSessions.append(incoming.keepingUserValues(of: session))
             } else {
                 updatedSessions.append(incoming)
             }
@@ -311,14 +254,45 @@ final class SliderViewModel: ObservableObject {
         // Add new sessions at the end
         let existingIds = Set(sessions.map { $0.id })
         let newSessions = incomingSessions.filter { !existingIds.contains($0.id) }
-        let sortedNewSessions = newSessions.sorted { 
-            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending 
-        }
+        let sortedNewSessions = newSessions.sorted(by: Self.inDisplayOrder)
         
         sessions = updatedSessions + sortedNewSessions
         
         if preserveSessionOrder {
-            savedOrder = sessions.map { $0.id }
+            saveOrderIfChanged()
         }
+    }
+
+    // States can arrive every second (session details), so skip writes that change nothing.
+    private func saveOrderIfChanged() {
+        let order = sessions.map { $0.id }
+        if order != savedOrder {
+            savedOrder = order
+        }
+    }
+
+    // By name; same-named sessions (told apart only by their detail) by id, numbers in ids
+    // compared numerically, so their order is stable and never depends on the detail.
+    private static func inDisplayOrder(_ lhs: FullState.Session, _ rhs: FullState.Session) -> Bool {
+        switch lhs.name.localizedCaseInsensitiveCompare(rhs.name) {
+        case .orderedAscending: return true
+        case .orderedDescending: return false
+        case .orderedSame:
+            switch lhs.id.localizedStandardCompare(rhs.id) {
+            case .orderedAscending: return true
+            case .orderedDescending: return false
+            case .orderedSame: return lhs.id < rhs.id
+            }
+        }
+    }
+}
+
+private extension FullState.Session {
+    /// This incoming session with the volume and mute of `existing`, for a session the user is editing.
+    func keepingUserValues(of existing: FullState.Session) -> FullState.Session {
+        var merged = self
+        merged.muted = existing.muted
+        merged.volume = existing.volume
+        return merged
     }
 }

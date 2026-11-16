@@ -140,6 +140,7 @@ struct RecessedCapsuleToggleStyle: ToggleStyle {
 
 struct SessionCell: View {
     @Binding var session: FullState.Session
+    var icon: UIImage? = nil
     var isChat: Bool = false
     var chatMode: Bool = false
     var isMasterMuted: Bool = false
@@ -165,6 +166,8 @@ struct SessionCell: View {
     // Show a dialog to edit the alias for this session
     @State private var isEditingAlias = false
     @State private var newAlias = ""
+    // Captured when the prompt opens: the live detail can change while the user types.
+    @State private var aliasPromptDetail: String? = nil
 
     private var isInEditMode: Bool {
         editMode?.wrappedValue == .active
@@ -176,6 +179,58 @@ struct SessionCell: View {
     // when a cell is recreated after scrolling back on-screen.
     static func displayVolume(volume: Double, muted: Bool, masterMuted: Bool) -> Double {
         (muted || masterMuted) ? 0 : volume
+    }
+
+    // Alias if the user set one, otherwise the session's name.
+    private var displayName: String {
+        aliasManager.displayNameForSession(sessionId: session.id, originalName: session.name)
+    }
+
+    private var detail: String? {
+        guard let detail = session.detail?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !detail.isEmpty else { return nil }
+        return detail
+    }
+
+    /// The row's spoken name: the display name, then the detail when there is one.
+    static func spokenName(_ displayName: String, detail: String?) -> String {
+        guard let detail else { return displayName }
+        return "\(displayName), \(detail)"
+    }
+
+    // The hidden stack reserves the detail's line in every row, so a row keeps its height
+    // when a detail appears, changes or disappears; without one the name is centred in it.
+    private var nameAndDetail: some View {
+        ZStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 1) {
+                nameLine("X")
+                detailLine("X")
+            }
+            .hidden()
+
+            VStack(alignment: .leading, spacing: 1) {
+                nameLine(displayName)
+                    .foregroundColor(.white)
+                    .truncationMode(.middle)
+                if let detail {
+                    detailLine(detail)
+                        .foregroundColor(.white.opacity(0.6))
+                        .truncationMode(.tail)
+                }
+            }
+        }
+        .animation(nil, value: detail)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(SessionCell.spokenName(displayName, detail: detail))
+    }
+
+    // Shared by the visible lines and the hidden ones that reserve their height.
+    private func nameLine(_ text: String) -> some View {
+        Text(text).font(.subheadline).fontWeight(.medium).lineLimit(1)
+    }
+
+    private func detailLine(_ text: String) -> some View {
+        Text(text).font(.caption).lineLimit(1)
     }
 
     private var displayVolume: Double {
@@ -201,6 +256,8 @@ struct SessionCell: View {
             }
 
             HStack {
+                SessionIconView(image: icon)
+
                 // Chat balance indicator
                 if isChat {
                     Image(systemName: "arrow.up.arrow.down.circle.fill")
@@ -208,13 +265,7 @@ struct SessionCell: View {
                         .font(.system(size: 16))
                 }
 
-                // Use alias if available, otherwise use original name
-                Text(aliasManager.displayNameForSession(sessionId: session.id, originalName: session.name))
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
+                nameAndDetail
 
                 Spacer()
 
@@ -267,7 +318,7 @@ struct SessionCell: View {
                     value: $localVolume,
                     range: 0...100,
                     steps: 10,
-                    accessibilityLabel: "Volume for \(aliasManager.displayNameForSession(sessionId: session.id, originalName: session.name))",
+                    accessibilityLabel: "Volume for \(SessionCell.spokenName(displayName, detail: detail))",
                     onEditingChanged: { editing in
                         if editing {
                             ignoreServerUpdates = true
@@ -380,13 +431,18 @@ struct SessionCell: View {
             
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Enter a custom name for \"\(session.name)\"")
+            if let detail = aliasPromptDetail {
+                Text("Enter a custom name for \"\(session.name)\" (\(detail))")
+            } else {
+                Text("Enter a custom name for \"\(session.name)\"")
+            }
         }
     }
     
     private func showAliasEditingPrompt() {
         // Initialize with current alias if exists
         newAlias = aliasManager.sessionAliases[session.id] ?? ""
+        aliasPromptDetail = detail
         isEditingAlias = true
     }
 }
@@ -396,7 +452,8 @@ struct SessionCell: View {
         id: "radio.exe",
         muted: false,
         name: "Radio",
-        volume: 75.0
+        volume: 75.0,
+        detail: "Morning Show - Live"
     )
     
     SessionCell(

@@ -109,7 +109,7 @@ struct MainView: View {
                         .padding(.vertical, 12)
                         .accessibilityElement(children: .combine)
                     }
-                    .accessibilityHint("Opens the Windows server setup guide")
+                    .accessibilityHint("Opens the server setup guide")
                 }
                 .readableContentWidth()
             }
@@ -269,7 +269,7 @@ struct MainView: View {
             // Multiple output devices so the master-device selector has a
             // meaningful list; "mock-device" is the selected default.
             viewModel.fullState = FullState(
-                protocolVersion: 7,
+                protocolVersion: WireProtocol.version,
                 deviceIds: [
                     "mock-device": "Speakers (HDMI)",
                     "headphones": "Headphones (Bluetooth)",

@@ -38,3 +38,13 @@ struct OneSession : Codable {
     let volume: Double
     let muted: Bool
 }
+
+// ask for application icons by icon id
+struct AIconRequest : Codable {
+    struct Payload : Codable {
+        let ids: [String]
+        let size: Int
+    }
+    let protocolVersion: Int
+    let iconRequest: Payload
+}
