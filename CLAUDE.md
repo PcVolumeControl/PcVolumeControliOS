@@ -92,8 +92,9 @@ The app speaks protocol version 8 only, a JSON protocol with one message per lin
 - **Client → Server**: updates for the default device, master volume/mute and session
   volume/mute, and `iconRequest` for application icons
 
-The canonical spec is the protocol version 8 document of the PcVolumeControlServer repo.
-This app does not work with the original C# PcVolumeControlWindows server (version 7).
+The canonical spec is `docs/PROTOCOL.md` in the PcVolumeControlServer repo; sample
+messages are in `examples/` of the PcVolumeControlProtocol repo. This app does not work
+with the original C# PcVolumeControlWindows server (version 7).
 Paths below are relative to `PcVolumeControl/`.
 
 ### Version and ids
@@ -105,8 +106,9 @@ Paths below are relative to `PcVolumeControl/`.
   server (lower number) or the app (higher number) needs updating.
 - Session ids are opaque. A session update is sent with the current state's
   `defaultDevice.deviceId`, the device whose sessions the app shows.
-- mDNS discovery does not read TXT records; a server of another version shows up in the
-  list and is rejected with the message above when connecting.
+- mDNS discovery does not read TXT records (servers advertise `protocol=8`); a server of
+  another version shows up in the list and is rejected with the message above when
+  connecting, which tells the user what to update instead of hiding the server.
 
 ### Lines and icons
 

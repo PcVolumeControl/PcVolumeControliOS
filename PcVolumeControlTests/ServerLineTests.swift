@@ -22,6 +22,11 @@ final class ServerLineTests: XCTestCase {
     {"protocolVersion":7,"applicationVersion":"v10","deviceIds":{"dev-a":"Speakers"},"defaultDevice":{"deviceId":"dev-a","name":"Speakers","masterVolume":80.0,"masterMuted":false,"sessions":[{"name":"Chrome","id":"{0.0.0.00000000}.{dev-a}|chrome.exe","volume":35.0,"muted":false}]}}
     """#
 
+    // examples/full-state.json from the protocol repo (the reference mock server), on one line.
+    static let referenceState = #"""
+    {"protocolVersion":8,"applicationVersion":"v10","deviceIds":{"0f4090a9-dee2-4563-ba29-0ad6b93d9e22":"Speakers (Mock Audio)","c5a32106-264d-40b2-a2e0-74eda397454c":"Headphones (Mock Audio)","c98e4030-926b-4e62-8c83-1c529574cc51":"Headset (Mock USB Audio)"},"defaultDevice":{"deviceId":"0f4090a9-dee2-4563-ba29-0ad6b93d9e22","name":"Speakers (Mock Audio)","masterVolume":80.0,"masterMuted":false,"sessions":[{"name":"Firefox","id":"mock-9ff8bf89-firefox","volume":100.0,"muted":false,"iconId":"demo1d94c5a"},{"name":"Spotify","id":"mock-9ff8bf89-spotify","volume":65.0,"muted":false,"iconId":"demo1b64cd9"},{"name":"Discord","id":"mock-9ff8bf89-discord","volume":40.0,"muted":false,"iconId":"demo174d94c"},{"name":"Musique été","id":"mock-9ff8bf89-musique","volume":55.0,"muted":false,"iconId":"demo14cd968"},{"name":"Firefox","id":"mock-9ff8bf89-firefox-radio","volume":70.0,"muted":false,"iconId":"demo1d94c5a","detail":"Radio Paradise - Main Mix"},{"name":"Firefox","id":"mock-9ff8bf89-firefox-video","volume":90.0,"muted":false,"iconId":"demo1d94c5a","detail":"Tears of Steel - YouTube"}]}}
+    """#
+
     // Shape captured from a v8 server (device names shortened): one session without an
     // icon id yet, and two sessions sharing an id.
     static let v8State = #"""
@@ -56,6 +61,19 @@ final class ServerLineTests: XCTestCase {
         XCTAssertEqual(state.defaultDevice.sessions.count, 1)
         XCTAssertNil(state.defaultDevice.sessions[0].iconId)
         XCTAssertEqual(state.defaultDevice.sessions[0].volume, 35.0)
+    }
+
+    func testReferenceExampleDecodes() throws {
+        guard case .state(let state) = try classify(Self.referenceState) else {
+            return XCTFail("Expected a full state")
+        }
+        let sessions = state.defaultDevice.sessions
+        XCTAssertEqual(sessions.count, 6)
+        // Session ids are opaque: none contains the device id.
+        XCTAssertFalse(sessions.contains { $0.id.contains(state.defaultDevice.deviceId) })
+        XCTAssertEqual(state.iconIds, ["demo1d94c5a", "demo1b64cd9", "demo174d94c", "demo14cd968"])
+        XCTAssertEqual(sessions.compactMap(\.detail), ["Radio Paradise - Main Mix", "Tears of Steel - YouTube"])
+        XCTAssertEqual(sessions[3].name, "Musique \u{E9}t\u{E9}")
     }
 
     func testStateDecodesIconIds() throws {
